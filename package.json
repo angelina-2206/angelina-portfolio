@@ -1,0 +1,36 @@
+{
+  "name": "angelina-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cinematic portfolio website for Angelina Chatterjee — Full Stack Developer & AI Builder",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angelina-2206/angelina-portfolio.git"
+  },
+  "keywords": [],
+  "author": "Angelina Chatterjee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/angelina-2206/angelina-portfolio/issues"
+  },
+  "homepage": "https://github.com/angelina-2206/angelina-portfolio#readme",
+  "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
+    "framer-motion": "^12.38.0",
+    "gsap": "^3.14.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "@vitejs/plugin-react": "^6.0.1",
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.3"
+  }
+}
