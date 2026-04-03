@@ -24,8 +24,8 @@ export default function Hero() {
   return (
     <section id="hero" className="obs-section bg-dark" ref={containerRef}>
       {/* Decorative orbital lines */}
-      <div className="orbital-line orbital-line-1" style={{ width: '80vw', height: '80vw', top: '-20%', right: '-10%', border: '1px solid rgba(139,92,246,0.2)' }} />
-      <div className="orbital-line orbital-line-2" style={{ width: '60vw', height: '60vw', bottom: '-15%', left: '-5%', border: '1px solid rgba(139,92,246,0.1)' }} />
+      <div className="orbital-line orbital-line-1 float-anim" style={{ width: '80vw', height: '80vw', top: '-20%', right: '-10%', border: '1px solid rgba(139,92,246,0.2)', animationDelay: '0s' }} />
+      <div className="orbital-line orbital-line-2 float-anim" style={{ width: '60vw', height: '60vw', bottom: '-15%', left: '-5%', border: '1px solid rgba(139,92,246,0.1)', animationDelay: '-3s' }} />
 
       <div className="obs-inner" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         
@@ -60,6 +60,7 @@ export default function Hero() {
 
         {/* Central visual piece (placeholder for Obsidian's dark crystal) */}
         <motion.div 
+          className="glow-pulse float-anim"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
@@ -68,7 +69,7 @@ export default function Hero() {
             transform: 'translate(-50%, -50%)', zIndex: 1,
             width: '40vw', height: '40vw', maxWidth: '600px', maxHeight: '600px',
             background: 'radial-gradient(circle at 30% 30%, rgba(139,92,246,0.15) 0%, transparent 60%)',
-            borderRadius: '50%', filter: 'blur(40px)'
+            borderRadius: '50%', filter: 'blur(30px)'
           }}
         />
 

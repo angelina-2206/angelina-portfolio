@@ -57,11 +57,8 @@ export default function Projects() {
           </h2>
 
           {/* Center Interactive Object area */}
-          <div className="reveal-up" style={{
+          <div className="reveal-up tactile-card-light float-anim" style={{
             width: '32vw', height: '45vh', minWidth: '280px', minHeight: '360px',
-            background: 'white', borderRadius: '12px',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
-            border: '1px solid rgba(0,0,0,0.05)',
             position: 'relative', zIndex: 10,
             display: 'flex', flexDirection: 'column',
             overflow: 'hidden', cursor: 'none'

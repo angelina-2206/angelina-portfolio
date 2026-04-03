@@ -31,10 +31,8 @@ export default function Gallery() {
           <span style={{ fontStyle: 'italic', color: 'var(--color-lavender)' }}>Vault</span>
         </h2>
 
-        <div className="reveal-up" style={{
+        <div className="reveal-up tactile-card" style={{
           position: 'relative', width: '60vw', height: '60vh',
-          border: '1px solid rgba(139,92,246,0.1)',
-          background: 'rgba(5,5,5,0.7)', backdropFilter: 'blur(10px)',
           display: 'flex', flexDirection: 'column', overflow: 'hidden'
         }}>
           

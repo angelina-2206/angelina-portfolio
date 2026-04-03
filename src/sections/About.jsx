@@ -28,12 +28,9 @@ export default function About() {
           </div>
 
           {/* Center Image/Object Box */}
-          <div className="reveal-up" style={{
+          <div className="reveal-up tactile-card float-anim" style={{
             width: '100%', height: '100%', position: 'relative',
-            borderRadius: '16px', overflow: 'hidden',
-            background: 'linear-gradient(135deg, rgba(139,92,246,0.1), rgba(139,92,246,0.02))',
-            border: '1px solid rgba(139,92,246,0.15)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center'
+            overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center'
           }}>
             {/* The "Inner Chamber" style text overlaid on image */}
             <div style={{
