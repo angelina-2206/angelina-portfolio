@@ -14,6 +14,7 @@ const sectionLabels = {
 export default function HudStrip({ currentSection }) {
   const labels = sectionLabels[currentSection] || sectionLabels[0]
   const [time, setTime] = useState('')
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const updateTime = () => {
@@ -25,8 +26,22 @@ export default function HudStrip({ currentSection }) {
     return () => clearInterval(interval)
   }, [])
 
+  // Hide HUD strip when on hero section (it has its own nav)
+  useEffect(() => {
+    const handleScroll = () => {
+      setVisible(window.scrollY > window.innerHeight * 0.8)
+    }
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <div className="hud-strip">
+    <div className="hud-strip" style={{
+      opacity: visible ? 1 : 0,
+      pointerEvents: visible ? 'auto' : 'none',
+      transition: 'opacity 0.4s ease',
+    }}>
       <div className="hud-item">
         <div className="hud-dot" />
         <span>LAP {labels.lap}</span>

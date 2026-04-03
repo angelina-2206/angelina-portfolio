@@ -1,37 +1,75 @@
 import { useState, useEffect } from 'react'
 import LoadingScreen from './components/LoadingScreen'
 import CustomCursor from './components/CustomCursor'
-import HudStrip from './components/HudStrip'
-import SectorProgress from './components/SectorProgress'
+import ObsidianNav from './components/ObsidianNav'
 import Hero from './sections/Hero'
 import About from './sections/About'
+import Projects from './sections/Projects'
+import Gallery from './sections/Gallery'
+import Contact from './sections/Contact'
 
-function App() {
+export default function App() {
   const [isLoading, setIsLoading] = useState(true)
-  const [currentSection, setCurrentSection] = useState(0)
+  const [currentSection, setCurrentSection] = useState('hero')
+  
+  // Track scroll position for Nav updates (dark/light theme)
+  useEffect(() => {
+    if (isLoading) return
+    
+    const handleScroll = () => {
+      const sections = document.querySelectorAll('.obs-section')
+      let current = ''
+      
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop
+        // If we've scrolled past this section (with some buffer)
+        if (window.scrollY >= sectionTop - window.innerHeight / 3) {
+          current = section.getAttribute('id')
+        }
+      })
+      
+      if (current !== currentSection) {
+        setCurrentSection(current)
+      }
+    }
+    
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [isLoading, currentSection])
 
-  const sections = ['hero', 'about']
+  useEffect(() => {
+    // Add scroll reveal observer
+    if (isLoading) return
+    const obsvr = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed')
+        }
+      })
+    }, { threshold: 0.1 })
+    
+    document.querySelectorAll('.reveal-up').forEach(el => obsvr.observe(el))
+    return () => obsvr.disconnect()
+  }, [isLoading])
 
   return (
     <>
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
       <CustomCursor />
+      
       {!isLoading && (
         <>
-          <HudStrip currentSection={currentSection} />
-          <SectorProgress 
-            sections={sections} 
-            currentSection={currentSection}
-            setCurrentSection={setCurrentSection}
-          />
+          <ObsidianNav currentSection={currentSection} />
+          
           <main>
             <Hero />
             <About />
+            <Projects />
+            <Gallery />
+            <Contact />
           </main>
         </>
       )}
     </>
   )
 }
-
-export default App

@@ -1,261 +1,80 @@
-import { useRef, useEffect } from 'react'
-import { motion, useInView } from 'framer-motion'
-
 export default function About() {
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
-
-  const bioLines = [
-    "I'm Angelina Chatterjee — a full stack developer and AI builder currently pursuing Computer Science (Business Systems).",
-    "I don't just write code. I build systems that solve real problems — from AI-driven mental health tools to NLP-based legal assistants. Every project starts with a question: \"What's broken, and how do I fix it?\"",
-    "My work sits at the intersection of engineering precision and creative thinking. I believe the best technology isn't the most complex — it's the most intentional.",
-    "I move fast, learn faster, and document eventually. If it can be automated, optimized, or rethought from scratch — I've probably already started.",
-  ]
-
   return (
-    <section
-      data-section="about"
-      id="about"
-      ref={sectionRef}
-      className="section"
-      style={{ position: 'relative', overflow: 'hidden' }}
-    >
-      {/* Grid bg */}
-      <div className="grid-bg" />
+    <section id="about" className="obs-section bg-deep">
+      <div className="obs-inner" style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '40px 0' }}>
+        
+        {/* Top Label */}
+        <div className="obs-label reveal-up">001 — THE MAKER</div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
-        {/* Section tag */}
-        <motion.div
-          className="section-tag"
-          initial={{ opacity: 0, x: -20 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          SECTOR 02 — SUBJECT FILE: 001
-        </motion.div>
+        {/* Massive Display Title */}
+        <h2 className="display-large reveal-up" style={{ marginBottom: '60px', color: 'var(--color-text-primary)' }}>
+          Explore
+          <br/>
+          <span style={{ color: 'var(--color-lavender)', fontStyle: 'italic' }}>Origins</span>
+        </h2>
 
-        <motion.h2
-          className="section-title"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          About the Operator
-        </motion.h2>
-
-        {/* Split layout */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 3fr)',
-          gap: '48px',
-          alignItems: 'start',
-        }}
-        className="about-grid"
-        >
-          {/* Left — Photo area with crime-doc overlay */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            style={{
-              position: 'relative',
-              aspectRatio: '3/4',
-              background: 'var(--color-card)',
-              borderRadius: '12px',
-              overflow: 'hidden',
-              border: '1px solid var(--color-border)',
-            }}
-          >
-            {/* CCTV overlay aesthetic */}
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: `
-                repeating-linear-gradient(
-                  0deg,
-                  transparent,
-                  transparent 2px,
-                  rgba(255,255,255,0.02) 2px,
-                  rgba(255,255,255,0.02) 4px
-                )
-              `,
-              zIndex: 2,
-              pointerEvents: 'none',
-            }} />
-
-            {/* Placeholder silhouette */}
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '6rem',
-              color: 'rgba(255,255,255,0.05)',
-              fontFamily: 'var(--font-display)',
-              fontStyle: 'italic',
-            }}>
-              AC
-            </div>
-
-            {/* Corner markers */}
-            {[
-              { top: '12px', left: '12px', borderTop: '2px solid var(--color-ferrari)', borderLeft: '2px solid var(--color-ferrari)' },
-              { top: '12px', right: '12px', borderTop: '2px solid var(--color-ferrari)', borderRight: '2px solid var(--color-ferrari)' },
-              { bottom: '12px', left: '12px', borderBottom: '2px solid var(--color-ferrari)', borderLeft: '2px solid var(--color-ferrari)' },
-              { bottom: '12px', right: '12px', borderBottom: '2px solid var(--color-ferrari)', borderRight: '2px solid var(--color-ferrari)' },
-            ].map((style, i) => (
-              <div key={i} style={{
-                position: 'absolute',
-                width: '20px',
-                height: '20px',
-                ...style,
-                zIndex: 3,
-              }} />
-            ))}
-
-            {/* Timestamp */}
-            <div style={{
-              position: 'absolute',
-              bottom: '16px',
-              left: '16px',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.6rem',
-              color: 'var(--color-ferrari)',
-              letterSpacing: '0.15em',
-              zIndex: 3,
-            }}>
-              REC ● 2025.04.03
-            </div>
-
-            {/* Classification banner */}
-            <div style={{
-              position: 'absolute',
-              top: '16px',
-              right: '16px',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.55rem',
-              color: 'var(--color-text-dim)',
-              letterSpacing: '0.2em',
-              background: 'rgba(0,0,0,0.5)',
-              padding: '4px 8px',
-              borderRadius: '4px',
-              zIndex: 3,
-            }}>
-              CLASSIFIED
-            </div>
-          </motion.div>
-
-          {/* Right — Bio + Stats */}
-          <div>
-            {/* Bio paragraphs with stagger */}
-            <div style={{ marginBottom: '40px' }}>
-              {bioLines.map((line, i) => (
-                <motion.p
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
-                  style={{
-                    fontSize: '0.95rem',
-                    lineHeight: 1.8,
-                    color: i === 0 ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
-                    marginBottom: '16px',
-                  }}
-                >
-                  {line}
-                </motion.p>
-              ))}
-            </div>
-
-            {/* F1 Driver Stats Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.9 }}
-              style={{
-                background: 'var(--color-card)',
-                border: '1px solid var(--color-border)',
-                borderRadius: '12px',
-                padding: '24px',
-              }}
-            >
-              <div style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.6rem',
-                letterSpacing: '0.3em',
-                color: 'var(--color-ferrari)',
-                marginBottom: '16px',
-              }}>
-                ■ DRIVER PROFILE
-              </div>
-
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '12px',
-              }}>
-                {[
-                  { label: 'ROLE', value: 'Full Stack + AI Developer' },
-                  { label: 'TEAM', value: 'CS Business Systems' },
-                  { label: 'SEASON', value: '2025' },
-                  { label: 'FASTEST LAP', value: 'TrapEye — 89% acc / 12hrs' },
-                  { label: 'STATUS', value: 'POINTS SCORING', color: 'var(--color-teal)' },
-                ].map((stat, i) => (
-                  <div key={i} style={{
-                    padding: '12px',
-                    background: 'rgba(255,255,255,0.02)',
-                    borderRadius: '8px',
-                    border: '1px solid var(--color-border)',
-                  }}>
-                    <div style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.55rem',
-                      letterSpacing: '0.2em',
-                      color: 'var(--color-text-dim)',
-                      marginBottom: '4px',
-                    }}>
-                      {stat.label}
-                    </div>
-                    <div style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.75rem',
-                      color: stat.color || 'var(--color-text-primary)',
-                      letterSpacing: '0.05em',
-                    }}>
-                      {stat.value}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+        {/* Flanked Layout matching Obsidian's image carousel style */}
+        <div className="flanked-layout" style={{ flex: 1, height: '60vh' }}>
+          
+          {/* Left Flank */}
+          <div style={{ alignSelf: 'flex-end', paddingBottom: '40px' }}>
+            <p className="flank-text reveal-up" style={{ position: 'relative', paddingLeft: '20px' }}>
+              <span style={{ position: 'absolute', left: 0, top: '4px', width: '1px', height: '100%', background: 'var(--color-primary)' }} />
+              I am Angelina Chatterjee — a full stack developer and AI builder pursuing Computer Science (Business Systems).
+              <br/><br/>
+              Every system starts with a question:<br/>
+              "What's broken, and how do I fix it?"
+            </p>
           </div>
+
+          {/* Center Image/Object Box */}
+          <div className="reveal-up" style={{
+            width: '100%', height: '100%', position: 'relative',
+            borderRadius: '16px', overflow: 'hidden',
+            background: 'linear-gradient(135deg, rgba(139,92,246,0.1), rgba(139,92,246,0.02))',
+            border: '1px solid rgba(139,92,246,0.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center'
+          }}>
+            {/* The "Inner Chamber" style text overlaid on image */}
+            <div style={{
+              position: 'absolute', bottom: '30px', left: '30px',
+              fontFamily: 'var(--font-display)', fontSize: '2rem',
+              color: 'var(--color-text-primary)', zIndex: 10
+            }}>
+              Inner Space
+            </div>
+
+            {/* Simulated arrows */}
+            <div style={{ position: 'absolute', bottom: '30px', right: '30px', display: 'flex', gap: '12px', zIndex: 10 }}>
+              <button className="arrow-btn">←</button>
+              <button className="arrow-btn">→</button>
+            </div>
+
+            {/* Index counter overlaid */}
+            <div className="fraction-counter" style={{ position: 'absolute', bottom: '30px', right: '160px', zIndex: 10 }}>
+              1/4
+            </div>
+
+            {/* Glowing orb inside */}
+            <div style={{
+              width: '120px', height: '120px', borderRadius: '50%',
+              background: 'radial-gradient(circle, var(--color-primary-light) 0%, transparent 70%)',
+              filter: 'blur(20px)', opacity: 0.6
+            }} />
+          </div>
+
+          {/* Right Flank */}
+          <div style={{ alignSelf: 'flex-start', paddingTop: '40px' }}>
+            <p className="flank-text reveal-up">
+              My work sits at the intersection of engineering precision and creative thinking.
+              <br/><br/>
+              I move fast, learn faster, and document eventually. If it can be optimized, I've already started.
+            </p>
+          </div>
+
         </div>
+
       </div>
-
-      {/* Bottom separator */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={isInView ? { scaleX: 1 } : {}}
-        transition={{ duration: 1, delay: 1 }}
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: '5%',
-          right: '5%',
-          height: '1px',
-          background: 'linear-gradient(90deg, transparent, var(--color-ferrari), transparent)',
-          transformOrigin: 'left',
-        }}
-      />
-
-      <style>{`
-        @media (max-width: 768px) {
-          .about-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </section>
   )
 }

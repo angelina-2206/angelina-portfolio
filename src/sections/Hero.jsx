@@ -1,206 +1,100 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-
-const subtitles = [
-  'Full Stack Developer',
-  'AI Builder',
-  'Data-Driven Thinker',
-  'Still Debugging.',
-]
+import gsap from 'gsap'
 
 export default function Hero() {
-  const [subtitleIndex, setSubtitleIndex] = useState(0)
-  const [displayText, setDisplayText] = useState('')
-  const [isDeleting, setIsDeleting] = useState(false)
-  const nameRef = useRef(null)
+  const containerRef = useRef(null)
 
-  // Typewriter effect
   useEffect(() => {
-    const current = subtitles[subtitleIndex]
-    let timeout
-
-    if (!isDeleting) {
-      if (displayText.length < current.length) {
-        timeout = setTimeout(() => {
-          setDisplayText(current.slice(0, displayText.length + 1))
-        }, 60)
-      } else {
-        timeout = setTimeout(() => setIsDeleting(true), 2000)
-      }
-    } else {
-      if (displayText.length > 0) {
-        timeout = setTimeout(() => {
-          setDisplayText(current.slice(0, displayText.length - 1))
-        }, 30)
-      } else {
-        setIsDeleting(false)
-        setSubtitleIndex((prev) => (prev + 1) % subtitles.length)
-      }
+    // Subtle parallax on the orbital lines
+    const handleMouseMove = (e) => {
+      if (!containerRef.current) return
+      const { clientX, clientY } = e
+      const x = (clientX / window.innerWidth - 0.5) * 20
+      const y = (clientY / window.innerHeight - 0.5) * 20
+      
+      gsap.to('.orbital-line-1', { x: x * 2, y: y * 2, duration: 2, ease: 'power2.out' })
+      gsap.to('.orbital-line-2', { x: -x * 1.5, y: -y * 1.5, duration: 2, ease: 'power2.out' })
     }
-
-    return () => clearTimeout(timeout)
-  }, [displayText, isDeleting, subtitleIndex])
-
-  const nameChars = 'ANGELINA CHATTERJEE'.split('')
+    
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   return (
-    <section data-section="hero" className="section" id="hero" style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      justifyContent: 'center',
-      minHeight: '100vh',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
-      {/* F1 Grid Background */}
-      <div className="grid-bg" />
+    <section id="hero" className="obs-section bg-dark" ref={containerRef}>
+      {/* Decorative orbital lines */}
+      <div className="orbital-line orbital-line-1" style={{ width: '80vw', height: '80vw', top: '-20%', right: '-10%', border: '1px solid rgba(139,92,246,0.2)' }} />
+      <div className="orbital-line orbital-line-2" style={{ width: '60vw', height: '60vw', bottom: '-15%', left: '-5%', border: '1px solid rgba(139,92,246,0.1)' }} />
 
-      {/* Decorative corner brackets */}
-      <div style={{
-        position: 'absolute',
-        top: '80px',
-        left: '40px',
-        width: '40px',
-        height: '40px',
-        borderTop: '1px solid rgba(225, 6, 0, 0.3)',
-        borderLeft: '1px solid rgba(225, 6, 0, 0.3)',
-      }} />
-      <div style={{
-        position: 'absolute',
-        bottom: '40px',
-        right: '40px',
-        width: '40px',
-        height: '40px',
-        borderBottom: '1px solid rgba(225, 6, 0, 0.3)',
-        borderRight: '1px solid rgba(225, 6, 0, 0.3)',
-      }} />
+      <div className="obs-inner" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        
+        {/* Left-aligned small flanked text */}
+        <div style={{ position: 'absolute', left: 0, top: '40%', transform: 'translateY(-50%)', maxWidth: '200px' }}>
+          <p className="flank-text reveal-up">
+            An Assembly of<br/>Algorithms & Design
+          </p>
+        </div>
 
-      {/* Main Content */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', padding: '0 20px' }}>
-        {/* Sector Tag */}
-        <motion.div
-          className="section-tag"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-        >
-          SECTOR 01 — IDENTIFICATION
-        </motion.div>
+        {/* Right-aligned small flanked text */}
+        <div style={{ position: 'absolute', right: 0, top: '30%', transform: 'translateY(-50%)', textAlign: 'right', maxWidth: '200px' }}>
+          <p className="flank-text reveal-up" style={{ transitionDelay: '0.2s' }}>
+            Coordinates<br/>Withheld
+          </p>
+        </div>
 
-        {/* Name — letter-by-letter stagger */}
-        <h1 ref={nameRef} style={{
-          fontFamily: 'var(--font-display)',
-          fontStyle: 'italic',
-          fontSize: 'clamp(2.5rem, 8vw, 7rem)',
-          fontWeight: 700,
-          lineHeight: 1,
-          marginBottom: '24px',
-          letterSpacing: '-0.02em',
-        }}>
-          {nameChars.map((char, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                delay: 0.5 + i * 0.04, 
-                duration: 0.5,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }}
-              style={{ display: 'inline-block' }}
-            >
-              {char === ' ' ? '\u00A0' : char}
-            </motion.span>
-          ))}
-        </h1>
+        {/* Main Massive Title */}
+        <div style={{ textAlign: 'center', zIndex: 10 }}>
+          <motion.h1 
+            className="display-massive"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            style={{ color: 'var(--color-warm)' }}
+          >
+            Nothing
+            <br/>
+            <span style={{ fontStyle: 'italic', paddingRight: '0.1em' }}>Built</span> First
+          </motion.h1>
+        </div>
 
-        {/* Typewriter Subtitle */}
-        <motion.div
+        {/* Central visual piece (placeholder for Obsidian's dark crystal) */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+          style={{
+            position: 'absolute', left: '50%', top: '55%',
+            transform: 'translate(-50%, -50%)', zIndex: 1,
+            width: '40vw', height: '40vw', maxWidth: '600px', maxHeight: '600px',
+            background: 'radial-gradient(circle at 30% 30%, rgba(139,92,246,0.15) 0%, transparent 60%)',
+            borderRadius: '50%', filter: 'blur(40px)'
+          }}
+        />
+
+        {/* Lower center subtext */}
+        <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.6 }}
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 'clamp(0.85rem, 2vw, 1.1rem)',
-            color: 'var(--color-text-secondary)',
-            marginBottom: '48px',
-            letterSpacing: '0.1em',
-            height: '2em',
-          }}
+          transition={{ duration: 1, delay: 1 }}
+          style={{ position: 'absolute', bottom: '10%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}
         >
-          {'> '}{displayText}
-          <span style={{ 
-            animation: 'blink 1s step-end infinite',
-            color: 'var(--color-ferrari)',
-            fontWeight: 700,
-          }}>_</span>
-          <style>{`@keyframes blink { 50% { opacity: 0; } }`}</style>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--color-text-primary)' }}>
+              Commitment
+            </span>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--color-lavender)' }}>
+              Precedes
+            </span>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--color-text-dim)', fontStyle: 'italic' }}>
+              Entry
+            </span>
+          </div>
+          
+          <div className="obs-divider" style={{ marginTop: '24px', height: '80px' }} />
         </motion.div>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.8, duration: 0.6 }}
-          style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}
-        >
-          <a href="#projects" className="pill-btn">
-            VIEW_PROJECTS
-          </a>
-          <a href="https://github.com/angelina-2206" target="_blank" rel="noopener noreferrer" className="pill-btn" style={{ borderColor: 'var(--color-text-dim)' }}>
-            GITHUB
-          </a>
-          <a href="#contact" className="pill-btn" style={{ borderColor: 'var(--color-text-dim)' }}>
-            CONTACT
-          </a>
-        </motion.div>
       </div>
-
-      {/* "SCROLL TO DEPLOY" vertical text */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 1 }}
-        style={{
-          position: 'absolute',
-          bottom: '80px',
-          left: '20px',
-          writingMode: 'vertical-lr',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.6rem',
-          letterSpacing: '0.3em',
-          color: 'var(--color-ferrari)',
-          textTransform: 'uppercase',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-        }}
-      >
-        <motion.div 
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          style={{ fontSize: '0.5rem' }}
-        >
-          ▼
-        </motion.div>
-        SCROLL TO DEPLOY
-      </motion.div>
-
-      {/* Red accent line bottom */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: 2, duration: 1, ease: 'easeOut' }}
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: '5%',
-          right: '5%',
-          height: '1px',
-          background: 'linear-gradient(90deg, transparent, var(--color-ferrari), transparent)',
-          transformOrigin: 'left',
-        }}
-      />
     </section>
   )
 }
