@@ -21,11 +21,14 @@
   },
   "homepage": "https://github.com/angelina-2206/angelina-portfolio#readme",
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
     "@studio-freight/lenis": "^1.0.42",
     "framer-motion": "^12.38.0",
     "gsap": "^3.14.2",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "three": "^0.183.2"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.2",
