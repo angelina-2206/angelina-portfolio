@@ -1,113 +1,86 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 
 export default function CustomCursor() {
   const cursorRef = useRef(null)
-  const quickX = useRef(null)
-  const quickY = useRef(null)
-  const magnetTargets = useRef([])
+  const [isHovering, setIsHovering] = useState(false)
 
   useEffect(() => {
-    // Detect touch device
-    if ('ontouchstart' in window || window.innerWidth < 768) return
-
     const cursor = cursorRef.current
     if (!cursor) return
 
-    // Set up GSAP quickTo for smooth cursor movement
-    quickX.current = gsap.quickTo(cursor, 'x', { duration: 0.6, ease: 'power3' })
-    quickY.current = gsap.quickTo(cursor, 'y', { duration: 0.6, ease: 'power3' })
+    // Setup GSAP QuickTo for buttery smooth cursor tracking
+    const xTo = gsap.quickTo(cursor, "x", { duration: 0.4, ease: "power3" })
+    const yTo = gsap.quickTo(cursor, "y", { duration: 0.4, ease: "power3" })
 
-    const onMouseMove = (e) => {
-      quickX.current(e.clientX)
-      quickY.current(e.clientY)
+    const moveCursor = (e) => {
+      xTo(e.clientX)
+      yTo(e.clientY)
     }
 
-    const setupMagneticElements = () => {
-      // Clean up old listeners
-      magnetTargets.current.forEach(({ el, enter, leave, move }) => {
-        el.removeEventListener('mouseenter', enter)
-        el.removeEventListener('mouseleave', leave)
-        el.removeEventListener('mousemove', move)
-      })
-      magnetTargets.current = []
-
-      const interactiveElements = document.querySelectorAll(
-        'a, button, input, textarea, [data-cursor-hover], .project-hover-target, .pill-btn, .skill-pill'
-      )
-
-      interactiveElements.forEach((el) => {
-        const elQuickX = gsap.quickTo(el, 'x', { duration: 0.4, ease: 'power3' })
-        const elQuickY = gsap.quickTo(el, 'y', { duration: 0.4, ease: 'power3' })
-
-        const enter = () => {
-          cursor.classList.add('cursor-hover')
-          gsap.to(cursor, {
-            width: 44,
-            height: 44,
-            duration: 0.3,
-            ease: 'power2.out',
-          })
-        }
-
-        const leave = () => {
-          cursor.classList.remove('cursor-hover')
-          gsap.to(cursor, {
-            width: 12,
-            height: 12,
-            duration: 0.3,
-            ease: 'power2.out',
-          })
-          // Reset element position
-          elQuickX(0)
-          elQuickY(0)
-        }
-
-        const move = (e) => {
-          const rect = el.getBoundingClientRect()
-          const centerX = rect.left + rect.width / 2
-          const centerY = rect.top + rect.height / 2
-          const deltaX = (e.clientX - centerX) * 0.25
-          const deltaY = (e.clientY - centerY) * 0.25
-          
-          // Clamp the magnetic pull to 8-12px max
-          const clamp = (val, max) => Math.max(-max, Math.min(max, val))
-          elQuickX(clamp(deltaX, 12))
-          elQuickY(clamp(deltaY, 12))
-        }
-
-        el.addEventListener('mouseenter', enter)
-        el.addEventListener('mouseleave', leave)
-        el.addEventListener('mousemove', move)
-
-        magnetTargets.current.push({ el, enter, leave, move })
-      })
+    const handleMouseOver = (e) => {
+      // If hovering over buttons, links, or interactive elements
+      if (
+        e.target.tagName.toLowerCase() === 'a' ||
+        e.target.tagName.toLowerCase() === 'button' ||
+        e.target.closest('a') ||
+        e.target.closest('button') ||
+        e.target.closest('.interactive-zone')
+      ) {
+        setIsHovering(true)
+      } else {
+        setIsHovering(false)
+      }
     }
 
-    document.addEventListener('mousemove', onMouseMove)
-    setupMagneticElements()
-
-    // MutationObserver for dynamically added elements
-    const observer = new MutationObserver(() => {
-      setupMagneticElements()
-    })
-    observer.observe(document.body, { childList: true, subtree: true })
+    window.addEventListener('mousemove', moveCursor)
+    window.addEventListener('mouseover', handleMouseOver)
 
     return () => {
-      document.removeEventListener('mousemove', onMouseMove)
-      observer.disconnect()
-      magnetTargets.current.forEach(({ el, enter, leave, move }) => {
-        el.removeEventListener('mouseenter', enter)
-        el.removeEventListener('mouseleave', leave)
-        el.removeEventListener('mousemove', move)
-      })
+      window.removeEventListener('mousemove', moveCursor)
+      window.removeEventListener('mouseover', handleMouseOver)
     }
   }, [])
 
   return (
-    <div
-      ref={cursorRef}
-      className="custom-cursor"
-    />
+    <div 
+      ref={cursorRef} 
+      className={`custom-cursor-container ${isHovering ? 'is-hovering' : ''}`}
+      style={{
+        position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 99999,
+        transform: 'translate(-50%, -50%)', mixBlendMode: 'difference'
+      }}
+    >
+      {/* The main dot */}
+      <div style={{
+        width: isHovering ? '48px' : '12px',
+        height: isHovering ? '48px' : '12px',
+        backgroundColor: 'var(--color-primary-light)',
+        borderRadius: '50%',
+        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+        boxShadow: isHovering 
+          ? '0 0 20px rgba(167, 139, 250, 0.5), inset 0 0 10px rgba(255,255,255,0.5)'
+          : 'none',
+        display: 'flex', alignItems: 'center', justifyContent: 'center'
+      }}>
+        {isHovering && (
+           <div style={{
+             width: '6px', height: '6px', backgroundColor: 'var(--color-void)',
+             borderRadius: '50%'
+           }} />
+        )}
+      </div>
+      
+      {/* Outer sleek border */}
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: isHovering ? '64px' : '32px',
+        height: isHovering ? '64px' : '32px',
+        border: '1px solid var(--color-primary-light)',
+        borderRadius: '50%', opacity: isHovering ? 0 : 0.4,
+        transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+      }} />
+    </div>
   )
 }

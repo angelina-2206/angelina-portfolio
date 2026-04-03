@@ -3,9 +3,11 @@ import LoadingScreen from './components/LoadingScreen'
 import CustomCursor from './components/CustomCursor'
 import ObsidianNav from './components/ObsidianNav'
 import Hero from './sections/Hero'
+import Quote from './sections/Quote'
 import About from './sections/About'
 import Projects from './sections/Projects'
 import Gallery from './sections/Gallery'
+import Achievements from './sections/Achievements'
 import Contact from './sections/Contact'
 
 export default function App() {
@@ -63,9 +65,11 @@ export default function App() {
           
           <main>
             <Hero />
+            <Quote />
             <About />
             <Projects />
             <Gallery />
+            <Achievements />
             <Contact />
           </main>
         </>

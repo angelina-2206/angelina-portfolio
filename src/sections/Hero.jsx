@@ -6,15 +6,16 @@ export default function Hero() {
   const containerRef = useRef(null)
 
   useEffect(() => {
-    // Subtle parallax on the orbital lines
+    // Subtle parallax effect on mouse move for the central elements
     const handleMouseMove = (e) => {
       if (!containerRef.current) return
       const { clientX, clientY } = e
-      const x = (clientX / window.innerWidth - 0.5) * 20
-      const y = (clientY / window.innerHeight - 0.5) * 20
+      const x = (clientX / window.innerWidth - 0.5) * 40
+      const y = (clientY / window.innerHeight - 0.5) * 40
       
-      gsap.to('.orbital-line-1', { x: x * 2, y: y * 2, duration: 2, ease: 'power2.out' })
-      gsap.to('.orbital-line-2', { x: -x * 1.5, y: -y * 1.5, duration: 2, ease: 'power2.out' })
+      gsap.to('.hero-bg-core', { x: x, y: y, duration: 1.5, ease: 'power2.out' })
+      gsap.to('.hero-title-left', { x: -x*0.5, y: -y*0.5, duration: 1.5, ease: 'power2.out' })
+      gsap.to('.hero-title-right', { x: -x*0.5, y: -y*0.5, duration: 1.5, ease: 'power2.out' })
     }
     
     window.addEventListener('mousemove', handleMouseMove)
@@ -22,77 +23,83 @@ export default function Hero() {
   }, [])
 
   return (
-    <section id="hero" className="obs-section bg-dark" ref={containerRef}>
-      {/* Decorative orbital lines */}
-      <div className="orbital-line orbital-line-1 float-anim" style={{ width: '80vw', height: '80vw', top: '-20%', right: '-10%', border: '1px solid rgba(139,92,246,0.2)', animationDelay: '0s' }} />
-      <div className="orbital-line orbital-line-2 float-anim" style={{ width: '60vw', height: '60vw', bottom: '-15%', left: '-5%', border: '1px solid rgba(139,92,246,0.1)', animationDelay: '-3s' }} />
+    <section id="hero" className="obs-section bg-dark" ref={containerRef} style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
+      
+      {/* Central Visual Focus (Inspired by Leclerc's cinematic video center) */}
+      <div 
+        className="hero-bg-core float-anim" 
+        style={{
+          position: 'absolute', inset: 0, zIndex: 0,
+          background: 'radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.3) 0%, rgba(5,5,5,1) 70%)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}
+      >
+        {/* Placeholder for future portrait or video / Currently a sleek 3D architectural orb */}
+        <div style={{
+          width: '45vh', height: '60vh', borderRadius: '240px',
+          background: 'linear-gradient(180deg, rgba(139,92,246,0.4) 0%, rgba(139,92,246,0) 100%)',
+          boxShadow: 'inset 0px 40px 100px rgba(139,92,246,0.6), 0 0 80px rgba(139,92,246,0.2)',
+          backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)'
+        }} />
+      </div>
 
-      <div className="obs-inner" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      {/* Grid overlay */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
+        backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
+        backgroundSize: '40px 40px', opacity: 0.5
+      }} />
+
+      <div className="obs-inner" style={{ position: 'relative', height: '100%', width: '100%', maxWidth: 'none', zIndex: 10 }}>
         
-        {/* Left-aligned small flanked text */}
-        <div style={{ position: 'absolute', left: 0, top: '40%', transform: 'translateY(-50%)', maxWidth: '200px' }}>
-          <p className="flank-text reveal-up">
-            An Assembly of<br/>Algorithms & Design
-          </p>
-        </div>
-
-        {/* Right-aligned small flanked text */}
-        <div style={{ position: 'absolute', right: 0, top: '30%', transform: 'translateY(-50%)', textAlign: 'right', maxWidth: '200px' }}>
-          <p className="flank-text reveal-up" style={{ transitionDelay: '0.2s' }}>
-            Coordinates<br/>Withheld
-          </p>
-        </div>
-
-        {/* Main Massive Title */}
-        <div style={{ textAlign: 'center', zIndex: 10 }}>
-          <motion.h1 
-            className="display-massive"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            style={{ color: 'var(--color-warm)' }}
-          >
-            Nothing
-            <br/>
-            <span style={{ fontStyle: 'italic', paddingRight: '0.1em' }}>Built</span> First
-          </motion.h1>
-        </div>
-
-        {/* Central visual piece (placeholder for Obsidian's dark crystal) */}
+        {/* Giant Vertical Title Left */}
         <motion.div 
-          className="glow-pulse float-anim"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+          className="hero-title-left"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            position: 'absolute', left: '50%', top: '55%',
-            transform: 'translate(-50%, -50%)', zIndex: 1,
-            width: '40vw', height: '40vw', maxWidth: '600px', maxHeight: '600px',
-            background: 'radial-gradient(circle at 30% 30%, rgba(139,92,246,0.15) 0%, transparent 60%)',
-            borderRadius: '50%', filter: 'blur(30px)'
+            position: 'absolute', left: '-2%', top: '50%', transform: 'translateY(-50%)',
+            fontFamily: 'var(--font-display)', fontSize: 'clamp(10rem, 25vw, 22rem)',
+            fontWeight: 800, color: 'white', lineHeight: 0.8, letterSpacing: '-0.06em',
+            textTransform: 'uppercase', writingMode: 'vertical-rl', textOrientation: 'mixed',
+            opacity: 0.9, textShadow: '20px 20px 60px rgba(0,0,0,0.8)'
           }}
-        />
-
-        {/* Lower center subtext */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          style={{ position: 'absolute', bottom: '10%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--color-text-primary)' }}>
-              Commitment
-            </span>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--color-lavender)' }}>
-              Precedes
-            </span>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--color-text-dim)', fontStyle: 'italic' }}>
-              Entry
-            </span>
-          </div>
-          
-          <div className="obs-divider" style={{ marginTop: '24px', height: '80px' }} />
+          ANGELINA
+        </motion.div>
+
+        {/* Giant Vertical Title Right */}
+        <motion.div 
+          className="hero-title-right"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          style={{
+            position: 'absolute', right: '-2%', top: '50%', transform: 'translateY(-50%) rotate(180deg)',
+            fontFamily: 'var(--font-display)', fontSize: 'clamp(10rem, 25vw, 22rem)',
+            fontWeight: 800, color: 'white', lineHeight: 0.8, letterSpacing: '-0.06em',
+            textTransform: 'uppercase', writingMode: 'vertical-rl', textOrientation: 'mixed',
+            opacity: 0.9, textShadow: '20px 20px 60px rgba(0,0,0,0.8)'
+          }}
+        >
+          CHATTERJEE
+        </motion.div>
+
+        {/* Bottom CTA / SCROLL TO EXPLORE inspired by Leclerc */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1 }}
+          style={{ 
+            position: 'absolute', bottom: '40px', left: '50%', transform: 'translateX(-50%)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px'
+          }}
+        >
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-accent)' }}>
+            SCROLL TO EXPLORE
+          </span>
+          <div style={{ width: '1px', height: '60px', background: 'linear-gradient(to bottom, var(--color-primary-light), transparent)' }} />
         </motion.div>
 
       </div>

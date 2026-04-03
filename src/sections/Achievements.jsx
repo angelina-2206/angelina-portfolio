@@ -1,80 +1,82 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
-import ScrollRevealText from '../components/ScrollRevealText'
+import { useEffect } from 'react'
 
 const achievements = [
-  { year: '2025', rank: '1st', event: 'National Hackathon — AI for Social Impact', project: 'Burnout Sentinel', isTop: true },
-  { year: '2025', rank: '2nd', event: 'Smart India Hackathon Regional', project: 'PostPehchaan', isTop: true },
-  { year: '2025', rank: 'Top 10', event: 'Inter-University AI Challenge', project: 'TrapEye' },
-  { year: '2024', rank: 'Winner', event: 'CodeStorm 2024', project: 'EcoPulse', isTop: true },
-  { year: '2024', rank: 'Finalist', event: 'TechFest Innovation Track', project: 'Sentinelix' },
-  { year: '2024', rank: '1st', event: 'Women in Tech Hackathon', project: 'AquaPredict', isTop: true },
+  { label: 'HACKATHONS WON', value: '4' },
+  { label: 'SYSTEMS DEPLOYED', value: '12' },
+  { label: 'LINES OF CODE', value: '1.2M' },
+  { label: 'PROJECTS LED', value: '7' }
 ]
 
 export default function Achievements() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+
+  useEffect(() => {
+    // Scroll reveal observer similar to Leclerc's stats slide-up
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('stat-revealed')
+        }
+      })
+    }, { threshold: 0.2 })
+    
+    document.querySelectorAll('.stat-item').forEach(el => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <section data-section="achievements" id="achievements" ref={ref} className="section section-purple">
-      <div className="section-number" style={{ color: 'rgba(139,92,246,0.12)' }}>004</div>
+    <section id="achievements" className="obs-section bg-deep" style={{ padding: '120px 40px', position: 'relative' }}>
+      
+      {/* Blueprint Grid background (Leclerc style technical background adapted to dark theme) */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 0, opacity: 0.15,
+        backgroundImage: 'linear-gradient(rgba(139,92,246,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.3) 1px, transparent 1px)',
+        backgroundSize: '80px 80px'
+      }} />
 
-      <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 2 }}>
-        <motion.div className="section-label" initial={{ opacity: 0, x: -20 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }} style={{ color: 'var(--color-lavender)' }}>
-          RECOGNITION
-        </motion.div>
+      <div className="obs-inner" style={{ position: 'relative', zIndex: 10, maxWidth: '1000px', margin: '0 auto' }}>
+        
+        <div className="obs-label reveal-up" style={{ color: 'var(--color-primary-light)', marginBottom: '80px' }}>
+          003 — PERFORMANCE METRICS
+        </div>
 
-        <ScrollRevealText as="h2" className="section-title">
-          Awards & achievements.
-        </ScrollRevealText>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '60px' }}>
+          
+          {achievements.map((item, idx) => (
+            <div 
+              key={idx} 
+              className="stat-item" 
+              style={{ paddingBottom: '20px', borderBottom: '1px solid rgba(139,92,246,0.2)', transitionDelay: `${idx * 0.15}s` }}
+            >
+              <div style={{ 
+                fontFamily: 'var(--font-mono)', fontSize: '0.7rem', 
+                color: 'var(--color-lavender)', letterSpacing: '0.15em', 
+                marginBottom: '16px' 
+              }}>
+                {item.label}
+              </div>
+              <div style={{ 
+                fontFamily: 'var(--font-display)', fontSize: 'clamp(4rem, 8vw, 6rem)', 
+                fontWeight: 700, color: 'white', lineHeight: 0.9, letterSpacing: '-0.04em' 
+              }}>
+                {item.value}
+              </div>
+            </div>
+          ))}
 
-        {/* Table header */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 0.5 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="achievement-row"
-          style={{ borderBottom: '1px solid rgba(139,92,246,0.15)', color: 'var(--color-lavender)' }}
-        >
-          <span>YEAR</span>
-          <span>RANK</span>
-          <span>EVENT</span>
-          <span>PROJECT</span>
-        </motion.div>
-
-        {/* Rows */}
-        {achievements.map((a, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
-            className="achievement-row"
-            style={{ borderColor: 'rgba(139,92,246,0.08)' }}
-          >
-            <span style={{ color: 'var(--color-text-dim)' }}>{a.year}</span>
-            <span style={{ color: a.isTop ? 'var(--color-lavender)' : 'var(--color-text-secondary)' }}>
-              {a.isTop && <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-lavender)', marginRight: '6px', boxShadow: '0 0 8px rgba(196,181,253,0.4)' }} />}
-              {a.rank}
-            </span>
-            <span style={{ color: 'var(--color-text-primary)' }}>{a.event}</span>
-            <span style={{ color: 'var(--color-text-secondary)', textAlign: 'right' }}>{a.project}</span>
-          </motion.div>
-        ))}
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.9 }}
-          style={{
-            marginTop: '40px', fontFamily: 'var(--font-display)',
-            fontSize: '1rem', color: 'var(--color-lavender)', lineHeight: 1.6,
-            opacity: 0.6, textAlign: 'right',
-          }}
-        >
-          "Results don't lie."
-        </motion.div>
+        </div>
       </div>
+
+      <style>{`
+        .stat-item {
+          opacity: 0;
+          transform: translateY(60px);
+          transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .stat-item.stat-revealed {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
     </section>
   )
 }
