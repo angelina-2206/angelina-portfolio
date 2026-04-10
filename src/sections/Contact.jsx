@@ -38,7 +38,7 @@ export default function Contact() {
           fontFamily: 'var(--font-mono)', fontSize: '0.55rem',
           letterSpacing: '0.2em', opacity: 0.3, textTransform: 'uppercase'
         }}>
-          <span>© 2025 ANGELINA CHATTERJEE</span>
+          <span>© 2026 angelina chatterjee</span>
           <span>THE OBSIDIAN ARCHITECTURE</span>
           <span>ALL RIGHTS RESERVED</span>
         </div>

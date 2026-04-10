@@ -12,35 +12,42 @@ export default function Quote() {
     if (!textRef.current || !sectionRef.current) return;
     
     let ctx = gsap.context(() => {
-
-      // A single timeline tied cleanly to the scroll progress
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 80%',   // Fire when section enters 80% down the viewport
-          end: 'bottom top',  // Scrub finishes when section leaves top
-          scrub: 1.5,         // Smooth tight scrub
+          start: 'top top',    
+          end: '+=600%',       
+          scrub: 1.5, // Higher scrub for more "lazy" cinematic feel
+          pin: true,
+          anticipatePin: 1,
         }
       });
 
-      // Parallax horizontal scroll - use xPercent to avoid scrollWidth calculation issues
+      // Horizontal Slide
       tl.to(textRef.current, {
-        xPercent: -40, 
-        ease: 'none'
-      }, 0); // '0' means start at the very beginning of the timeline
+        x: () => -(textRef.current.scrollWidth - window.innerWidth + window.innerWidth * 0.1),
+        ease: 'none',
+        duration: 1 
+      }, 0);
 
-      // Typing stagger effect synced across the timeline
+      // Typing Reveal — High-impact reveal with stable easing
       tl.fromTo('.quote-char', 
-        { opacity: 0, filter: 'blur(10px)', x: 30, scale: 1.2 },
+        { 
+          opacity: 0, 
+          filter: 'blur(15px)', 
+          y: 30,
+          scale: 0.95 
+        },
         { 
           opacity: 1, 
           filter: 'blur(0px)', 
-          x: 0, 
-          scale: 1, 
-          stagger: 0.05, 
-          ease: 'power2.out',
+          y: 0,
+          scale: 1,
+          stagger: 0.1, 
+          duration: 0.4,
+          ease: 'expo.out' // Using expo.out for that premium snap
         }, 
-        0 // Fire at the exact same start time so they happen simultaneously
+        0
       );
 
     }, sectionRef);
@@ -59,70 +66,73 @@ export default function Quote() {
     <section 
       id="quote" 
       ref={sectionRef}
-      className="obs-section bg-void" 
       style={{ 
-        background: 'var(--color-void)', 
-        display: 'flex', 
-        alignItems: 'center', 
-        padding: '20vh 0', 
-        overflow: 'hidden',
-        position: 'relative'
+        background: '#050505', 
+        position: 'relative',
+        width: '100%',
+        height: '100vh', 
+        overflow: 'hidden'
       }}
     >
-      
-      {/* Dynamic background effect akin to Leclerc's blurry parallax */}
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 0, opacity: 0.6,
-        background: 'radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.15) 0%, transparent 60%)',
-        filter: 'blur(40px)',
-        pointerEvents: 'none'
-      }} />
-
-      {/* 
-        Container that slides horizontally via GSAP.
-        Must allow its content to overflow without breaking lines.
-      */}
       <div 
-        ref={textRef} 
-        style={{ 
-          zIndex: 10, 
+        style={{
+          height: '100vh',
+          width: '100%',
           display: 'flex',
-          whiteSpace: 'nowrap', // FORCE literally one line
-          paddingLeft: '10vw'   // Start slightly inset
+          alignItems: 'center',
+          position: 'relative',
+          paddingLeft: '10vw' // Start visible slightly inset
         }}
       >
-        <h2 
+        {/* Dynamic background effect */}
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 0, opacity: 0.4,
+          background: 'radial-gradient(circle at 50% 50%, rgba(139,92,246,0.05) 0%, transparent 70%)',
+          filter: 'blur(80px)',
+          pointerEvents: 'none'
+        }} />
+
+        <div 
+          ref={textRef} 
           style={{ 
-            color: 'white', 
-            lineHeight: 0.85, 
-            letterSpacing: '-0.03em', 
-            textTransform: 'uppercase',
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(7rem, 20vw, 25rem)', // MASSIVE LECLERC SIZING
-            fontWeight: 800,
-            display: 'inline-block',
-            margin: 0
+            zIndex: 10, 
+            display: 'flex',
+            whiteSpace: 'nowrap'
           }}
         >
-          {chunks.map((chunk, chunkIndex) => (
-            <span key={chunkIndex}>
-              {chunk.text.split('').map((char, charIndex) => (
-                <span
-                  key={`${chunkIndex}-${charIndex}`}
-                  className="quote-char"
-                  style={{
-                    display: 'inline-block',
-                    fontStyle: chunk.italic ? 'italic' : 'normal',
-                    color: chunk.italic ? 'var(--color-lavender)' : 'inherit',
-                    whiteSpace: 'pre'
-                  }}
-                >
-                  {char}
-                </span>
-              ))}
-            </span>
-          ))}
-        </h2>
+          <h2 
+            style={{ 
+              color: 'white', 
+              lineHeight: 0.9, 
+              letterSpacing: '-0.02em', 
+              textTransform: 'uppercase',
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(5rem, 15vw, 20rem)', 
+              fontWeight: 900,
+              display: 'inline-block',
+              margin: 0
+            }}
+          >
+            {chunks.map((chunk, chunkIndex) => (
+              <span key={chunkIndex}>
+                {chunk.text.split('').map((char, charIndex) => (
+                  <span
+                    key={`${chunkIndex}-${charIndex}`}
+                    className="quote-char"
+                    style={{
+                      display: 'inline-block',
+                      fontStyle: chunk.italic ? 'italic' : 'normal',
+                      color: chunk.italic ? 'var(--color-lavender)' : 'inherit',
+                      whiteSpace: 'pre'
+                    }}
+                  >
+                    {char}
+                  </span>
+                ))}
+              </span>
+            ))}
+          </h2>
+        </div>
       </div>
     </section>
   )

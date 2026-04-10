@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useSound } from '../context/SoundContext'
 
-export default function ObsidianNav({ currentSection }) {
+export default function ObsidianNav({ currentSection, onMenuToggle }) {
+  const { isEnabled, toggleSound, playSoftClick } = useSound()
   const [theme, setTheme] = useState('nav-dark')
 
   useEffect(() => {
@@ -17,36 +19,101 @@ export default function ObsidianNav({ currentSection }) {
   return (
     <nav className={`obs-nav ${theme}`}>
       {/* Top Left: Logo */}
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <a href="#" className="obs-nav-logo">
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 400, letterSpacing: '-0.02em' }}>
-            Angelina<br/>Chatterjee
-          </span>
+          <img 
+            src="/logo.svg" 
+            alt="AC Logo" 
+            style={{ width: '40px', height: 'auto', display: 'block' }} 
+          />
         </a>
-        <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.65rem', opacity: 0.5, marginTop: '4px' }}>
-          Imagine Possible
-        </span>
       </div>
 
-      {/* Center Links (The 'Places/Objects' equivalent) */}
+      {/* Center Links */}
       <div className="obs-nav-links">
-        <a href="#about" className={currentSection === 'about' ? 'active' : ''}>ABOUT</a>
-        <a href="#projects" className={currentSection === 'projects' || currentSection === 'gallery' ? 'active' : ''}>PROJECTS</a>
+        <a href="#about" className={currentSection === 'about' ? 'active' : ''} onMouseEnter={playSoftClick}>ABOUT</a>
+        <a href="#projects" className={currentSection === 'projects' ? 'active' : ''} onMouseEnter={playSoftClick}>PROJECTS</a>
+        <a href="#gallery" className={currentSection === 'gallery' ? 'active' : ''} onMouseEnter={playSoftClick}>GALLERY</a>
+        <a href="#achievements" className={currentSection === 'achievements' ? 'active' : ''} onMouseEnter={playSoftClick}>ACHIEVEMENTS</a>
       </div>
 
       {/* Top Right: CTA / Menu */}
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <a href="#contact" className="pill-btn" style={{ padding: '8px 24px', opacity: 1, border: 'none', background: 'rgba(139,92,246,0.1)' }}>
-          SEND REQUEST
-        </a>
-        <button className="obs-nav-menu">
-           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="square">
-             <line x1="4" y1="9" x2="20" y2="9" />
-             <line x1="4" y1="15" x2="20" y2="15" />
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'flex-end' }}>
+        {/* Sound Toggle */}
+        <button 
+          onClick={toggleSound}
+          onMouseEnter={playSoftClick}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'inherit',
+            cursor: 'pointer',
+            padding: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            opacity: isEnabled ? 1 : 0.4,
+            transition: 'opacity 0.3s'
+          }}
+          title={isEnabled ? "Mute" : "Unmute"}
+        >
+          {isEnabled ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/></svg>
+          )}
+        </button>
+
+        <motion.a 
+          href="#contact" 
+          className="pill-btn h-btn"
+          onMouseEnter={playSoftClick}
+          whileHover={{ 
+            scale: 1.05,
+            boxShadow: '0 0 35px rgba(139,92,246,0.6), inset 0 0 10px rgba(255,255,255,0.2)',
+            backgroundColor: 'rgba(139,92,246,0.2)'
+          }}
+          transition={{
+            boxShadow: {
+              duration: 1.5,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }
+          }}
+          style={{ 
+            padding: '10px 24px', 
+            opacity: 1, 
+            border: '1px solid rgba(139,92,246,0.3)', 
+            background: 'rgba(139,92,246,0.1)',
+            minWidth: '220px',
+            textAlign: 'center',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 700,
+            color: 'white',
+            letterSpacing: '0.05em',
+            transition: 'border-color 0.3s, background-color 0.3s'
+          }}
+        >
+          LET'S BUILD SOMETHING
+        </motion.a>
+        <button 
+          className="obs-nav-menu" 
+          onClick={onMenuToggle}
+          style={{ 
+            cursor: 'pointer',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        >
+           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+             <line x1="3" y1="12" x2="21" y2="12" />
+             <line x1="3" y1="6" x2="21" y2="6" />
+             <line x1="3" y1="18" x2="21" y2="18" />
            </svg>
-           MENU
+           <span style={{ fontSize: '0.55rem' }}>SYSTEM</span>
         </button>
       </div>
     </nav>
   )
 }
+

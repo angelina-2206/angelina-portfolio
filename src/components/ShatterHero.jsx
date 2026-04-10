@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import * as THREE from "three";
 
 // ─────────────────────────────────────────────
@@ -328,7 +329,13 @@ export default function ShatterHero({ subtitle = "ANGELINA CHATTERJEE" }) {
         />
 
         {/* Hero text overlay */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ 
+            opacity: 1, 
+            y: 0,
+            transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }
+          }}
           style={{
             position: "absolute",
             inset: 0,
@@ -342,34 +349,75 @@ export default function ShatterHero({ subtitle = "ANGELINA CHATTERJEE" }) {
           }}
         >
           {/* Name */}
-          <h1
-            style={{
-              fontFamily: "var(--font-display, 'Space Mono', monospace)",
-              fontSize: "clamp(2rem, 7vw, 6rem)",
-              fontWeight: 800,
-              color: "#ffffff",
-              letterSpacing: "-0.04em",
-              textAlign: "center",
-              margin: 0,
-              textShadow: "0 10px 30px rgba(157, 78, 221, 0.5), 0 4px 10px rgba(0,0,0,0.8)",
-              lineHeight: 1.1,
+          <motion.div
+            animate={{
+              y: [0, -10, 0],
+              transition: { duration: 6, repeat: Infinity, ease: "easeInOut" }
             }}
+            className="hero-name-container"
           >
-            {subtitle}
-          </h1>
+            <h1
+              style={{
+                fontFamily: "'Prosto One', sans-serif",
+                fontSize: "clamp(1.5rem, 7vw, 5.5rem)",
+                fontWeight: 400,
+                letterSpacing: "-0.02em",
+                textAlign: "center",
+                margin: 0,
+                lineHeight: 0.9,
+                display: 'flex',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+                gap: '0.05em',
+                color: "#ffffff"
+              }}
+            >
+              {subtitle.split("").map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.5, y: 30 }}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: 1,
+                    y: 0,
+                    transition: { duration: 0.8, delay: 0.6 + index * 0.08, ease: [0.34, 1.56, 0.64, 1] }
+                  }}
+                  whileHover={{ 
+                    y: -15,
+                    scale: 1.2,
+                    skewX: -10,
+                    color: '#ffffff',
+                    textShadow: '0 0 10px rgba(251, 191, 36, 1), 0 0 30px rgba(139, 92, 246, 0.8), 0 20px 40px rgba(0,0,0,0.6)',
+                    transition: { duration: 0.1, ease: "easeOut" }
+                  }}
+                  style={{
+                    display: 'inline-block',
+                  }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              ))}
+            </h1>
+          </motion.div>
           {/* Role line */}
-          <p
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: 0.4, 
+              transition: { duration: 1.5, ease: "easeOut", delay: 1.5 } 
+            }}
             style={{
               fontFamily: "var(--font-mono, 'Space Mono', monospace)",
-              fontSize: "clamp(0.65rem, 1.4vw, 1rem)",
-              color: "rgba(255, 255, 255, 0.7)",
-              letterSpacing: "0.25em",
+              fontSize: 'clamp(0.55rem, 1vw, 0.8rem)',
+              color: "#ffffff",
+              letterSpacing: "0.6em",
               textTransform: "uppercase",
-              margin: 0,
+              margin: "-0.5rem 0 0",
+              fontWeight: 400,
             }}
           >
-            Full Stack Developer &nbsp;·&nbsp; AI Builder &nbsp;·&nbsp; Still Debugging
-          </p>
+            Full Stack Developer • CS Student • Still Debugging Life
+          </motion.p>
           {/* Purple accent line */}
           <div
             style={{
@@ -380,7 +428,44 @@ export default function ShatterHero({ subtitle = "ANGELINA CHATTERJEE" }) {
               boxShadow: "0 0 10px rgba(157, 78, 221, 0.5)"
             }}
           />
-        </div>
+        </motion.div>
+
+        {/* Scroll Cue */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 1 }}
+          style={{
+            position: 'absolute',
+            bottom: '40px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '12px',
+            zIndex: 10
+          }}
+        >
+          <span style={{ 
+            fontFamily: 'var(--font-mono)', 
+            fontSize: '0.5rem', 
+            letterSpacing: '0.3em', 
+            opacity: 0.4,
+            textTransform: 'uppercase'
+          }}>
+            Scroll to explore
+          </span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              width: '1px',
+              height: '40px',
+              background: 'linear-gradient(to bottom, rgba(139,92,246,0.5), transparent)'
+            }}
+          />
+        </motion.div>
 
         {/* Hint */}
         {hint && (
