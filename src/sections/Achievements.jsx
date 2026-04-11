@@ -35,14 +35,9 @@ const achievements = [
         detail: 'Designed complete UI/UX prototypes in Figma; pitched product vision to a national jury panel',
       },
       {
-        highlight: '🥈 2nd Place',
-        text: 'TrapEye — AI-Powered Cyber Threat Detection',
-        detail: '89%+ phishing detection accuracy · <200ms inference · real-time URL & email threat analysis',
-      },
-      {
         highlight: '🥈 Runners Up',
-        text: 'VITaura\'25 — VIT AP University',
-        detail: 'Ranked 2nd among 82 competing teams in a national-level technical competition',
+        text: 'TrapEye — VITaura\'25, VIT AP University',
+        detail: 'AI-powered cyber threat detection · 89%+ phishing accuracy · <200ms inference · 2nd among 82 teams',
       },
       {
         highlight: '🥉 3rd Place',
@@ -51,7 +46,7 @@ const achievements = [
       },
     ],
     note: null,
-    metric: '04',
+    metric: '03',
     metricLabel: 'PODIUMS',
     tags: ['AI', 'Cybersecurity', 'Figma', 'UI/UX', 'ML', 'Gen AI', 'Python'],
   },
