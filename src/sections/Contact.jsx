@@ -182,7 +182,6 @@ export default function Contact() {
         {/* Footer */}
         <motion.div {...stagger(6)} className="cta-footer">
           <span>© 2026 ANGELINA CHATTERJEE</span>
-          <span className="cta-footer-brand">THE OBSIDIAN ARCHITECTURE</span>
           <span>ALL RIGHTS RESERVED</span>
         </motion.div>
       </div>
