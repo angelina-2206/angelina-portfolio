@@ -100,31 +100,27 @@ export default function App() {
 
   return (
     <SoundProvider>
-      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
       <CustomCursor />
-      
-      {!isLoading && (
-        <>
-          <MenuOverlay 
-            isOpen={isMenuOpen} 
-            onClose={() => setIsMenuOpen(false)} 
-          />
-          <ObsidianNav 
-            currentSection={currentSection} 
-            onMenuToggle={() => setIsMenuOpen(true)} 
-          />
-          
-          <main>
-            <Hero />
-            <Quote />
-            <About />
-            <Projects />
-            <Gallery />
-            <Achievements />
-            <Contact />
-          </main>
-        </>
-      )}
+      <LoadingScreen onComplete={() => setIsLoading(false)}>
+        <MenuOverlay 
+          isOpen={isMenuOpen} 
+          onClose={() => setIsMenuOpen(false)} 
+        />
+        <ObsidianNav 
+          currentSection={currentSection} 
+          onMenuToggle={() => setIsMenuOpen(true)} 
+        />
+        
+        <main>
+          <Hero />
+          <Quote />
+          <About />
+          <Projects />
+          <Gallery />
+          <Achievements />
+          <Contact />
+        </main>
+      </LoadingScreen>
     </SoundProvider>
   );
 }

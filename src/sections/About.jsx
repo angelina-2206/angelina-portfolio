@@ -8,24 +8,28 @@ const MODES = [
     label: 'BUILDER',
     quote: `I turn ideas into real, working systems.\nFrom concept to deployment, I focus on execution.`,
     icon: '◈',
+    watermark: 'BUILD',
   },
   {
     key: 'debugger',
     label: 'DEBUGGER',
     quote: `I break things down, trace problems, and fix what others overlook.\nEfficiency starts with understanding.`,
     icon: '⏣',
+    watermark: 'DEBUG',
   },
   {
     key: 'designer',
     label: 'DESIGNER',
     quote: `I care about how things feel and function.\nClean interfaces, intuitive flows, and thoughtful UX.`,
     icon: '✦',
+    watermark: 'DESIGN',
   },
   {
     key: 'system-thinker',
     label: 'SYSTEM THINKER',
     quote: `I think in systems, not just features.\nScalability, structure, and long-term impact matter.`,
     icon: '⬡',
+    watermark: 'SYSTEM',
   },
 ]
 
@@ -33,7 +37,7 @@ const MODES = [
 const EASE_OUT = [0.16, 1, 0.3, 1]
 
 /* ── Stagger text component ─────────────────────────────────── */
-function StaggerLines({ children, delay = 0, className = '' }) {
+function StaggerLines({ children, delay = 0, className = '', highlightWords = [] }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-60px' })
 
@@ -45,15 +49,25 @@ function StaggerLines({ children, delay = 0, className = '' }) {
       {lines.map((line, i) => (
         <motion.div
           key={i}
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{
-            duration: 0.7,
-            delay: delay + i * 0.1,
+            duration: 0.8,
+            delay: delay + i * 0.12,
             ease: EASE_OUT,
           }}
+          style={{ marginBottom: '0.4em' }}
         >
-          {line}
+          {typeof line === 'string' ? (
+            line.split(' ').map((word, idx) => {
+              const isHighlighted = highlightWords.some(h => word.toLowerCase().includes(h.toLowerCase()))
+              return (
+                <span key={idx} style={{ color: isHighlighted ? 'var(--color-text-primary)' : 'inherit', fontWeight: isHighlighted ? 600 : 'inherit' }}>
+                  {word}{' '}
+                </span>
+              )
+            })
+          ) : line}
         </motion.div>
       ))}
     </div>
@@ -99,32 +113,43 @@ export default function About() {
   const sectionRef = useRef(null)
   const headlineRef = useRef(null)
   const headlineInView = useInView(headlineRef, { once: true, margin: '-80px' })
-  const { index: modeIndex, direction, goNext, goPrev } = useAutoCycle(MODES.length, 5000)
+  const { index: modeIndex, direction, goNext, goPrev } = useAutoCycle(MODES.length, 6000)
   const activeMode = MODES[modeIndex]
+
+  const [headlineVariation, setHeadlineVariation] = useState(false)
+
+  // Subtle headline text variation effect
+  useEffect(() => {
+    if (!headlineInView) return
+    const timer = setInterval(() => {
+      setHeadlineVariation(prev => !prev)
+    }, 4500)
+    return () => clearInterval(timer)
+  }, [headlineInView])
 
   /* Parallax watermark */
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   })
-  const watermarkX = useTransform(scrollYProgress, [0, 1], ['5%', '-20%'])
+  const watermarkX = useTransform(scrollYProgress, [0, 1], ['5%', '-25%'])
 
   /* Mode card swipe variants */
-  const cardVariants = {
+  const cardContentVariants = {
     enter: (dir) => ({
       opacity: 0,
-      y: dir > 0 ? 28 : -28,
-      scale: 0.97,
+      y: dir > 0 ? 30 : -30,
+      filter: 'blur(10px)',
     }),
     center: {
       opacity: 1,
       y: 0,
-      scale: 1,
+      filter: 'blur(0px)',
     },
     exit: (dir) => ({
       opacity: 0,
-      y: dir > 0 ? -28 : 28,
-      scale: 0.97,
+      y: dir > 0 ? -30 : 30,
+      filter: 'blur(10px)',
     }),
   }
 
@@ -137,13 +162,23 @@ export default function About() {
         display: 'block',
         position: 'relative',
         overflow: 'hidden',
-        padding: '140px 0 120px',
+        padding: '160px 0 140px',
       }}
     >
-      {/* ── Giant Background Watermark ── */}
-      <motion.div className="about-watermark" style={{ x: watermarkX }}>
-        PERSONA
-      </motion.div>
+      {/* ── Giant Background Watermark (Dynamic) ── */}
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key={activeMode.watermark}
+          className="about-watermark" 
+          style={{ x: watermarkX }}
+          initial={{ opacity: 0, y: '-45%' }}
+          animate={{ opacity: 1, y: '-50%' }}
+          exit={{ opacity: 0, y: '-55%' }}
+          transition={{ duration: 1.2, ease: EASE_OUT }}
+        >
+          {activeMode.watermark}
+        </motion.div>
+      </AnimatePresence>
 
       {/* ── Ambient glow ── */}
       <div className="about-ambient-glow" />
@@ -169,31 +204,47 @@ export default function About() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: EASE_OUT }}
+              transition={{ duration: 0.8, ease: EASE_OUT }}
             >
               <span className="about-label-line" />
               [ 001 — THE MAKER ]
             </motion.div>
 
-            {/* Headline */}
+            {/* Headline with slide and blur effect */}
             <div ref={headlineRef} className="about-headline">
               <motion.span
                 className="about-headline-line"
-                initial={{ opacity: 0, y: 30 }}
-                animate={headlineInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, ease: EASE_OUT }}
+                initial={{ opacity: 0, filter: 'blur(20px)', y: 20 }}
+                animate={headlineInView ? { opacity: 1, filter: 'blur(0px)', y: 0 } : {}}
+                transition={{ duration: 1.2, ease: EASE_OUT }}
               >
                 ENGINEERED,
               </motion.span>
-              <motion.span
-                className="about-headline-line about-headline-accent"
-                initial={{ opacity: 0, y: 40 }}
-                animate={headlineInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT }}
-              >
-                NOT ACCIDENTAL
-              </motion.span>
+              <div style={{ position: 'relative', overflow: 'hidden' }}>
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={headlineVariation ? 'alt' : 'main'}
+                    className="about-headline-line about-headline-accent"
+                    initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: -40, filter: 'blur(10px)' }}
+                    transition={{ duration: 0.8, ease: EASE_OUT }}
+                  >
+                    {headlineVariation ? 'NOT LUCK' : 'NOT ACCIDENTAL'}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
             </div>
+
+            {/* Signature Identity Line */}
+            <motion.p
+              className="about-signature"
+              initial={{ opacity: 0, y: 10 }}
+              animate={headlineInView ? { opacity: 0.6, y: 0 } : {}}
+              transition={{ duration: 1, delay: 0.5, ease: EASE_OUT }}
+            >
+              I don’t chase trends. I build systems that last.
+            </motion.p>
 
             {/* Divider */}
             <motion.div
@@ -201,19 +252,23 @@ export default function About() {
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3, ease: EASE_OUT }}
+              transition={{ duration: 1, delay: 0.6, ease: EASE_OUT }}
             />
 
-            {/* Intro Text */}
-            <StaggerLines delay={0.3} className="about-intro">
+            {/* Intro Text - Separated Hierarchically */}
+            <StaggerLines delay={0.7} className="about-intro" highlightWords={['systems', 'solve']}>
               {`I build systems that solve real problems.`}
             </StaggerLines>
 
-            <StaggerLines delay={0.45} className="about-body">
-              {`Full-stack developer and CS (Business Systems) student\nfocused on turning ideas into scalable, working products.`}
+            <div style={{ height: '20px' }} />
+
+            <StaggerLines delay={0.9} className="about-body">
+              {`Full-stack developer & Computer Science Engineering student\nfocused on turning ideas into scalable engineering products.`}
             </StaggerLines>
 
-            <StaggerLines delay={0.6} className="about-body about-body-emphasis">
+            <div style={{ height: '20px' }} />
+
+            <StaggerLines delay={1.1} className="about-body about-body-emphasis">
               {`I don't just write code —\nI design how things work.`}
             </StaggerLines>
 
@@ -223,7 +278,7 @@ export default function About() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.75, ease: EASE_OUT }}
+              transition={{ duration: 0.9, delay: 1.3, ease: EASE_OUT }}
             >
               <span className="about-philosophy-bar" />
               <p>
@@ -236,20 +291,19 @@ export default function About() {
           {/* ═══ CENTER COLUMN — PERSONA CARD ═══ */}
           <div className="about-col-center">
             <motion.div
-              className="about-persona-card"
-              initial={{ opacity: 0, y: 40, scale: 0.96 }}
+              className="about-persona-card float-anim"
+              initial={{ opacity: 0, y: 60, scale: 0.92 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.9, delay: 0.2, ease: EASE_OUT }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 1.2, delay: 0.4, ease: EASE_OUT }}
               whileHover={{
-                boxShadow: '0 0 60px rgba(139, 92, 246, 0.15), 0 30px 80px rgba(0,0,0,0.5)',
-                y: -4,
+                boxShadow: '0 0 80px rgba(139, 92, 246, 0.25), 0 40px 100px rgba(0,0,0,0.6)',
+                y: -8,
+                scale: 1.02,
               }}
             >
-              {/* Card glow border */}
               <div className="about-card-glow" />
 
-              {/* Card header */}
               <div className="about-card-header">
                 <div className="about-card-dots">
                   <span />
@@ -259,18 +313,17 @@ export default function About() {
                 <span className="about-card-sys">PERSONA.SYS</span>
               </div>
 
-              {/* Mode Title */}
+              {/* Mode Title with scale animation */}
               <div className="about-mode-title">
                 <span className="about-mode-prefix">MODE:</span>
                 <AnimatePresence mode="wait" custom={direction}>
                   <motion.span
                     key={activeMode.key}
                     className="about-mode-name"
-                    custom={direction}
-                    initial={{ opacity: 0, y: 12, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -12, scale: 0.95 }}
-                    transition={{ duration: 0.4, ease: EASE_OUT }}
+                    initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                    transition={{ duration: 0.5, ease: EASE_OUT }}
                   >
                     {activeMode.label}
                   </motion.span>
@@ -282,28 +335,27 @@ export default function About() {
                 <motion.div
                   key={activeMode.key + '-icon'}
                   className="about-mode-icon"
-                  custom={direction}
-                  initial={{ opacity: 0, scale: 0.7 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.7 }}
-                  transition={{ duration: 0.35, ease: EASE_OUT }}
+                  initial={{ opacity: 0, rotateY: 90 }}
+                  animate={{ opacity: 1, rotateY: 0 }}
+                  exit={{ opacity: 0, rotateY: -90 }}
+                  transition={{ duration: 0.6, ease: EASE_OUT }}
                 >
                   {activeMode.icon}
                 </motion.div>
               </AnimatePresence>
 
-              {/* Mode quote */}
+              {/* Mode quote with smoother slide transitions */}
               <div className="about-mode-quote-wrapper">
                 <AnimatePresence mode="wait" custom={direction}>
                   <motion.p
                     key={activeMode.key + '-quote'}
                     className="about-mode-quote"
+                    variants={cardContentVariants}
                     custom={direction}
-                    variants={cardVariants}
                     initial="enter"
                     animate="center"
                     exit="exit"
-                    transition={{ duration: 0.45, ease: EASE_OUT }}
+                    transition={{ duration: 0.6, ease: EASE_OUT }}
                   >
                     {activeMode.quote}
                   </motion.p>
@@ -313,42 +365,33 @@ export default function About() {
               {/* Navigation */}
               <div className="about-card-nav">
                 <motion.button
-                  className="about-card-arrow"
+                  className="about-card-arrow interactive-zone"
                   onClick={goPrev}
-                  whileHover={{ scale: 1.15, boxShadow: '0 0 20px rgba(139,92,246,0.35)' }}
-                  whileTap={{ scale: 0.92 }}
-                  aria-label="Previous mode"
+                  whileHover={{ scale: 1.2, backgroundColor: 'rgba(139, 92, 246, 0.2)' }}
+                  whileTap={{ scale: 0.9 }}
                 >
                   ←
                 </motion.button>
 
-                {/* Progress dots */}
                 <div className="about-card-progress">
                   {MODES.map((_, i) => (
                     <motion.span
                       key={i}
                       className={`about-progress-dot ${i === modeIndex ? 'active' : ''}`}
                       animate={{
-                        scale: i === modeIndex ? 1.4 : 1,
-                        backgroundColor:
-                          i === modeIndex
-                            ? 'rgba(167, 139, 250, 1)'
-                            : 'rgba(255,255,255,0.15)',
+                        width: i === modeIndex ? '20px' : '6px',
+                        backgroundColor: i === modeIndex ? '#A78BFA' : 'rgba(255,255,255,0.1)',
                       }}
-                      transition={{ duration: 0.35, ease: EASE_OUT }}
+                      transition={{ duration: 0.4 }}
                     />
                   ))}
-                  <span className="about-progress-counter">
-                    {String(modeIndex + 1).padStart(2, '0')} / {String(MODES.length).padStart(2, '0')}
-                  </span>
                 </div>
 
                 <motion.button
-                  className="about-card-arrow"
+                  className="about-card-arrow interactive-zone"
                   onClick={goNext}
-                  whileHover={{ scale: 1.15, boxShadow: '0 0 20px rgba(139,92,246,0.35)' }}
-                  whileTap={{ scale: 0.92 }}
-                  aria-label="Next mode"
+                  whileHover={{ scale: 1.2, backgroundColor: 'rgba(139, 92, 246, 0.2)' }}
+                  whileTap={{ scale: 0.9 }}
                 >
                   →
                 </motion.button>
@@ -358,11 +401,11 @@ export default function About() {
 
           {/* ═══ RIGHT COLUMN ═══ */}
           <div className="about-col-right">
-            <StaggerLines delay={0.2} className="about-right-text">
+            <StaggerLines delay={0.4} className="about-right-text">
               {`I work at the intersection of\nlogic and product thinking —`}
             </StaggerLines>
 
-            <StaggerLines delay={0.4} className="about-right-text">
+            <StaggerLines delay={0.6} className="about-right-text">
               {`where systems aren't just built,\nthey're designed to scale.`}
             </StaggerLines>
 
@@ -371,35 +414,44 @@ export default function About() {
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5, ease: EASE_OUT }}
+              transition={{ duration: 0.8, delay: 0.7, ease: EASE_OUT }}
             />
 
-            <StaggerLines delay={0.55} className="about-right-text">
+            <StaggerLines delay={0.8} className="about-right-text" highlightWords={['fast', 'ship']}>
               {`I move fast, iterate faster,\nand ship things that actually work.`}
             </StaggerLines>
 
-            {/* ── Highlighted CTA Card ── */}
+            <StaggerLines delay={1.0} className="about-right-text about-right-highlight">
+              {`Built across AI, full-stack systems,\nand real-world applications.`}
+            </StaggerLines>
+
+            <div style={{ height: '30px' }} />
+
+            {/* ── Highlighted Status Card ── */}
             <motion.a
               href="#contact"
-              className="about-cta-card"
-              initial={{ opacity: 0, y: 24, scale: 0.97 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              className="about-cta-card interactive-zone"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.7, ease: EASE_OUT }}
+              transition={{ duration: 0.8, delay: 1.2, ease: EASE_OUT }}
               onClick={(e) => {
                 e.preventDefault()
                 document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
               }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
             >
               <div className="about-cta-glow-border" />
               <div className="about-cta-status">
-                <span className="about-cta-pill">OPEN TO WORK</span>
+                <span className="about-status-blink-dot" />
+                <span className="about-cta-pill">STATUS: BUILDING + AVAILABLE</span>
               </div>
               <p className="about-cta-headline">
                 Currently building,<br />learning, and open to<br />
                 <span className="about-cta-accent">internship opportunities.</span>
               </p>
-              <span className="about-cta-arrow">↓</span>
+              <span className="about-cta-arrow">View Contact ↓</span>
             </motion.a>
           </div>
         </div>
@@ -409,7 +461,6 @@ export default function About() {
            SCOPED STYLES
          ──────────────────────────────────────────────────────── */}
       <style>{`
-        /* ── Watermark ── */
         .about-watermark {
           position: absolute;
           top: 50%;
@@ -417,533 +468,303 @@ export default function About() {
           white-space: nowrap;
           transform: translateY(-50%);
           font-family: var(--font-display);
-          font-size: clamp(8rem, 20vw, 26rem);
+          font-size: clamp(10rem, 25vw, 35rem);
           font-weight: 800;
           text-transform: uppercase;
           color: transparent;
-          -webkit-text-stroke: 1.5px rgba(139, 92, 246, 0.035);
+          -webkit-text-stroke: 1px rgba(139, 92, 246, 0.03);
           pointer-events: none;
           z-index: 0;
           user-select: none;
           line-height: 1;
         }
 
-        /* ── Ambient glow ── */
         .about-ambient-glow {
           position: absolute;
-          top: 40%;
+          top: 50%;
           left: 50%;
-          width: 700px;
-          height: 700px;
+          width: 80vw;
+          height: 80vw;
           transform: translate(-50%, -50%);
-          background: radial-gradient(
-            circle,
-            rgba(139, 92, 246, 0.06) 0%,
-            rgba(139, 92, 246, 0.02) 40%,
-            transparent 70%
-          );
-          filter: blur(80px);
+          background: radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+          filter: blur(100px);
           pointer-events: none;
           z-index: 1;
         }
 
-        /* ── Grid ── */
         .about-grid {
           display: grid;
-          grid-template-columns: 1fr 1.1fr 0.85fr;
-          gap: 56px;
+          grid-template-columns: 1.15fr 1fr 1fr;
+          gap: 50px;
           align-items: start;
-        }
-
-        /* ── LEFT COLUMN ── */
-        .about-col-left {
-          display: flex;
-          flex-direction: column;
-          gap: 0;
         }
 
         .about-label {
           font-family: var(--font-mono);
-          font-size: 0.6rem;
-          letter-spacing: 0.3em;
+          font-size: 0.65rem;
+          letter-spacing: 0.35em;
           text-transform: uppercase;
           color: var(--color-primary-light);
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 28px;
+          gap: 15px;
+          margin-bottom: 35px;
         }
 
         .about-label-line {
-          display: inline-block;
-          width: 24px;
+          width: 30px;
           height: 1px;
           background: var(--color-primary);
-          opacity: 0.6;
+          opacity: 0.7;
         }
 
         .about-headline {
           display: flex;
           flex-direction: column;
-          margin-bottom: 24px;
+          margin-bottom: 12px;
         }
 
         .about-headline-line {
           font-family: var(--font-display);
-          font-size: clamp(2rem, 3.2vw, 3rem);
+          font-size: clamp(2.5rem, 4.2vw, 4rem);
           font-weight: 800;
-          letter-spacing: -0.03em;
+          letter-spacing: -0.04em;
           text-transform: uppercase;
-          line-height: 1.1;
+          line-height: 1;
           color: var(--color-text-primary);
-          display: block;
         }
 
         .about-headline-accent {
           color: var(--color-lavender);
+          display: inline-block;
+        }
+
+        .about-signature {
+          font-family: var(--font-mono);
+          font-size: 0.75rem;
+          letter-spacing: 0.1em;
+          margin-bottom: 30px;
+          color: var(--color-text-secondary);
         }
 
         .about-divider {
-          width: 48px;
+          width: 60px;
           height: 1px;
           background: linear-gradient(90deg, var(--color-primary), transparent);
-          margin-bottom: 28px;
+          margin-bottom: 35px;
           transform-origin: left;
         }
 
         .about-intro {
-          font-family: var(--font-body);
-          font-size: 0.95rem;
-          color: var(--color-text-primary);
-          line-height: 1.7;
-          margin-bottom: 20px;
-          font-weight: 500;
+          font-family: var(--font-display);
+          font-size: 1.1rem;
+          color: var(--color-text-secondary);
+          line-height: 1.6;
         }
 
         .about-body {
-          font-family: var(--font-mono);
-          font-size: 0.72rem;
-          line-height: 1.9;
-          letter-spacing: 0.04em;
+          font-family: var(--font-body);
+          font-size: 0.85rem;
+          line-height: 1.8;
           color: var(--color-text-secondary);
-          margin-bottom: 18px;
+          opacity: 0.6;
         }
 
         .about-body-emphasis {
-          color: rgba(196, 181, 253, 0.7);
-          font-style: italic;
-        }
-
-        .about-philosophy {
-          display: flex;
-          align-items: stretch;
-          gap: 14px;
-          margin-top: 12px;
-          padding: 14px 0;
-        }
-
-        .about-philosophy-bar {
-          width: 2px;
-          flex-shrink: 0;
-          background: linear-gradient(180deg, var(--color-primary) 0%, rgba(139,92,246,0.1) 100%);
-          border-radius: 2px;
-        }
-
-        .about-philosophy p {
-          font-family: var(--font-mono);
-          font-size: 0.68rem;
-          line-height: 1.8;
-          letter-spacing: 0.04em;
-          color: rgba(255, 255, 255, 0.35);
-        }
-
-        .about-philosophy em {
           color: var(--color-lavender);
-          font-style: italic;
           opacity: 0.8;
+          font-style: italic;
         }
 
-        /* ── CENTER COLUMN — PERSONA CARD ── */
-        .about-col-center {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding-top: 24px;
+        .float-anim {
+          animation: aboutFloat 8s ease-in-out infinite;
+        }
+
+        @keyframes aboutFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-15px); }
         }
 
         .about-persona-card {
+          padding: 40px;
+          border-radius: 24px;
+          background: rgba(20, 10, 30, 0.4);
+          backdrop-filter: blur(40px);
+          border: 1px solid rgba(139, 92, 246, 0.15);
+          box-shadow: 0 40px 100px rgba(0,0,0,0.5);
           position: relative;
-          width: 100%;
-          max-width: 380px;
-          padding: 32px 28px 28px;
-          border-radius: 20px;
-          background: linear-gradient(
-            160deg,
-            rgba(255, 255, 255, 0.04) 0%,
-            rgba(139, 92, 246, 0.04) 30%,
-            rgba(0, 0, 0, 0.25) 100%
-          );
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
-          border: 1px solid rgba(139, 92, 246, 0.12);
-          box-shadow:
-            0 20px 60px rgba(0, 0, 0, 0.4),
-            0 0 40px rgba(139, 92, 246, 0.05),
-            inset 0 1px 0 rgba(255, 255, 255, 0.06);
-          transition: box-shadow 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-          overflow: hidden;
-        }
-
-        .about-card-glow {
-          position: absolute;
-          top: -1px;
-          left: -1px;
-          right: -1px;
-          bottom: -1px;
-          border-radius: 20px;
-          background: linear-gradient(
-            135deg,
-            rgba(139, 92, 246, 0.15) 0%,
-            transparent 40%,
-            transparent 60%,
-            rgba(196, 181, 253, 0.08) 100%
-          );
-          pointer-events: none;
-          z-index: -1;
-          opacity: 0.6;
-          transition: opacity 0.4s ease;
-        }
-
-        .about-persona-card:hover .about-card-glow {
-          opacity: 1;
+          z-index: 5;
         }
 
         .about-card-header {
           display: flex;
-          align-items: center;
           justify-content: space-between;
-          margin-bottom: 28px;
+          margin-bottom: 40px;
         }
 
         .about-card-dots {
           display: flex;
-          gap: 6px;
+          gap: 8px;
         }
 
         .about-card-dots span {
-          width: 7px;
-          height: 7px;
+          width: 8px;
+          height: 8px;
           border-radius: 50%;
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(139, 92, 246, 0.2);
         }
 
-        .about-card-dots span:first-child {
-          background: rgba(139, 92, 246, 0.5);
-        }
+        .about-card-dots span:first-child { background: var(--color-primary); }
 
         .about-card-sys {
           font-family: var(--font-mono);
-          font-size: 0.5rem;
-          letter-spacing: 0.25em;
-          color: rgba(255, 255, 255, 0.2);
-          text-transform: uppercase;
+          font-size: 0.55rem;
+          letter-spacing: 0.2em;
+          opacity: 0.3;
         }
 
         .about-mode-title {
           display: flex;
+          gap: 12px;
           align-items: baseline;
-          gap: 10px;
-          margin-bottom: 20px;
-          min-height: 28px;
+          margin-bottom: 30px;
         }
 
         .about-mode-prefix {
           font-family: var(--font-mono);
-          font-size: 0.6rem;
-          letter-spacing: 0.2em;
-          color: rgba(255, 255, 255, 0.3);
-          text-transform: uppercase;
-          flex-shrink: 0;
+          font-size: 0.7rem;
+          opacity: 0.4;
         }
 
         .about-mode-name {
           font-family: var(--font-display);
-          font-size: 1.2rem;
+          font-size: 1.5rem;
           font-weight: 700;
-          letter-spacing: 0.06em;
           color: var(--color-lavender);
-          text-transform: uppercase;
-          display: inline-block;
         }
 
         .about-mode-icon {
-          font-size: 2.4rem;
+          font-size: 3.5rem;
           text-align: center;
-          margin-bottom: 20px;
-          line-height: 1;
-          filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.3));
-        }
-
-        .about-mode-quote-wrapper {
-          min-height: 80px;
-          display: flex;
-          align-items: flex-start;
-          margin-bottom: 28px;
+          margin-bottom: 30px;
+          filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
         }
 
         .about-mode-quote {
-          font-family: var(--font-body);
-          font-size: 0.85rem;
-          line-height: 1.75;
-          color: rgba(255, 255, 255, 0.55);
-          white-space: pre-line;
-          letter-spacing: 0.01em;
+          font-size: 0.95rem;
+          line-height: 1.8;
+          color: rgba(255, 255, 255, 0.6);
+          min-height: 100px;
         }
 
         .about-card-nav {
           display: flex;
-          align-items: center;
           justify-content: space-between;
-          border-top: 1px solid rgba(255, 255, 255, 0.06);
-          padding-top: 20px;
+          align-items: center;
+          padding-top: 30px;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .about-card-arrow {
-          width: 40px;
-          height: 40px;
+          width: 45px;
+          height: 45px;
           border-radius: 50%;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background: rgba(255, 255, 255, 0.03);
-          color: rgba(255, 255, 255, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: transparent;
+          color: white;
+          cursor: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 0.9rem;
-          transition: all 0.35s ease;
-          cursor: none;
-        }
-
-        .about-card-arrow:hover {
-          border-color: var(--color-primary);
-          color: var(--color-lavender);
-          background: rgba(139, 92, 246, 0.1);
-        }
-
-        .about-card-progress {
-          display: flex;
-          align-items: center;
-          gap: 8px;
+          transition: all 0.3s;
         }
 
         .about-progress-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          display: block;
-          transition: all 0.35s ease;
+          height: 6px;
+          border-radius: 3px;
+          margin: 0 4px;
         }
 
-        .about-progress-counter {
-          font-family: var(--font-mono);
-          font-size: 0.55rem;
-          letter-spacing: 0.15em;
-          color: rgba(255, 255, 255, 0.2);
-          margin-left: 8px;
-        }
-
-        /* ── RIGHT COLUMN ── */
         .about-col-right {
           display: flex;
           flex-direction: column;
-          gap: 0;
+          gap: 32px;
           padding-top: 60px;
         }
 
         .about-right-text {
           font-family: var(--font-display);
-          font-size: 0.92rem;
-          line-height: 1.75;
-          color: rgba(255, 255, 255, 0.45);
-          margin-bottom: 20px;
-          letter-spacing: -0.01em;
-          font-weight: 400;
+          font-size: 1rem;
+          line-height: 1.8;
+          color: var(--color-text-secondary);
+          margin-bottom: 0;
+          letter-spacing: 0.01em;
+        }
+
+        .about-right-highlight {
+          color: var(--color-lavender);
+          opacity: 0.9;
         }
 
         .about-right-divider {
-          width: 36px;
+          width: 40px;
           height: 1px;
-          background: rgba(139, 92, 246, 0.25);
-          margin-bottom: 20px;
-          transform-origin: left;
+          background: rgba(139, 92, 246, 0.3);
+          margin-bottom: 25px;
         }
 
-        /* ── CTA Card ── */
         .about-cta-card {
-          position: relative;
           display: block;
+          padding: 30px;
+          border-radius: 20px;
+          background: rgba(139, 92, 246, 0.08);
+          border: 1px solid rgba(139, 92, 246, 0.2);
           text-decoration: none;
-          margin-top: 20px;
-          padding: 24px 24px 28px;
-          border-radius: 16px;
-          background: linear-gradient(
-            160deg,
-            rgba(139, 92, 246, 0.08) 0%,
-            rgba(139, 92, 246, 0.03) 40%,
-            rgba(0, 0, 0, 0.2) 100%
-          );
-          border: 1px solid rgba(139, 92, 246, 0.15);
-          overflow: hidden;
-          transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .about-cta-card:hover {
-          border-color: rgba(139, 92, 246, 0.35);
-          box-shadow: 0 0 50px rgba(139, 92, 246, 0.12);
-          transform: translateY(-3px);
-        }
-
-        .about-cta-glow-border {
-          position: absolute;
-          inset: -1px;
-          border-radius: 16px;
-          background: linear-gradient(
-            135deg,
-            rgba(139, 92, 246, 0.25) 0%,
-            transparent 35%,
-            transparent 65%,
-            rgba(196, 181, 253, 0.12) 100%
-          );
-          pointer-events: none;
-          z-index: 0;
-          opacity: 0;
-          animation: ctaGlowPulse 4s ease-in-out infinite;
-        }
-
-        @keyframes ctaGlowPulse {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.8; }
-        }
-
-        .about-cta-status {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 16px;
+          color: white;
           position: relative;
-          z-index: 1;
+          overflow: hidden;
+          transition: all 0.4s;
+        }
+
+        .about-status-blink-dot {
+          width: 10px;
+          height: 10px;
+          background: #34d399;
+          border-radius: 50%;
+          animation: aboutStatusBlink 2s infinite;
+        }
+
+        @keyframes aboutStatusBlink {
+          0%, 100% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 rgba(52, 211, 153, 0); }
+          50% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 15px rgba(52, 211, 153, 0.6); }
         }
 
         .about-cta-pill {
           font-family: var(--font-mono);
-          font-size: 0.5rem;
-          letter-spacing: 0.25em;
-          text-transform: uppercase;
+          font-size: 0.6rem;
+          letter-spacing: 0.15em;
           color: #34d399;
-          padding: 4px 12px;
-          border: 1px solid rgba(52, 211, 153, 0.25);
-          border-radius: 999px;
-          background: rgba(52, 211, 153, 0.06);
-          box-shadow: 0 0 12px rgba(52, 211, 153, 0.15);
-          transition: box-shadow 0.4s ease, background 0.4s ease;
-        }
-
-        .about-cta-card:hover .about-cta-pill {
-          box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
-          background: rgba(52, 211, 153, 0.1);
         }
 
         .about-cta-headline {
           font-family: var(--font-display);
-          font-size: 1.1rem;
+          font-size: 1.2rem;
           font-weight: 600;
-          line-height: 1.6;
-          letter-spacing: -0.01em;
-          color: var(--color-text-primary);
-          position: relative;
-          z-index: 1;
+          line-height: 1.5;
+          margin-bottom: 20px;
         }
 
         .about-cta-arrow {
-          position: absolute;
-          bottom: 20px;
-          right: 22px;
-          font-size: 1rem;
-          color: rgba(255, 255, 255, 0.15);
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          z-index: 1;
+          font-family: var(--font-mono);
+          font-size: 0.65rem;
+          letter-spacing: 0.1em;
+          opacity: 0.4;
+          text-transform: uppercase;
         }
 
-        .about-cta-card:hover .about-cta-arrow {
-          color: var(--color-lavender);
-          transform: translateY(3px);
-        }
-
-        .about-cta-accent {
-          color: var(--color-lavender);
-          font-style: italic;
-        }
-
-        /* ── Responsive ── */
         @media (max-width: 1024px) {
-          .about-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-          }
-
-          .about-col-right {
-            grid-column: 1 / -1;
-            padding-top: 0;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 12px 24px;
-          }
-
-          .about-right-divider {
-            width: 100%;
-            flex-basis: 100%;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .about-section {
-            padding: 80px 0 60px !important;
-          }
-
-          .about-grid {
-            grid-template-columns: 1fr;
-            gap: 40px;
-          }
-
-          .about-col-center {
-            padding-top: 0;
-          }
-
-          .about-persona-card {
-            max-width: 100%;
-          }
-
-          .about-headline-line {
-            font-size: clamp(1.6rem, 7vw, 2.4rem);
-          }
-
-          .about-col-right {
-            padding-top: 0;
-          }
-
-          .about-watermark {
-            font-size: clamp(4rem, 22vw, 8rem);
-            -webkit-text-stroke-width: 1px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .about-persona-card {
-            padding: 24px 20px 20px;
-          }
-
-          .about-mode-name {
-            font-size: 1rem;
-          }
+          .about-grid { grid-template-columns: 1fr; gap: 80px; }
+          .about-col-right { padding-top: 0; }
         }
       `}</style>
     </section>
