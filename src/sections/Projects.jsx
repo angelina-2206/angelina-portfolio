@@ -51,17 +51,18 @@ const PROJECTS = [
   },
   {
     num: '04', title: 'Formula Decoded',
-    subtitle: 'Coming Soon',
-    desc: 'Details incoming. Stay tuned.',
+    subtitle: '3D Engineering · 2026 Regulations · Aerodynamics',
+    desc: 'Interactive 3D platform exploring F1 engineering, aerodynamics, and 2026 hybrid power units. Visualizing the next generation of motorsport physics through immersive web technologies.',
     accent: '#EC4899',
     accentGrad: 'linear-gradient(90deg,#EC4899,#8B5CF6)',
     bgWord: 'FORMULA',
     tags: [
-      { t: 'Coming Soon', c: 'muted' }
+      { t: 'Three.js', c: 'purple' }, { t: 'React Three Fiber', c: 'purple' },
+      { t: 'GSAP', c: 'muted' }
     ],
     flagship: false,
     status: { label: 'In Progress', dot: '#EC4899', text: 'rgba(236,72,153,0.85)', border: 'rgba(236,72,153,0.3)' },
-    github: 'https://github.com/angelina-2206',
+    github: 'https://github.com/angelina-2206/Formula-Decoded',
     live: null,
   },
   {
