@@ -230,15 +230,15 @@ export default function Projects() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
             <div style={{ width: 20, height: 1, background: p.accent, transition: 'background 0.4s' }} />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: `${p.accent}99`, transition: 'color 0.4s' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, letterSpacing: '0.22em', textTransform: 'uppercase', color: `${p.accent}99`, transition: 'color 0.4s' }}>
               002 — The Constructs
             </span>
           </div>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.08em', lineHeight: 1.6, color: 'rgba(240,238,246,0.3)', maxWidth: 240 }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 13, letterSpacing: '0.08em', lineHeight: 1.6, color: 'rgba(240,238,246,0.3)', maxWidth: 240 }}>
             These items are formed within<br />the experiences themselves.
           </p>
         </div>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.08em', lineHeight: 1.6, color: 'rgba(240,238,246,0.3)', textAlign: 'right', maxWidth: 220 }}>
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 13, letterSpacing: '0.08em', lineHeight: 1.6, color: 'rgba(240,238,246,0.3)', textAlign: 'right', maxWidth: 220 }}>
           Each originates on site. Shaped<br />by logic, process, and purpose.
         </p>
       </div>
@@ -379,16 +379,16 @@ export default function Projects() {
       </div>
 
       {/* Nav row */}
-      <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '1.75rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <button
             className="proj-nav-btn"
             disabled={current === 0}
             onClick={() => navigate(-1)}
             style={{
-              width: 40, height: 40, borderRadius: '50%',
-              border: '0.5px solid rgba(255,255,255,0.12)',
-              background: 'transparent', color: '#F0EEF6', fontSize: 14,
+              width: 52, height: 52, borderRadius: '50%',
+              border: '0.5px solid rgba(255,255,255,0.15)',
+              background: 'rgba(255,255,255,0.03)', color: '#F0EEF6', fontSize: 18,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: 'none', transition: 'all 0.2s',
             }}
@@ -398,25 +398,25 @@ export default function Projects() {
             disabled={current === PROJECTS.length - 1}
             onClick={() => navigate(1)}
             style={{
-              width: 40, height: 40, borderRadius: '50%',
-              border: '0.5px solid rgba(255,255,255,0.12)',
-              background: 'transparent', color: '#F0EEF6', fontSize: 14,
+              width: 52, height: 52, borderRadius: '50%',
+              border: '0.5px solid rgba(255,255,255,0.15)',
+              background: 'rgba(255,255,255,0.03)', color: '#F0EEF6', fontSize: 18,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: 'none', transition: 'all 0.2s',
             }}
           >→</button>
 
           {/* Progress dots */}
-          <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
             {PROJECTS.map((_, i) => (
               <div
                 key={i}
                 className="proj-pdot"
                 onClick={() => goTo(i)}
                 style={{
-                  height: 3, borderRadius: 2, cursor: 'none',
+                  height: 4, borderRadius: 2, cursor: 'none',
                   background: i === current ? p.accent : 'rgba(255,255,255,0.12)',
-                  width: i === current ? 20 : 6,
+                  width: i === current ? 28 : 7,
                   transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
                 }}
               />
