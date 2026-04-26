@@ -33,7 +33,7 @@ export default function ObsidianNav({ currentSection, onMenuToggle }) {
       <div className="obs-nav-links">
         <a href="#about" className={currentSection === 'about' ? 'active' : ''} onMouseEnter={playSoftClick}>ABOUT</a>
         <a href="#projects" className={currentSection === 'projects' ? 'active' : ''} onMouseEnter={playSoftClick}>PROJECTS</a>
-        <a href="#gallery" className={currentSection === 'gallery' ? 'active' : ''} onMouseEnter={playSoftClick}>GALLERY</a>
+        <a href="#process" className={currentSection === 'process' ? 'active' : ''} onMouseEnter={playSoftClick}>PROCESS</a>
         <a href="#achievements" className={currentSection === 'achievements' ? 'active' : ''} onMouseEnter={playSoftClick}>ACHIEVEMENTS</a>
       </div>
 

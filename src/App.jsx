@@ -8,9 +8,11 @@ import Hero from './components/ShatterHero'
 import QuoteReveal from './sections/QuoteReveal'
 import About from './sections/About'
 import Projects from './sections/Projects'
-import Gallery from './sections/Gallery'
+import ProcessBreakdown from './components/ProcessBreakdown'
+import ContributionsTimeline from './components/ContributionsTimeline'
 import Achievements from './sections/Achievements'
 import Contact from './sections/Contact'
+import LapCounter from './components/LapCounter'
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -27,7 +29,6 @@ export default function App() {
       
       sections.forEach((section) => {
         const sectionTop = section.offsetTop
-        // If we've scrolled past this section (with some buffer)
         if (window.scrollY >= sectionTop - window.innerHeight / 3) {
           current = section.getAttribute('id')
         }
@@ -52,10 +53,8 @@ export default function App() {
   }, [isMenuOpen])
 
   useEffect(() => {
-    // Initialize Lenis for smooth scroll
     if (isLoading) return
     
-    // Import Lenis dynamically to avoid SSR issues if any
     import('@studio-freight/lenis').then(({ default: Lenis }) => {
       const lenis = new Lenis({
         duration: 1.2,
@@ -71,7 +70,6 @@ export default function App() {
       }
       requestAnimationFrame(raf)
 
-      // Connect Lenis to ScrollTrigger
       lenis.on('scroll', () => {
         import('gsap/ScrollTrigger').then(({ default: ScrollTrigger }) => {
           ScrollTrigger.update()
@@ -83,7 +81,6 @@ export default function App() {
   }, [isLoading])
 
   useEffect(() => {
-    // Add scroll reveal observer
     if (isLoading) return
     
     const obsvr = new IntersectionObserver((entries) => {
@@ -116,12 +113,14 @@ export default function App() {
           <QuoteReveal />
           <About />
           <Projects />
-          <Gallery />
+          <ProcessBreakdown />
+          <ContributionsTimeline />
           <Achievements />
           <Contact />
         </main>
+
+        <LapCounter />
       </LoadingScreen>
     </SoundProvider>
   );
 }
-

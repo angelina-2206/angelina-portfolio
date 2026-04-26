@@ -33,7 +33,8 @@ export default function MenuOverlay({ isOpen, onClose }) {
   const links = [
     { name: 'About', href: '#about' },
     { name: 'Projects', href: '#projects' },
-    { name: 'Gallery', href: '#gallery' },
+    { name: 'Process', href: '#process' },
+    { name: 'Contributions', href: '#contributions' },
     { name: 'Achievements', href: '#achievements' },
     { name: 'Contact', href: '#contact' }
   ]
