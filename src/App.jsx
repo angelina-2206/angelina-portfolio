@@ -5,7 +5,7 @@ import CustomCursor from './components/CustomCursor'
 import ObsidianNav from './components/ObsidianNav'
 import MenuOverlay from './components/MenuOverlay'
 import Hero from './components/ShatterHero'
-import Quote from './sections/Quote'
+import QuoteReveal from './sections/QuoteReveal'
 import About from './sections/About'
 import Projects from './sections/Projects'
 import Gallery from './sections/Gallery'
@@ -113,7 +113,7 @@ export default function App() {
         
         <main>
           <Hero />
-          <Quote />
+          <QuoteReveal />
           <About />
           <Projects />
           <Gallery />
