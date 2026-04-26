@@ -30,7 +30,7 @@ const PROJECTS = [
     ],
     flagship: false,
     status: { label: 'Awarded', dot: '#FFD700', text: 'rgba(255,215,0,0.85)', border: 'rgba(255,215,0,0.3)' },
-    github: 'https://github.com/angelina-2206/trapeye',
+    github: 'https://github.com/angelina-2206/TrapEye-Demo',
     live: null,
   },
   {
@@ -50,19 +50,19 @@ const PROJECTS = [
     live: null,
   },
   {
-    num: '04', title: 'NyayaSathi',
-    subtitle: 'Legal AI · Multilingual · Accessible',
-    desc: 'Multilingual AI legal assistant that cuts through jargon. Makes legal information accessible across languages, reducing dependency on technical expertise for everyday users.',
-    accent: '#FFD700',
-    accentGrad: 'linear-gradient(90deg,#FFD700,#FF6B35)',
-    bgWord: 'NYAYA',
+    num: '04', title: 'Gear Guard',
+    subtitle: 'Asset Tracking · Equipment Management · Downtime Analytics',
+    desc: 'Prototype equipment management solution streamlining asset tracking and maintenance workflows. Uniquely integrates downtime cost modeling with human impact assessments — quantifying the real cost of equipment failure.',
+    accent: '#F59E0B',
+    accentGrad: 'linear-gradient(90deg,#F59E0B,#EF4444)',
+    bgWord: 'GEAR',
     tags: [
-      { t: 'LLM', c: 'purple' }, { t: 'Multilingual', c: 'gold' },
-      { t: 'IndiaAI', c: 'gold' }
+      { t: 'Asset Tracking', c: 'gold' }, { t: 'Cost Modeling', c: 'orange' },
+      { t: 'Prototype', c: 'muted' }
     ],
     flagship: false,
-    status: { label: 'Deployed', dot: '#00D2BE', text: 'rgba(0,210,190,0.85)', border: 'rgba(0,210,190,0.3)' },
-    github: 'https://github.com/angelina-2206/nyayasathi',
+    status: { label: 'Prototype', dot: '#F59E0B', text: 'rgba(245,158,11,0.85)', border: 'rgba(245,158,11,0.3)' },
+    github: 'https://github.com/angelina-2206/Gear-Guard',
     live: null,
   },
   {
@@ -78,7 +78,7 @@ const PROJECTS = [
     ],
     flagship: false,
     status: { label: 'Selected', dot: '#FFD700', text: 'rgba(255,215,0,0.85)', border: 'rgba(255,215,0,0.3)' },
-    github: 'https://github.com/angelina-2206/ecopulse',
+    github: 'https://github.com/angelina-2206/EcoPulse',
     live: null,
   },
   {
@@ -94,7 +94,7 @@ const PROJECTS = [
     ],
     flagship: false,
     status: { label: 'Deployed', dot: '#00D2BE', text: 'rgba(0,210,190,0.85)', border: 'rgba(0,210,190,0.3)' },
-    github: 'https://github.com/angelina-2206/what-if-wizard',
+    github: 'https://github.com/angelina-2206/What-If-Wizard',
     live: null,
   },
 ]
