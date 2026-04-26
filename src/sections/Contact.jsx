@@ -121,6 +121,17 @@ function TerminalModal({ isOpen, onClose }) {
     }
   }, [isOpen])
 
+  // Handle Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
   // Boot sequence
   useEffect(() => {
     if (!isOpen || step !== STEPS.BOOT) return
@@ -136,6 +147,10 @@ function TerminalModal({ isOpen, onClose }) {
   // Quick commands
   const handleQuickCommand = (cmd) => {
     const lower = cmd.trim().toLowerCase()
+    if (lower === 'exit' || lower === 'close') {
+      onClose()
+      return true
+    }
     if (lower === 'resume') {
       window.open('/resume.pdf', '_blank')
       return true
@@ -180,20 +195,30 @@ function TerminalModal({ isOpen, onClose }) {
       setInputValue('')
       setStep(STEPS.COMPANY)
     } else if (step === STEPS.COMPANY) {
-      setInputs(p => ({ ...p, company: val }))
+      const finalCompany = val || '—'
+      setInputs(p => ({ ...p, company: finalCompany }))
       setInputValue('')
       setStep(STEPS.PROFILE)
+      
+      // Sequence: Profile View -> Sending Status -> Done
       setTimeout(() => setStep(STEPS.SENDING), 2800)
-      setTimeout(() => {
+      setTimeout(async () => {
+        try {
+          await fetch('https://formspree.io/f/xbdqelao', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: choice,
+              name: inputs.name,
+              email: inputs.email,
+              company: finalCompany,
+              message: inputs.context
+            })
+          })
+        } catch (err) {
+          console.error('Formspree error:', err)
+        }
         setStep(STEPS.DONE)
-        // Construct mailto
-        const subject = choice === 'recruiter' ? 'Recruitment Inquiry' :
-                       choice === 'internship' ? 'Internship Opportunity' :
-                       choice === 'collaboration' ? 'Collaboration Proposal' : 'Hello'
-        const body = `Name: ${inputs.name || val}\nEmail: ${inputs.email}\nCompany: ${val}\n\nMessage: ${inputs.context}`
-        const mailto = `mailto:angelinachatterjee2206@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-        // Open mailto after small delay
-        setTimeout(() => window.open(mailto, '_self'), 1200)
       }, 4200)
     }
   }
@@ -203,8 +228,26 @@ function TerminalModal({ isOpen, onClose }) {
       setInputs(p => ({ ...p, company: '—' }))
       setInputValue('')
       setStep(STEPS.PROFILE)
+      
       setTimeout(() => setStep(STEPS.SENDING), 2800)
-      setTimeout(() => setStep(STEPS.DONE), 4200)
+      setTimeout(async () => {
+        try {
+          await fetch('https://formspree.io/f/xbdqelao', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: choice,
+              name: inputs.name,
+              email: inputs.email,
+              company: '—',
+              message: inputs.context
+            })
+          })
+        } catch (err) {
+          console.error('Formspree error:', err)
+        }
+        setStep(STEPS.DONE)
+      }, 4200)
     }
   }
 
@@ -244,6 +287,19 @@ function TerminalModal({ isOpen, onClose }) {
               </div>
               <span className="term-title">angelina@portfolio:~</span>
               <div style={{ width: 52 }} />
+              {/* Explicit close button */}
+              <button
+                onClick={onClose}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'rgba(255,255,255,0.5)',
+                  fontSize: 12,
+                  cursor: 'pointer',
+                  marginLeft: 12,
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >✕</button>
             </div>
 
             {/* Body */}
@@ -411,6 +467,17 @@ function TerminalModal({ isOpen, onClose }) {
                     <span className="term-dim">or reach me directly at: </span>
                     <a href="mailto:angelinachatterjee2206@gmail.com" className="term-email">angelinachatterjee2206@gmail.com</a>
                   </TermLine>
+                  <div className="term-spacer" />
+                  <motion.button
+                    className="term-skip"
+                    onClick={onClose}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.5 }}
+                    style={{ marginTop: 12 }}
+                  >
+                    [exit terminal]
+                  </motion.button>
                 </>
               )}
 
