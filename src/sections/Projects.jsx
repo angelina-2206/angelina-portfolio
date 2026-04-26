@@ -2,23 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 
 const PROJECTS = [
   {
-    num: '01', title: 'Burnout Sentinel',
-    subtitle: 'AI · Mental Health · Behavioral Analytics',
-    desc: 'AI-powered personal analytics that transforms calendar data into burnout prevention insights. Multi-agent architecture + NLP detects overload trends before they break you.',
-    accent: '#8B5CF6',
-    accentGrad: 'linear-gradient(90deg,#8B5CF6,#C4B5FD)',
-    bgWord: 'BURNOUT',
-    tags: [
-      { t: 'Multi-Agent', c: 'purple' }, { t: 'NLP', c: 'purple' },
-      { t: 'Python', c: 'teal' }, { t: 'FastAPI', c: 'muted' }
-    ],
-    flagship: true,
-    status: { label: 'Active', dot: '#2ECC71', text: 'rgba(46,204,113,0.85)', border: 'rgba(46,204,113,0.3)' },
-    github: 'https://github.com/angelina-2206/burnout-sentinel',
-    live: null,
-  },
-  {
-    num: '02', title: 'TrapEye',
+    num: '01', title: 'TrapEye',
     subtitle: 'Phishing Detection · Chrome Extension',
     desc: '89% accuracy, sub-200ms inference. On-device ML model built in 12 hours. Web app + Chrome extension for real-time phishing detection that\'s fast, private, and practical.',
     accent: '#E10600',
@@ -34,23 +18,23 @@ const PROJECTS = [
     live: null,
   },
   {
-    num: '03', title: 'PostPehchaan',
-    subtitle: 'Digital Identity · Offline-First Platform',
-    desc: 'Secure identity verification for low-connectivity environments. Offline-first mobile app with real-time dashboard, AI trust scoring, multilingual voice interface + blockchain audit trails.',
-    accent: '#00D2BE',
-    accentGrad: 'linear-gradient(90deg,#00D2BE,#7B68EE)',
-    bgWord: 'IDENTITY',
+    num: '02', title: 'Burnout Sentinel',
+    subtitle: 'AI · Mental Health · Behavioral Analytics',
+    desc: 'AI-powered personal analytics that transforms calendar data into burnout prevention insights. Multi-agent architecture + NLP detects overload trends before they break you.',
+    accent: '#8B5CF6',
+    accentGrad: 'linear-gradient(90deg,#8B5CF6,#C4B5FD)',
+    bgWord: 'BURNOUT',
     tags: [
-      { t: 'Top 8 · India Post', c: 'gold' }, { t: 'Blockchain', c: 'teal' },
-      { t: 'React Native', c: 'muted' }
+      { t: 'Multi-Agent', c: 'purple' }, { t: 'NLP', c: 'purple' },
+      { t: 'Python', c: 'teal' }, { t: 'FastAPI', c: 'muted' }
     ],
-    flagship: false,
-    status: { label: 'Awarded', dot: '#FFD700', text: 'rgba(255,215,0,0.85)', border: 'rgba(255,215,0,0.3)' },
-    github: 'https://github.com/angelina-2206/postpehchaan',
+    flagship: true,
+    status: { label: 'Active', dot: '#2ECC71', text: 'rgba(46,204,113,0.85)', border: 'rgba(46,204,113,0.3)' },
+    github: 'https://github.com/angelina-2206/burnout-sentinel',
     live: null,
   },
   {
-    num: '04', title: 'Gear Guard',
+    num: '03', title: 'Gear Guard',
     subtitle: 'Asset Tracking · Equipment Management · Downtime Analytics',
     desc: 'Prototype equipment management solution streamlining asset tracking and maintenance workflows. Uniquely integrates downtime cost modeling with human impact assessments — quantifying the real cost of equipment failure.',
     accent: '#F59E0B',
@@ -63,6 +47,21 @@ const PROJECTS = [
     flagship: false,
     status: { label: 'Prototype', dot: '#F59E0B', text: 'rgba(245,158,11,0.85)', border: 'rgba(245,158,11,0.3)' },
     github: 'https://github.com/angelina-2206/Gear-Guard',
+    live: null,
+  },
+  {
+    num: '04', title: 'Formula Decoded',
+    subtitle: 'Coming Soon',
+    desc: 'Details incoming. Stay tuned.',
+    accent: '#EC4899',
+    accentGrad: 'linear-gradient(90deg,#EC4899,#8B5CF6)',
+    bgWord: 'FORMULA',
+    tags: [
+      { t: 'Coming Soon', c: 'muted' }
+    ],
+    flagship: false,
+    status: { label: 'In Progress', dot: '#EC4899', text: 'rgba(236,72,153,0.85)', border: 'rgba(236,72,153,0.3)' },
+    github: 'https://github.com/angelina-2206',
     live: null,
   },
   {
@@ -95,6 +94,22 @@ const PROJECTS = [
     flagship: false,
     status: { label: 'Deployed', dot: '#00D2BE', text: 'rgba(0,210,190,0.85)', border: 'rgba(0,210,190,0.3)' },
     github: 'https://github.com/angelina-2206/What-If-Wizard',
+    live: null,
+  },
+  {
+    num: '07', title: 'PostPehchaan',
+    subtitle: 'Digital Identity · Offline-First Platform',
+    desc: 'Secure identity verification for low-connectivity environments. Offline-first mobile app with real-time dashboard, AI trust scoring, multilingual voice interface + blockchain audit trails.',
+    accent: '#00D2BE',
+    accentGrad: 'linear-gradient(90deg,#00D2BE,#7B68EE)',
+    bgWord: 'IDENTITY',
+    tags: [
+      { t: 'Top 8 · India Post', c: 'gold' }, { t: 'Blockchain', c: 'teal' },
+      { t: 'React Native', c: 'muted' }
+    ],
+    flagship: false,
+    status: { label: 'Awarded', dot: '#FFD700', text: 'rgba(255,215,0,0.85)', border: 'rgba(255,215,0,0.3)' },
+    github: 'https://github.com/angelina-2206/postpehchaan',
     live: null,
   },
 ]
