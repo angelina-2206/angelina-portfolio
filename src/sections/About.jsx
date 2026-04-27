@@ -5,79 +5,124 @@ const EASE_OUT = [0.16, 1, 0.3, 1]
 
 const TECH = [
   {
-    id: "py", name: "Python", icon: "🐍", cat: "language",
+    id: "py", name: "Python", devicon: "devicon-python-plain colored", cat: "language",
     mastery: 95, rarity: "legendary",
-    color: "#FFD700", grad: "linear-gradient(90deg,#FFD700,#FF6B35)",
+    color: "#FFD700", icon_bg: "rgba(255,215,0,0.12)",
+    grad: "linear-gradient(90deg,#FFD700,#FF6B35)",
+    glow: "rgba(255,215,0,0.5)",
     projects: ["Burnout Sentinel", "TrapEye", "EcoPulse"],
   },
   {
-    id: "genai", name: "Generative AI", icon: "🤖", cat: "ai",
+    id: "genai", name: "Generative AI", devicon: "devicon-tensorflow-original colored", cat: "ai",
     mastery: 90, rarity: "legendary",
-    color: "#FFD700", grad: "linear-gradient(90deg,#FFD700,#8B5CF6)",
+    color: "#FFD700", icon_bg: "rgba(255,215,0,0.12)",
+    grad: "linear-gradient(90deg,#FFD700,#8B5CF6)",
+    glow: "rgba(255,215,0,0.5)",
     projects: ["What If Wizard", "NyayaSathi", "EcoPulse"],
   },
   {
-    id: "react", name: "React", icon: "⚛️", cat: "frontend",
+    id: "react", name: "React", devicon: "devicon-react-original colored", cat: "frontend",
     mastery: 85, rarity: "epic",
-    color: "#8B5CF6", grad: "linear-gradient(90deg,#8B5CF6,#C4B5FD)",
+    color: "#61DAFB", icon_bg: "rgba(97,218,251,0.1)",
+    grad: "linear-gradient(90deg,#61DAFB,#8B5CF6)",
+    glow: "rgba(97,218,251,0.5)",
     projects: ["Portfolio", "PostPehchaan", "What If Wizard"],
   },
   {
-    id: "llm", name: "LLMs / NLP", icon: "🧠", cat: "ai",
-    mastery: 82, rarity: "epic",
-    color: "#8B5CF6", grad: "linear-gradient(90deg,#8B5CF6,#00D2BE)",
-    projects: ["Burnout Sentinel", "NyayaSathi", "What If Wizard"],
-  },
-  {
-    id: "js", name: "JavaScript", icon: "🌐", cat: "language",
+    id: "js", name: "JavaScript", devicon: "devicon-javascript-plain colored", cat: "language",
     mastery: 80, rarity: "epic",
-    color: "#8B5CF6", grad: "linear-gradient(90deg,#F7DF1E,#8B5CF6)",
+    color: "#F7DF1E", icon_bg: "rgba(247,223,30,0.1)",
+    grad: "linear-gradient(90deg,#F7DF1E,#8B5CF6)",
+    glow: "rgba(247,223,30,0.5)",
     projects: ["TrapEye", "Portfolio", "PostPehchaan"],
   },
   {
-    id: "fastapi", name: "FastAPI", icon: "⚡", cat: "backend",
+    id: "fastapi", name: "FastAPI", devicon: "devicon-fastapi-plain colored", cat: "backend",
     mastery: 78, rarity: "rare",
-    color: "#00D2BE", grad: "linear-gradient(90deg,#00D2BE,#8B5CF6)",
-    projects: ["Burnout Sentinel", "TrapEye", "EcoPulse"],
+    color: "#00D2BE", icon_bg: "rgba(0,210,190,0.1)",
+    grad: "linear-gradient(90deg,#00D2BE,#8B5CF6)",
+    glow: "rgba(0,210,190,0.5)",
+    projects: ["Burnout Sentinel", "TrapEye"],
   },
   {
-    id: "node", name: "Node.js", icon: "🟢", cat: "backend",
+    id: "node", name: "Node.js", devicon: "devicon-nodejs-plain colored", cat: "backend",
     mastery: 75, rarity: "rare",
-    color: "#00D2BE", grad: "linear-gradient(90deg,#00D2BE,#2ECC71)",
+    color: "#539E43", icon_bg: "rgba(83,158,67,0.1)",
+    grad: "linear-gradient(90deg,#539E43,#00D2BE)",
+    glow: "rgba(83,158,67,0.5)",
     projects: ["Portfolio", "PostPehchaan"],
   },
   {
-    id: "tailwind", name: "Tailwind CSS", icon: "🎨", cat: "frontend",
+    id: "tailwind", name: "Tailwind CSS", devicon: "devicon-tailwindcss-plain colored", cat: "frontend",
     mastery: 82, rarity: "rare",
-    color: "#00D2BE", grad: "linear-gradient(90deg,#38BDF8,#8B5CF6)",
-    projects: ["Portfolio", "What If Wizard", "PostPehchaan"],
+    color: "#38BDF8", icon_bg: "rgba(56,189,248,0.1)",
+    grad: "linear-gradient(90deg,#38BDF8,#8B5CF6)",
+    glow: "rgba(56,189,248,0.5)",
+    projects: ["Portfolio", "What If Wizard"],
   },
   {
-    id: "sql", name: "SQL / Pandas", icon: "🗃️", cat: "data",
-    mastery: 70, rarity: "common",
-    color: "rgba(255,255,255,0.4)",
-    grad: "linear-gradient(90deg,rgba(255,255,255,0.3),rgba(255,255,255,0.15))",
-    projects: ["Burnout Sentinel", "EcoPulse"],
-  },
-  {
-    id: "sklearn", name: "Scikit-learn", icon: "📊", cat: "ai",
-    mastery: 68, rarity: "common",
-    color: "rgba(255,255,255,0.4)",
-    grad: "linear-gradient(90deg,rgba(255,255,255,0.25),rgba(255,255,255,0.1))",
-    projects: ["TrapEye", "Burnout Sentinel"],
-  },
-  {
-    id: "git", name: "Git / GitHub", icon: "🔗", cat: "tools",
+    id: "git", name: "Git", devicon: "devicon-git-plain colored", cat: "tools",
     mastery: 88, rarity: "rare",
-    color: "#00D2BE", grad: "linear-gradient(90deg,#FF6B35,#00D2BE)",
+    color: "#F05032", icon_bg: "rgba(240,80,50,0.1)",
+    grad: "linear-gradient(90deg,#F05032,#FF6B35)",
+    glow: "rgba(240,80,50,0.5)",
     projects: ["All Projects"],
   },
   {
-    id: "c", name: "C / C++", icon: "⚙️", cat: "language",
+    id: "sklearn", name: "Scikit-learn", devicon: "devicon-scikitlearn-plain colored", cat: "ai",
+    mastery: 68, rarity: "common",
+    color: "rgba(255,255,255,0.35)", icon_bg: "rgba(255,255,255,0.05)",
+    grad: "linear-gradient(90deg,rgba(255,255,255,0.3),rgba(255,255,255,0.15))",
+    glow: "rgba(255,255,255,0.2)",
+    projects: ["TrapEye", "Burnout Sentinel"],
+  },
+  {
+    id: "pandas", name: "Pandas", devicon: "devicon-pandas-plain colored", cat: "data",
+    mastery: 70, rarity: "common",
+    color: "rgba(255,255,255,0.35)", icon_bg: "rgba(255,255,255,0.05)",
+    grad: "linear-gradient(90deg,rgba(255,255,255,0.25),rgba(255,255,255,0.1))",
+    glow: "rgba(255,255,255,0.2)",
+    projects: ["Burnout Sentinel", "EcoPulse"],
+  },
+  {
+    id: "postgres", name: "PostgreSQL", devicon: "devicon-postgresql-plain colored", cat: "data",
     mastery: 65, rarity: "common",
-    color: "rgba(255,255,255,0.4)",
+    color: "rgba(255,255,255,0.35)", icon_bg: "rgba(255,255,255,0.05)",
+    grad: "linear-gradient(90deg,rgba(255,255,255,0.25),rgba(255,255,255,0.1))",
+    glow: "rgba(255,255,255,0.2)",
+    projects: ["PostPehchaan"],
+  },
+  {
+    id: "c", name: "C / C++", devicon: "devicon-cplusplus-plain colored", cat: "language",
+    mastery: 65, rarity: "common",
+    color: "rgba(255,255,255,0.35)", icon_bg: "rgba(255,255,255,0.05)",
     grad: "linear-gradient(90deg,rgba(255,255,255,0.2),rgba(255,255,255,0.1))",
+    glow: "rgba(255,255,255,0.2)",
     projects: ["Systems coursework"],
+  },
+  {
+    id: "html", name: "HTML5", devicon: "devicon-html5-plain colored", cat: "frontend",
+    mastery: 88, rarity: "rare",
+    color: "#E34F26", icon_bg: "rgba(227,79,38,0.1)",
+    grad: "linear-gradient(90deg,#E34F26,#F06529)",
+    glow: "rgba(227,79,38,0.5)",
+    projects: ["Portfolio", "PostPehchaan", "What If Wizard"],
+  },
+  {
+    id: "css", name: "CSS3", devicon: "devicon-css3-plain colored", cat: "frontend",
+    mastery: 85, rarity: "rare",
+    color: "#1572B6", icon_bg: "rgba(21,114,182,0.1)",
+    grad: "linear-gradient(90deg,#1572B6,#33A9DC)",
+    glow: "rgba(21,114,182,0.5)",
+    projects: ["Portfolio", "PostPehchaan", "What If Wizard"],
+  },
+  {
+    id: "flutter", name: "Flutter", devicon: "devicon-flutter-plain colored", cat: "frontend",
+    mastery: 75, rarity: "common",
+    color: "#54C5F8", icon_bg: "rgba(84,197,248,0.1)",
+    grad: "linear-gradient(90deg,#54C5F8,#01579B)",
+    glow: "rgba(84,197,248,0.5)",
+    projects: ["Mobile App Prototypes"],
   },
 ]
 
@@ -198,7 +243,7 @@ function TechCard({ tech, visible, delay }) {
         backdropFilter: "blur(10px)",
       }}
       whileHover={{ y: -5, scale: 1.02 }}
-      className="interactive-zone"
+      className={`interactive-zone about-tcard ${tech.rarity === 'legendary' ? 'legendary-pulse' : ''}`}
     >
       {/* Top accent bar */}
       <div style={{
@@ -218,7 +263,17 @@ function TechCard({ tech, visible, delay }) {
       }}>{r.label}</div>
 
       {/* Icon */}
-      <div style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>{tech.icon}</div>
+      <div className="about-icon-wrap" style={{
+        background: tech.icon_bg,
+        border: `0.5px solid ${tech.color}22`,
+        "--ac": tech.color,
+        "--ac-i": tech.icon_bg,
+        "--glow": tech.glow
+      }}>
+        <div className="about-icon-ring" style={{ "--ac": tech.color, "--ac-i": tech.icon_bg }}></div>
+        <div className="about-orbit" style={{ "--ac": tech.color }}></div>
+        <i className={tech.devicon} style={{ fontSize: "30px", "--glow": tech.glow }}></i>
+      </div>
 
       {/* Name */}
       <div style={{
@@ -861,6 +916,56 @@ export default function About() {
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: rgba(139, 92, 246, 0.5);
+        }
+
+        /* Icon container */
+        .about-icon-wrap {
+          width: 48px; height: 48px; border-radius: 10px;
+          display: flex; align-items: center; justify-content: center;
+          margin-bottom: 0.75rem; position: relative;
+          transition: all 0.3s;
+        }
+        .about-tcard:hover .about-icon-wrap { transform: scale(1.1) rotate(-3deg); }
+        .about-icon-wrap i { transition: all 0.3s; }
+        .about-tcard:hover .about-icon-wrap i { filter: drop-shadow(0 0 8px var(--glow, rgba(139,92,246,0.6))); }
+
+        /* Floating ring on hover */
+        .about-icon-ring {
+          position: absolute; inset: -4px; border-radius: 14px;
+          border: 1px solid transparent;
+          transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .about-tcard:hover .about-icon-ring {
+          border-color: var(--ac);
+          box-shadow: 0 0 12px var(--ac), inset 0 0 12px var(--ac-i);
+        }
+
+        /* Orbit dots on hover */
+        .about-orbit {
+          position: absolute; inset: -12px; border-radius: 50%;
+          border: 1px solid transparent;
+          animation: none; pointer-events: none;
+        }
+        .about-tcard:hover .about-orbit {
+          border-color: var(--ac);
+          opacity: 0.3;
+          animation: aboutSpin 3s linear infinite;
+        }
+        .about-orbit::before {
+          content: ''; position: absolute; top: -3px; left: 50%;
+          transform: translateX(-50%);
+          width: 5px; height: 5px; border-radius: 50%;
+          background: var(--ac);
+        }
+        @keyframes aboutSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Pulse animation for legendary */
+        @keyframes legendaryPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.4); }
+          50% { box-shadow: 0 0 0 6px rgba(255,215,0,0); }
+        }
+        .about-tcard.legendary-pulse:hover .about-icon-wrap {
+          animation: legendaryPulse 1.5s ease-in-out infinite;
         }
 
         @media (max-width: 1024px) {

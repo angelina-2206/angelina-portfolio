@@ -1,0 +1,374 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+
+.arsenal{
+  background:#080810;
+  border-radius:14px;
+  padding:2rem;
+  font-family:'Space Mono',monospace;
+  border:0.5px solid rgba(255,255,255,0.06);
+  position:relative;overflow:hidden;
+}
+
+.bg-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(139,92,246,0.08) 0%,transparent 70%);
+}
+
+/* Header */
+.header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.5rem;position:relative;z-index:2}
+.title-block{}
+.title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:#F0EEF6;letter-spacing:-0.04em;line-height:0.9;margin-bottom:0.3rem}
+.title span{color:#8B5CF6}
+.sub{font-size:9px;color:rgba(255,255,255,0.2);letter-spacing:0.18em;text-transform:uppercase}
+.xp-block{text-align:right}
+.xp-label{font-size:9px;color:rgba(139,92,246,0.5);letter-spacing:0.12em;margin-bottom:2px}
+.xp-val{font-size:2.2rem;font-weight:700;color:#8B5CF6;letter-spacing:-0.04em;line-height:1}
+
+/* Filter tabs */
+.filter-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.25rem;position:relative;z-index:2}
+.ftab{
+  font-size:8px;padding:4px 11px;border-radius:100px;
+  border:0.5px solid rgba(255,255,255,0.08);
+  background:transparent;color:rgba(255,255,255,0.25);
+  cursor:pointer;letter-spacing:0.1em;text-transform:uppercase;
+  transition:all 0.2s;font-family:'Space Mono',monospace;
+}
+.ftab.on{border-color:rgba(139,92,246,0.55);background:rgba(139,92,246,0.14);color:#8B5CF6}
+
+/* Grid */
+.tech-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
+  gap:10px;
+  position:relative;z-index:2;
+  max-height:480px;overflow-y:auto;
+  padding-right:4px;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(139,92,246,0.2) transparent;
+}
+
+/* Card */
+.tcard{
+  background:#111120;
+  border:0.5px solid rgba(255,255,255,0.07);
+  border-radius:13px;padding:1rem;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.tcard:hover{transform:translateY(-6px) scale(1.02)}
+.tcard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  opacity:0;transition:opacity 0.3s;
+}
+.tcard:hover::before{opacity:1}
+
+/* Rarity badge */
+.rbadge{
+  position:absolute;top:0.55rem;right:0.55rem;
+  font-size:7px;padding:2px 7px;border-radius:100px;
+  letter-spacing:0.1em;text-transform:uppercase;font-weight:700;
+}
+
+/* Icon container */
+.icon-wrap{
+  width:48px;height:48px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:0.75rem;position:relative;
+  transition:all 0.3s;
+}
+.tcard:hover .icon-wrap{transform:scale(1.1) rotate(-3deg)}
+.icon-wrap i{font-size:32px;transition:all 0.3s}
+.tcard:hover .icon-wrap i{filter:drop-shadow(0 0 8px var(--glow,rgba(139,92,246,0.6)))}
+
+/* Floating ring on hover */
+.icon-ring{
+  position:absolute;inset:-4px;border-radius:14px;
+  border:1px solid transparent;
+  transition:border-color 0.3s, box-shadow 0.3s;
+}
+.tcard:hover .icon-ring{
+  border-color:var(--ac,#8B5CF6);
+  box-shadow:0 0 12px var(--ac,#8B5CF6),inset 0 0 12px var(--ac-i,rgba(139,92,246,0.1));
+}
+
+/* Orbit dots on hover */
+.orbit{
+  position:absolute;inset:-12px;border-radius:50%;
+  border:1px solid transparent;
+  animation:none;pointer-events:none;
+}
+.tcard:hover .orbit{
+  border-color:var(--ac,#8B5CF6);
+  opacity:0.3;
+  animation:spin 3s linear infinite;
+}
+.orbit::before{
+  content:'';position:absolute;top:-3px;left:50%;
+  transform:translateX(-50%);
+  width:5px;height:5px;border-radius:50%;
+  background:var(--ac,#8B5CF6);
+}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+.tname{font-size:12px;font-weight:700;color:#F0EEF6;letter-spacing:-0.01em;margin-bottom:0.15rem;transition:color 0.3s}
+.tcard:hover .tname{color:var(--ac,#8B5CF6)}
+.tcat{font-size:7px;color:rgba(255,255,255,0.2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.65rem}
+
+/* XP bar */
+.bar-wrap{height:3px;background:rgba(255,255,255,0.07);border-radius:2px;margin-bottom:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;width:0%;transition:width 0.7s cubic-bezier(0.16,1,0.3,1)}
+.tcard:hover .bar-fill{width:var(--pct,80%)}
+.pct-row{display:flex;justify-content:space-between;font-size:7px;color:rgba(255,255,255,0.18);letter-spacing:0.05em}
+.tcard:hover .pct-val{color:var(--ac,#8B5CF6)}
+
+/* Reveal projects */
+.proj-reveal{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1)}
+.tcard:hover .proj-reveal{max-height:120px}
+.proj-inner{margin-top:0.65rem;padding-top:0.55rem;border-top:0.5px solid rgba(255,255,255,0.05)}
+.proj-label{font-size:7px;color:var(--ac,#8B5CF6);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px}
+.proj-item{font-size:9px;color:rgba(255,255,255,0.4);line-height:1.7}
+
+/* Strength */
+.strength{
+  margin-top:1.1rem;padding:0.875rem 1rem;
+  background:rgba(255,255,255,0.02);
+  border:0.5px solid rgba(255,255,255,0.05);
+  border-radius:10px;position:relative;z-index:2;
+}
+.str-row{display:flex;justify-content:space-between;margin-bottom:5px}
+.str-label{font-size:8px;color:rgba(255,255,255,0.18);letter-spacing:0.12em;text-transform:uppercase}
+.str-track{height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.str-fill{height:100%;width:79%;background:linear-gradient(90deg,#8B5CF6,#00D2BE,#FFD700);border-radius:2px}
+
+.legend{display:flex;gap:12px;margin-top:0.75rem;flex-wrap:wrap;position:relative;z-index:2}
+.li{display:flex;align-items:center;gap:4px}
+.ld{width:6px;height:6px;border-radius:50%}
+.ll{font-size:7px;color:rgba(255,255,255,0.18);text-transform:uppercase;letter-spacing:0.06em}
+
+/* Pulse animation for legendary */
+@keyframes legendaryPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,0.4)}
+  50%{box-shadow:0 0 0 6px rgba(255,215,0,0)}
+}
+.legendary-pulse:hover .icon-wrap{animation:legendaryPulse 1.5s ease-in-out infinite}
+</style>
+
+<!-- Devicons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+
+<div class="arsenal">
+  <div class="bg-glow"></div>
+
+  <div class="header">
+    <div class="title-block">
+      <div class="title">TECH<br><span>ARSENAL.</span></div>
+      <div class="sub">Hover to inspect · sorted by mastery</div>
+    </div>
+    <div class="xp-block">
+      <div class="xp-label">TOTAL XP</div>
+      <div class="xp-val">6,847</div>
+    </div>
+  </div>
+
+  <div class="filter-row" id="filterRow"></div>
+  <div class="tech-grid" id="techGrid"></div>
+
+  <div class="strength">
+    <div class="str-row">
+      <span class="str-label">Arsenal Strength</span>
+      <span class="str-label">79% · Leveling up daily</span>
+    </div>
+    <div class="str-track"><div class="str-fill"></div></div>
+  </div>
+
+  <div class="legend">
+    <div class="li"><div class="ld" style="background:#FFD700"></div><span class="ll">Legendary</span></div>
+    <div class="li"><div class="ld" style="background:#8B5CF6"></div><span class="ll">Epic</span></div>
+    <div class="li"><div class="ld" style="background:#00D2BE"></div><span class="ll">Rare</span></div>
+    <div class="li"><div class="ld" style="background:rgba(255,255,255,0.3)"></div><span class="ll">Common</span></div>
+  </div>
+</div>
+
+<script>
+const TECH = [
+  {
+    name:"Python", devicon:"devicon-python-plain colored",
+    cat:"language", pct:95, rarity:"legendary",
+    ac:"#FFD700", aci:"rgba(255,215,0,0.12)",
+    grad:"linear-gradient(90deg,#FFD700,#FF6B35)",
+    glow:"rgba(255,215,0,0.5)",
+    projects:["Burnout Sentinel","TrapEye","EcoPulse"],
+  },
+  {
+    name:"Generative AI", devicon:"devicon-tensorflow-original colored",
+    cat:"ai", pct:90, rarity:"legendary",
+    ac:"#FFD700", aci:"rgba(255,215,0,0.12)",
+    grad:"linear-gradient(90deg,#FFD700,#8B5CF6)",
+    glow:"rgba(255,215,0,0.5)",
+    projects:["What If Wizard","NyayaSathi","EcoPulse"],
+  },
+  {
+    name:"React", devicon:"devicon-react-original colored",
+    cat:"frontend", pct:85, rarity:"epic",
+    ac:"#61DAFB", aci:"rgba(97,218,251,0.1)",
+    grad:"linear-gradient(90deg,#61DAFB,#8B5CF6)",
+    glow:"rgba(97,218,251,0.5)",
+    projects:["Portfolio","PostPehchaan","What If Wizard"],
+  },
+  {
+    name:"JavaScript", devicon:"devicon-javascript-plain colored",
+    cat:"language", pct:80, rarity:"epic",
+    ac:"#F7DF1E", aci:"rgba(247,223,30,0.1)",
+    grad:"linear-gradient(90deg,#F7DF1E,#8B5CF6)",
+    glow:"rgba(247,223,30,0.5)",
+    projects:["TrapEye","Portfolio","PostPehchaan"],
+  },
+  {
+    name:"FastAPI", devicon:"devicon-fastapi-plain colored",
+    cat:"backend", pct:78, rarity:"rare",
+    ac:"#00D2BE", aci:"rgba(0,210,190,0.1)",
+    grad:"linear-gradient(90deg,#00D2BE,#8B5CF6)",
+    glow:"rgba(0,210,190,0.5)",
+    projects:["Burnout Sentinel","TrapEye"],
+  },
+  {
+    name:"Node.js", devicon:"devicon-nodejs-plain colored",
+    cat:"backend", pct:75, rarity:"rare",
+    ac:"#539E43", aci:"rgba(83,158,67,0.1)",
+    grad:"linear-gradient(90deg,#539E43,#00D2BE)",
+    glow:"rgba(83,158,67,0.5)",
+    projects:["Portfolio","PostPehchaan"],
+  },
+  {
+    name:"Tailwind", devicon:"devicon-tailwindcss-plain colored",
+    cat:"frontend", pct:82, rarity:"rare",
+    ac:"#38BDF8", aci:"rgba(56,189,248,0.1)",
+    grad:"linear-gradient(90deg,#38BDF8,#8B5CF6)",
+    glow:"rgba(56,189,248,0.5)",
+    projects:["Portfolio","What If Wizard"],
+  },
+  {
+    name:"Git", devicon:"devicon-git-plain colored",
+    cat:"tools", pct:88, rarity:"rare",
+    ac:"#F05032", aci:"rgba(240,80,50,0.1)",
+    grad:"linear-gradient(90deg,#F05032,#FF6B35)",
+    glow:"rgba(240,80,50,0.5)",
+    projects:["All Projects"],
+  },
+  {
+    name:"Scikit-learn", devicon:"devicon-scikitlearn-plain colored",
+    cat:"ai", pct:68, rarity:"common",
+    ac:"rgba(255,255,255,0.35)", aci:"rgba(255,255,255,0.05)",
+    grad:"linear-gradient(90deg,rgba(255,255,255,0.3),rgba(255,255,255,0.15))",
+    glow:"rgba(255,255,255,0.2)",
+    projects:["TrapEye","Burnout Sentinel"],
+  },
+  {
+    name:"Pandas", devicon:"devicon-pandas-plain colored",
+    cat:"data", pct:70, rarity:"common",
+    ac:"rgba(255,255,255,0.35)", aci:"rgba(255,255,255,0.05)",
+    grad:"linear-gradient(90deg,rgba(255,255,255,0.25),rgba(255,255,255,0.1))",
+    glow:"rgba(255,255,255,0.2)",
+    projects:["Burnout Sentinel","EcoPulse"],
+  },
+  {
+    name:"PostgreSQL", devicon:"devicon-postgresql-plain colored",
+    cat:"data", pct:65, rarity:"common",
+    ac:"rgba(255,255,255,0.35)", aci:"rgba(255,255,255,0.05)",
+    grad:"linear-gradient(90deg,rgba(255,255,255,0.25),rgba(255,255,255,0.1))",
+    glow:"rgba(255,255,255,0.2)",
+    projects:["PostPehchaan"],
+  },
+  {
+    name:"C / C++", devicon:"devicon-cplusplus-plain colored",
+    cat:"language", pct:65, rarity:"common",
+    ac:"rgba(255,255,255,0.35)", aci:"rgba(255,255,255,0.05)",
+    grad:"linear-gradient(90deg,rgba(255,255,255,0.2),rgba(255,255,255,0.1))",
+    glow:"rgba(255,255,255,0.2)",
+    projects:["Systems coursework"],
+  },
+];
+
+const CATS = [
+  {id:"all",l:"All"},
+  {id:"ai",l:"AI/ML"},
+  {id:"frontend",l:"Frontend"},
+  {id:"backend",l:"Backend"},
+  {id:"language",l:"Languages"},
+  {id:"data",l:"Data"},
+  {id:"tools",l:"Tools"},
+];
+
+const RARITY_META = {
+  legendary: { label:"Legendary", bg:"rgba(255,215,0,0.12)", color:"#FFD700", border:"rgba(255,215,0,0.35)" },
+  epic:      { label:"Epic",      bg:"rgba(139,92,246,0.12)", color:"#8B5CF6", border:"rgba(139,92,246,0.35)" },
+  rare:      { label:"Rare",      bg:"rgba(0,210,190,0.1)",   color:"#00D2BE", border:"rgba(0,210,190,0.3)" },
+  common:    { label:"Common",    bg:"rgba(255,255,255,0.05)",color:"rgba(255,255,255,0.3)", border:"rgba(255,255,255,0.12)" },
+};
+
+let activeCat = "all";
+
+function renderFilters() {
+  document.getElementById('filterRow').innerHTML = CATS.map(c =>
+    `<button class="ftab${c.id===activeCat?' on':''}" onclick="setcat('${c.id}')">${c.l}</button>`
+  ).join('');
+}
+
+function renderGrid() {
+  const filtered = activeCat === 'all' ? TECH : TECH.filter(t => t.cat === activeCat);
+  document.getElementById('techGrid').innerHTML = filtered.map((t,i) => {
+    const r = RARITY_META[t.rarity];
+    return `
+    <div class="tcard${t.rarity==='legendary'?' legendary-pulse':''}"
+      style="--ac:${t.ac};--ac-i:${t.aci};--glow:${t.glow};--pct:${t.pct}%;animation-delay:${i*40}ms"
+      onmouseenter="this.style.borderColor='${t.ac}55';this.style.background='${t.aci}'"
+      onmouseleave="this.style.borderColor='rgba(255,255,255,0.07)';this.style.background='#111120'">
+      <div class="tcard::before" ></div>
+      <style>.tcard:nth-child(${i+1})::before{background:${t.grad}}</style>
+      <div class="rbadge" style="background:${r.bg};color:${r.color};border:0.5px solid ${r.border}">${r.label}</div>
+      <div class="icon-wrap" style="background:${t.aci};border:0.5px solid ${t.ac}22">
+        <div class="icon-ring" style="--ac:${t.ac};--ac-i:${t.aci}"></div>
+        <div class="orbit" style="--ac:${t.ac}"></div>
+        <i class="${t.devicon}" style="font-size:30px;--glow:${t.glow}"></i>
+      </div>
+      <div class="tname">${t.name}</div>
+      <div class="tcat">${t.cat}</div>
+      <div class="bar-wrap"><div class="bar-fill" style="background:${t.grad}"></div></div>
+      <div class="pct-row"><span>MASTERY</span><span class="pct-val">${t.pct}%</span></div>
+      <div class="proj-reveal">
+        <div class="proj-inner">
+          <div class="proj-label">Used in:</div>
+          ${t.projects.map(p=>`<div class="proj-item">→ ${p}</div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Fix the ::before gradient per card
+  document.querySelectorAll('.tcard').forEach((card,i) => {
+    const t = filtered[i];
+    if (!t) return;
+    card.addEventListener('mouseenter', () => {
+      card.style.setProperty('--before-bg', t.grad);
+    });
+    // inject a proper ::before via direct style tag per card
+    const id = `tc-${i}`;
+    card.id = id;
+    let existing = document.getElementById(`style-${id}`);
+    if (!existing) {
+      const s = document.createElement('style');
+      s.id = `style-${id}`;
+      s.textContent = `#${id}::before { background: ${t.grad} !important; }`;
+      document.head.appendChild(s);
+    }
+  });
+}
+
+function setcat(id) { activeCat = id; renderFilters(); renderGrid(); }
+
+renderFilters();
+renderGrid();
+</script>
