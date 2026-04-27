@@ -634,7 +634,12 @@ export default function About() {
               display:               "grid",
               gridTemplateColumns:   "repeat(auto-fill, minmax(140px,1fr))",
               gap:                   "12px",
-            }}>
+              maxHeight:             "500px",
+              overflowY:             "auto",
+              paddingRight:          "8px",
+              paddingBottom:         "120px", // Gives space for the hover tooltip on the last row
+              alignContent:          "start",
+            }} className="custom-scrollbar">
               <AnimatePresence mode="popLayout">
                 {filtered.map((tech, i) => (
                   <TechCard key={tech.id} tech={tech} visible={inView} delay={i * 45 + 500} />
