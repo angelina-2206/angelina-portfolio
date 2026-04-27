@@ -124,6 +124,22 @@ const TECH = [
     glow: "rgba(84,197,248,0.5)",
     projects: ["Mobile App Prototypes"],
   },
+  {
+    id: "mysql", name: "MySQL", devicon: "devicon-mysql-plain colored", cat: "data",
+    mastery: 72, rarity: "common",
+    color: "#4479A1", icon_bg: "rgba(68,121,161,0.1)",
+    grad: "linear-gradient(90deg,#4479A1,#00D2BE)",
+    glow: "rgba(68,121,161,0.5)",
+    projects: ["Coursework", "PostPehchaan"],
+  },
+  {
+    id: "r", name: "R", devicon: "devicon-r-plain colored", cat: "data",
+    mastery: 65, rarity: "common",
+    color: "#276DC3", icon_bg: "rgba(39,109,195,0.1)",
+    grad: "linear-gradient(90deg,#276DC3,#165CA8)",
+    glow: "rgba(39,109,195,0.5)",
+    projects: ["Data Analysis Coursework"],
+  },
 ]
 
 const CATS = [
