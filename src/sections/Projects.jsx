@@ -211,7 +211,7 @@ export default function Projects() {
       `}</style>
 
       {/* Ghost background word */}
-      <div style={{
+      <div className="ghost-text-bg" style={{
         position: 'absolute', top: '50%', left: '-1.5rem',
         transform: 'translateY(-50%)',
         fontSize: 'clamp(6rem,20vw,16rem)', fontWeight: 900,
@@ -238,7 +238,7 @@ export default function Projects() {
             These items are formed within<br />the experiences themselves.
           </p>
         </div>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 13, letterSpacing: '0.08em', lineHeight: 1.6, color: 'rgba(240,238,246,0.3)', textAlign: 'right', maxWidth: 220 }}>
+        <p className="hide-mobile" style={{ fontFamily: 'var(--font-mono)', fontSize: 13, letterSpacing: '0.08em', lineHeight: 1.6, color: 'rgba(240,238,246,0.3)', textAlign: 'right', maxWidth: 220 }}>
           Each originates on site. Shaped<br />by logic, process, and purpose.
         </p>
       </div>

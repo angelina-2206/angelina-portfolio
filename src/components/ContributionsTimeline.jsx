@@ -84,7 +84,7 @@ export default function ContributionsTimeline() {
       `}</style>
 
       {/* Ghost background text */}
-      <div style={{
+      <div className="ghost-text-bg" style={{
         position: 'absolute', top: '50%', left: '-1rem',
         transform: 'translateY(-50%)',
         fontSize: 'clamp(5rem,18vw,13rem)', fontWeight: 900,

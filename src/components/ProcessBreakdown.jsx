@@ -83,7 +83,7 @@ export default function ProcessBreakdown() {
       `}</style>
 
       {/* Ghost background word */}
-      <div style={{
+      <div className="ghost-text-bg" style={{
         position: 'absolute', top: '50%', right: '-2rem',
         transform: 'translateY(-50%)',
         fontSize: 'clamp(5rem,18vw,14rem)', fontWeight: 900,
@@ -117,7 +117,7 @@ export default function ProcessBreakdown() {
         </div>
 
         {/* Two-column layout */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 40, alignItems: 'start' }}>
+        <div className="pb-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 40, alignItems: 'start' }}>
 
           {/* LEFT: Project list */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>

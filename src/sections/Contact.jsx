@@ -536,7 +536,7 @@ export default function Contact() {
         padding: '120px 40px 60px',
       }}
     >
-      <div className="cta-watermark">CONNECT</div>
+      <div className="cta-watermark ghost-text-bg">CONNECT</div>
       <div className="cta-ambient-glow" />
 
       <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '900px', textAlign: 'center' }}>
@@ -651,7 +651,7 @@ export default function Contact() {
         .cta-headline-wrap { margin-bottom: 28px; }
         .cta-headline-line1, .cta-headline-line2 {
           font-family: var(--font-display);
-          font-size: clamp(2rem, 5.5vw, 4rem);
+          font-size: clamp(1.6rem, 6vw, 4rem);
           font-weight: 700; letter-spacing: -0.02em;
           line-height: 1.1; color: var(--color-text-primary); margin: 0;
         }

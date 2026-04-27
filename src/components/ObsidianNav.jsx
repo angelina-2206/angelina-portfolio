@@ -65,7 +65,7 @@ export default function ObsidianNav({ currentSection, onMenuToggle }) {
 
         <motion.a 
           href="#contact" 
-          className="pill-btn h-btn"
+          className="pill-btn h-btn hide-mobile"
           onMouseEnter={playSoftClick}
           whileHover={{ 
             scale: 1.05,

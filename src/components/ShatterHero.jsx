@@ -368,7 +368,8 @@ export default function ShatterHero({ subtitle = "ANGELINA CHATTERJEE" }) {
                 display: 'flex',
                 justifyContent: 'center',
                 flexWrap: 'wrap',
-                gap: '0.05em',
+                gap: '0',
+                padding: '0 10px',
                 color: "#ffffff"
               }}
             >
@@ -408,12 +409,15 @@ export default function ShatterHero({ subtitle = "ANGELINA CHATTERJEE" }) {
             }}
             style={{
               fontFamily: "var(--font-mono, 'Space Mono', monospace)",
-              fontSize: 'clamp(0.55rem, 1vw, 0.8rem)',
+              fontSize: 'clamp(0.55rem, 2vw, 0.8rem)',
               color: "#ffffff",
-              letterSpacing: "0.6em",
+              letterSpacing: "clamp(0.1em, 0.5vw, 0.6em)",
               textTransform: "uppercase",
               margin: "-0.5rem 0 0",
               fontWeight: 400,
+              textAlign: "center",
+              padding: "0 20px",
+              lineHeight: 1.5,
             }}
           >
             Full Stack Developer • CS Student • Still Debugging Life

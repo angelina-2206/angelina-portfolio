@@ -269,7 +269,7 @@ export default function Achievements() {
       }}
     >
       {/* ── Giant Background Watermark ── */}
-      <motion.div className="ach-watermark" style={{ x: bgTextX }}>
+      <motion.div className="ach-watermark ghost-text-bg" style={{ x: bgTextX }}>
         ENGINEERING METRICS
       </motion.div>
 

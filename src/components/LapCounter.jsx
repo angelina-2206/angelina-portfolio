@@ -60,6 +60,7 @@ export default function LapCounter() {
 
   return (
     <div
+      className="lap-counter-wrapper"
       style={{
         position: 'fixed',
         bottom: '28px',
