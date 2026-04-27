@@ -1,47 +1,147 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'framer-motion'
 
-/* ── Persona Mode Data ──────────────────────────────────────── */
-const MODES = [
+const EASE_OUT = [0.16, 1, 0.3, 1]
+
+const TECH = [
   {
-    key: 'builder',
-    label: 'BUILDER',
-    quote: `I turn ideas into real, working systems.\nFrom concept to deployment, I focus on execution.`,
-    icon: '◈',
-    watermark: 'BUILD',
+    id: "py", name: "Python", icon: "🐍", cat: "language",
+    mastery: 95, rarity: "legendary",
+    color: "#FFD700", grad: "linear-gradient(90deg,#FFD700,#FF6B35)",
+    projects: ["Burnout Sentinel", "TrapEye", "EcoPulse"],
   },
   {
-    key: 'debugger',
-    label: 'DEBUGGER',
-    quote: `I break things down, trace problems, and fix what others overlook.\nEfficiency starts with understanding.`,
-    icon: '⏣',
-    watermark: 'DEBUG',
+    id: "genai", name: "Generative AI", icon: "🤖", cat: "ai",
+    mastery: 90, rarity: "legendary",
+    color: "#FFD700", grad: "linear-gradient(90deg,#FFD700,#8B5CF6)",
+    projects: ["What If Wizard", "NyayaSathi", "EcoPulse"],
   },
   {
-    key: 'designer',
-    label: 'DESIGNER',
-    quote: `I care about how things feel and function.\nClean interfaces, intuitive flows, and thoughtful UX.`,
-    icon: '✦',
-    watermark: 'DESIGN',
+    id: "react", name: "React", icon: "⚛️", cat: "frontend",
+    mastery: 85, rarity: "epic",
+    color: "#8B5CF6", grad: "linear-gradient(90deg,#8B5CF6,#C4B5FD)",
+    projects: ["Portfolio", "PostPehchaan", "What If Wizard"],
   },
   {
-    key: 'system-thinker',
-    label: 'SYSTEM THINKER',
-    quote: `I think in systems, not just features.\nScalability, structure, and long-term impact matter.`,
-    icon: '⬡',
-    watermark: 'SYSTEM',
+    id: "llm", name: "LLMs / NLP", icon: "🧠", cat: "ai",
+    mastery: 82, rarity: "epic",
+    color: "#8B5CF6", grad: "linear-gradient(90deg,#8B5CF6,#00D2BE)",
+    projects: ["Burnout Sentinel", "NyayaSathi", "What If Wizard"],
+  },
+  {
+    id: "js", name: "JavaScript", icon: "🌐", cat: "language",
+    mastery: 80, rarity: "epic",
+    color: "#8B5CF6", grad: "linear-gradient(90deg,#F7DF1E,#8B5CF6)",
+    projects: ["TrapEye", "Portfolio", "PostPehchaan"],
+  },
+  {
+    id: "fastapi", name: "FastAPI", icon: "⚡", cat: "backend",
+    mastery: 78, rarity: "rare",
+    color: "#00D2BE", grad: "linear-gradient(90deg,#00D2BE,#8B5CF6)",
+    projects: ["Burnout Sentinel", "TrapEye", "EcoPulse"],
+  },
+  {
+    id: "node", name: "Node.js", icon: "🟢", cat: "backend",
+    mastery: 75, rarity: "rare",
+    color: "#00D2BE", grad: "linear-gradient(90deg,#00D2BE,#2ECC71)",
+    projects: ["Portfolio", "PostPehchaan"],
+  },
+  {
+    id: "tailwind", name: "Tailwind CSS", icon: "🎨", cat: "frontend",
+    mastery: 82, rarity: "rare",
+    color: "#00D2BE", grad: "linear-gradient(90deg,#38BDF8,#8B5CF6)",
+    projects: ["Portfolio", "What If Wizard", "PostPehchaan"],
+  },
+  {
+    id: "sql", name: "SQL / Pandas", icon: "🗃️", cat: "data",
+    mastery: 70, rarity: "common",
+    color: "rgba(255,255,255,0.4)",
+    grad: "linear-gradient(90deg,rgba(255,255,255,0.3),rgba(255,255,255,0.15))",
+    projects: ["Burnout Sentinel", "EcoPulse"],
+  },
+  {
+    id: "sklearn", name: "Scikit-learn", icon: "📊", cat: "ai",
+    mastery: 68, rarity: "common",
+    color: "rgba(255,255,255,0.4)",
+    grad: "linear-gradient(90deg,rgba(255,255,255,0.25),rgba(255,255,255,0.1))",
+    projects: ["TrapEye", "Burnout Sentinel"],
+  },
+  {
+    id: "git", name: "Git / GitHub", icon: "🔗", cat: "tools",
+    mastery: 88, rarity: "rare",
+    color: "#00D2BE", grad: "linear-gradient(90deg,#FF6B35,#00D2BE)",
+    projects: ["All Projects"],
+  },
+  {
+    id: "c", name: "C / C++", icon: "⚙️", cat: "language",
+    mastery: 65, rarity: "common",
+    color: "rgba(255,255,255,0.4)",
+    grad: "linear-gradient(90deg,rgba(255,255,255,0.2),rgba(255,255,255,0.1))",
+    projects: ["Systems coursework"],
   },
 ]
 
-/* ── Easing presets ──────────────────────────────────────────── */
-const EASE_OUT = [0.16, 1, 0.3, 1]
+const CATS = [
+  { id: "all",      label: "All"       },
+  { id: "ai",       label: "AI / ML"   },
+  { id: "frontend", label: "Frontend"  },
+  { id: "backend",  label: "Backend"   },
+  { id: "language", label: "Languages" },
+  { id: "data",     label: "Data"      },
+  { id: "tools",    label: "Tools"     },
+]
+
+const RARITY = {
+  legendary: { label: "Legendary", bg: "rgba(255,215,0,0.12)",  color: "#FFD700",              border: "rgba(255,215,0,0.35)"  },
+  epic:      { label: "Epic",      bg: "rgba(139,92,246,0.12)", color: "#8B5CF6",              border: "rgba(139,92,246,0.35)" },
+  rare:      { label: "Rare",      bg: "rgba(0,210,190,0.10)",  color: "#00D2BE",              border: "rgba(0,210,190,0.3)"   },
+  common:    { label: "Common",    bg: "rgba(255,255,255,0.05)",color: "rgba(255,255,255,0.3)",border: "rgba(255,255,255,0.12)" },
+}
+
+/* ── Hooks ──────────────────────────────────────────────────── */
+
+function useScramble(text, active) {
+  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!<>-[]{}—+*?#∎·"
+  const [display, setDisplay] = useState(() => text.replace(/[^\n ]/g, "█"))
+  const rafRef = useRef(null)
+
+  useEffect(() => {
+    if (!active) return
+    let frame = 0
+    const lines = text.split("\n")
+    const flat  = text.replace("\n", "")
+    const total = flat.length * 3 + 20
+
+    const tick = () => {
+      let fi = 0
+      const result = lines.map(line => {
+        let out = ""
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i]
+          if (ch === " ") { out += " "; fi++; continue; }
+          if (frame > fi * 3 + 20) out += ch
+          else if (frame > fi * 2)  out += CHARS[Math.floor(Math.random() * CHARS.length)]
+          else                        out += "█"
+          fi++
+        }
+        return out
+      })
+      setDisplay(result.join("\n"))
+      frame++
+      if (frame < total) rafRef.current = requestAnimationFrame(tick)
+    }
+
+    const timer = setTimeout(() => { rafRef.current = requestAnimationFrame(tick) }, 300)
+    return () => { clearTimeout(timer); cancelAnimationFrame(rafRef.current) }
+  }, [active, text])
+
+  return display
+}
 
 /* ── Stagger text component ─────────────────────────────────── */
 function StaggerLines({ children, delay = 0, className = '', highlightWords = [] }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-60px' })
-
-  // Split by newline, then render each line
   const lines = typeof children === 'string' ? children.split('\n') : [children]
 
   return (
@@ -74,58 +174,124 @@ function StaggerLines({ children, delay = 0, className = '', highlightWords = []
   )
 }
 
-/* ── Auto-cycling hook ──────────────────────────────────────── */
-function useAutoCycle(length, intervalMs = 5000) {
-  const [index, setIndex] = useState(0)
-  const [direction, setDirection] = useState(1)
-  const timerRef = useRef(null)
+/* ── Tech Card Component ────────────────────────────────────── */
+function TechCard({ tech, visible, delay }) {
+  const [hovered, setHovered] = useState(false)
+  const r = RARITY[tech.rarity]
 
-  const resetTimer = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current)
-    timerRef.current = setInterval(() => {
-      setDirection(1)
-      setIndex((prev) => (prev + 1) % length)
-    }, intervalMs)
-  }, [length, intervalMs])
+  return (
+    <motion.div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      initial={{ opacity: 0, y: 20, scale: 0.96 }}
+      animate={visible ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.6, delay: delay * 0.001, ease: EASE_OUT }}
+      style={{
+        background:  hovered ? `${tech.color}0E` : "rgba(255,255,255,0.02)",
+        border:      `1px solid ${hovered ? tech.color + "55" : "rgba(255,255,255,0.07)"}`,
+        borderRadius: "12px",
+        padding:     "1rem",
+        cursor:      "none",
+        position:    "relative",
+        overflow:    "hidden",
+        boxShadow:   hovered ? `0 12px 32px ${tech.color}18` : "none",
+        backdropFilter: "blur(10px)",
+      }}
+      whileHover={{ y: -5, scale: 1.02 }}
+      className="interactive-zone"
+    >
+      {/* Top accent bar */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, height: "2px",
+        background: tech.grad,
+        opacity:    hovered ? 1 : 0,
+        transition: "opacity 0.28s",
+      }} />
 
-  useEffect(() => {
-    resetTimer()
-    return () => clearInterval(timerRef.current)
-  }, [resetTimer])
+      {/* Rarity badge */}
+      <div style={{
+        position:    "absolute", top: "0.6rem", right: "0.6rem",
+        fontSize:    "0.45rem", padding: "2px 6px", borderRadius: "100px",
+        background:  r.bg, color: r.color, border: `1px solid ${r.border}`,
+        fontFamily:  "var(--font-mono)", letterSpacing: "0.1em",
+        textTransform: "uppercase", fontWeight: 600,
+      }}>{r.label}</div>
 
-  const goNext = () => {
-    setDirection(1)
-    setIndex((prev) => (prev + 1) % length)
-    resetTimer()
-  }
+      {/* Icon */}
+      <div style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>{tech.icon}</div>
 
-  const goPrev = () => {
-    setDirection(-1)
-    setIndex((prev) => (prev - 1 + length) % length)
-    resetTimer()
-  }
+      {/* Name */}
+      <div style={{
+        fontSize:      "0.85rem", fontWeight: 700,
+        color:         hovered ? tech.color : "var(--color-text-primary)",
+        letterSpacing: "-0.01em", marginBottom: "0.2rem",
+        transition:    "color 0.28s",
+        fontFamily:    "var(--font-display)",
+      }}>{tech.name}</div>
 
-  return { index, direction, goNext, goPrev }
+      {/* Category */}
+      <div style={{
+        fontFamily:    "var(--font-mono)", fontSize: "0.5rem",
+        color:         "var(--color-text-secondary)", opacity: 0.6, letterSpacing: "0.08em",
+        textTransform: "uppercase", marginBottom: "0.8rem",
+      }}>{tech.cat}</div>
+
+      {/* XP bar */}
+      <div style={{ height: "3px", background: "rgba(255,255,255,0.07)", borderRadius: "2px", marginBottom: "4px", overflow: "hidden" }}>
+        <div style={{
+          height:     "100%",
+          background: tech.grad,
+          width:      hovered ? `${tech.mastery}%` : "0%",
+          borderRadius: "2px",
+          transition: "width 0.65s cubic-bezier(0.16,1,0.3,1)",
+        }} />
+      </div>
+      <div style={{
+        display: "flex", justifyContent: "space-between",
+        fontFamily: "var(--font-mono)", fontSize: "0.5rem",
+        color: "var(--color-text-secondary)", opacity: 0.5, letterSpacing: "0.05em",
+      }}>
+        <span>MASTERY</span>
+        <span style={{ color: hovered ? tech.color : "inherit", transition: "color 0.28s" }}>
+          {tech.mastery}%
+        </span>
+      </div>
+
+      {/* Projects tooltip */}
+      <div style={{
+        maxHeight: hovered ? "120px" : "0px",
+        overflow:  "hidden",
+        transition: "max-height 0.35s cubic-bezier(0.16,1,0.3,1)",
+      }}>
+        <div style={{ marginTop: "0.8rem", paddingTop: "0.6rem", borderTop: `1px solid ${tech.color}22` }}>
+          <div style={{
+            fontFamily: "var(--font-mono)", fontSize: "0.5rem",
+            color: tech.color, letterSpacing: "0.1em",
+            textTransform: "uppercase", marginBottom: "6px",
+          }}>Used in:</div>
+          {tech.projects.map((p, i) => (
+            <div key={i} style={{
+              fontSize: "0.6rem", color: "var(--color-text-secondary)", opacity: 0.8,
+              fontFamily: "var(--font-mono)", lineHeight: 1.7,
+            }}>→ {p}</div>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )
 }
 
-/* ── Main About / The Maker Section ─────────────────────────── */
+/* ── Main About Section ─────────────────────────────────────── */
 export default function About() {
   const sectionRef = useRef(null)
-  const headlineRef = useRef(null)
-  const headlineInView = useInView(headlineRef, { once: true, margin: '-80px' })
-  const { index: modeIndex, direction, goNext, goPrev } = useAutoCycle(MODES.length, 6000)
-  const activeMode = MODES[modeIndex]
+  const inView = useInView(sectionRef, { once: true, margin: '-100px' })
+  
+  const [activeCat, setActiveCat] = useState("all")
+  const headline = useScramble("ENGINEERED,\nNOT LUCK", inView)
 
-  const [headlineVariation, setHeadlineVariation] = useState(false)
-
-  // Subtle headline text variation effect
-  useEffect(() => {
-    if (!headlineInView) return
-    const timer = setInterval(() => {
-      setHeadlineVariation(prev => !prev)
-    }, 4500)
-    return () => clearInterval(timer)
-  }, [headlineInView])
+  const filtered  = activeCat === "all" ? TECH : TECH.filter(t => t.cat === activeCat)
+  const avgMastery = Math.round(TECH.reduce((s, t) => s + t.mastery, 0) / TECH.length)
+  const totalXP    = TECH.reduce((s, t) => s + Math.round(t.mastery * 8.47), 0)
 
   /* Parallax watermark */
   const { scrollYProgress } = useScroll({
@@ -133,25 +299,6 @@ export default function About() {
     offset: ['start end', 'end start'],
   })
   const watermarkX = useTransform(scrollYProgress, [0, 1], ['5%', '-25%'])
-
-  /* Mode card swipe variants */
-  const cardContentVariants = {
-    enter: (dir) => ({
-      opacity: 0,
-      y: dir > 0 ? 30 : -30,
-      filter: 'blur(10px)',
-    }),
-    center: {
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
-    },
-    exit: (dir) => ({
-      opacity: 0,
-      y: dir > 0 ? -30 : 30,
-      filter: 'blur(10px)',
-    }),
-  }
 
   return (
     <section
@@ -165,20 +312,16 @@ export default function About() {
         padding: '160px 0 140px',
       }}
     >
-      {/* ── Giant Background Watermark (Dynamic) ── */}
-      <AnimatePresence mode="wait">
-        <motion.div 
-          key={activeMode.watermark}
-          className="about-watermark" 
-          style={{ x: watermarkX }}
-          initial={{ opacity: 0, y: '-45%' }}
-          animate={{ opacity: 1, y: '-50%' }}
-          exit={{ opacity: 0, y: '-55%' }}
-          transition={{ duration: 1.2, ease: EASE_OUT }}
-        >
-          {activeMode.watermark}
-        </motion.div>
-      </AnimatePresence>
+      {/* ── Giant Background Watermark (Static) ── */}
+      <motion.div 
+        className="about-watermark" 
+        style={{ x: watermarkX }}
+        initial={{ opacity: 0, y: '-45%' }}
+        animate={{ opacity: 1, y: '-50%' }}
+        transition={{ duration: 1.2, ease: EASE_OUT }}
+      >
+        SYSTEM
+      </motion.div>
 
       {/* ── Ambient glow ── */}
       <div className="about-ambient-glow" />
@@ -194,7 +337,7 @@ export default function About() {
           padding: '0 48px',
         }}
       >
-        {/* ── 3-Column Grid ── */}
+        {/* ── 2-Column Grid ── */}
         <div className="about-grid">
           {/* ═══ LEFT COLUMN ═══ */}
           <div className="about-col-left">
@@ -202,83 +345,65 @@ export default function About() {
             <motion.div
               className="about-label"
               initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.8, ease: EASE_OUT }}
             >
               <span className="about-label-line" />
               [ 001 — THE MAKER ]
             </motion.div>
 
-            {/* Headline with slide and blur effect */}
-            <div ref={headlineRef} className="about-headline">
-              <motion.span
-                className="about-headline-line"
-                initial={{ opacity: 0, filter: 'blur(20px)', y: 20 }}
-                animate={headlineInView ? { opacity: 1, filter: 'blur(0px)', y: 0 } : {}}
-                transition={{ duration: 1.2, ease: EASE_OUT }}
-              >
-                ENGINEERED,
-              </motion.span>
-              <div style={{ position: 'relative', overflow: 'hidden' }}>
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={headlineVariation ? 'alt' : 'main'}
-                    className="about-headline-line about-headline-accent"
-                    initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, y: -40, filter: 'blur(10px)' }}
-                    transition={{ duration: 0.8, ease: EASE_OUT }}
-                  >
-                    {headlineVariation ? 'NOT LUCK' : 'NOT ACCIDENTAL'}
-                  </motion.span>
-                </AnimatePresence>
-              </div>
-            </div>
+            {/* Scrambled headline */}
+            <h2 className="about-headline">
+              {headline.split("\n").map((line, i) => (
+                <div key={i} className={i === 1 ? "about-headline-accent" : "about-headline-line"}>
+                  {line}
+                </div>
+              ))}
+            </h2>
 
             {/* Signature Identity Line */}
             <motion.p
               className="about-signature"
               initial={{ opacity: 0, y: 10 }}
-              animate={headlineInView ? { opacity: 0.6, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.5, ease: EASE_OUT }}
+              animate={inView ? { opacity: 0.6, y: 0 } : {}}
+              transition={{ duration: 1, delay: 0.4, ease: EASE_OUT }}
             >
-              I don’t chase trends. I build systems that last.
+              I don't chase trends. I build systems that last.
             </motion.p>
 
             {/* Divider */}
             <motion.div
               className="about-divider"
               initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.6, ease: EASE_OUT }}
+              animate={inView ? { scaleX: 1 } : {}}
+              transition={{ duration: 1, delay: 0.5, ease: EASE_OUT }}
             />
 
-            {/* Intro Text - Separated Hierarchically */}
-            <StaggerLines delay={0.7} className="about-intro" highlightWords={['systems', 'solve']}>
+            {/* Intro Text */}
+            <StaggerLines delay={0.6} className="about-intro" highlightWords={['systems', 'solve']}>
               {`I build systems that solve real problems.`}
             </StaggerLines>
 
-            <div style={{ height: '20px' }} />
+            <div style={{ height: '16px' }} />
 
-            <StaggerLines delay={0.9} className="about-body">
-              {`Full-stack developer & Computer Science Engineering student\nfocused on turning ideas into scalable engineering products.`}
+            <StaggerLines delay={0.7} className="about-body">
+              {`Full-stack developer & Computer Science Engineering student\nfocused on turning ideas into scalable engineering products\nthat work in real conditions — not just demos.`}
             </StaggerLines>
 
-            <div style={{ height: '20px' }} />
+            <div style={{ height: '16px' }} />
 
-            <StaggerLines delay={1.1} className="about-body about-body-emphasis">
+            <StaggerLines delay={0.8} className="about-body about-body-emphasis">
               {`I don't just write code —\nI design how things work.`}
             </StaggerLines>
+
+            <div style={{ height: '24px' }} />
 
             {/* Philosophy */}
             <motion.div
               className="about-philosophy"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 1.3, ease: EASE_OUT }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.9, delay: 0.9, ease: EASE_OUT }}
             >
               <span className="about-philosophy-bar" />
               <p>
@@ -286,160 +411,47 @@ export default function About() {
                 <em>"What's broken — and why hasn't it been fixed yet?"</em>
               </p>
             </motion.div>
-          </div>
 
-          {/* ═══ CENTER COLUMN — PERSONA CARD ═══ */}
-          <div className="about-col-center">
-            <motion.div
-              className="about-persona-card float-anim"
-              initial={{ opacity: 0, y: 60, scale: 0.92 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 1.2, delay: 0.4, ease: EASE_OUT }}
-              whileHover={{
-                boxShadow: '0 0 80px rgba(139, 92, 246, 0.25), 0 40px 100px rgba(0,0,0,0.6)',
-                y: -8,
-                scale: 1.02,
+            {/* Badges */}
+            <motion.div 
+              style={{
+                marginTop: "2rem",
+                display: "flex", flexWrap: "wrap", gap: "10px",
               }}
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 1, delay: 1.1 }}
             >
-              <div className="about-card-glow" />
-
-              <div className="about-card-header">
-                <div className="about-card-dots">
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <span className="about-card-sys">PERSONA.SYS</span>
-              </div>
-
-              {/* Mode Title with scale animation */}
-              <div className="about-mode-title">
-                <span className="about-mode-prefix">MODE:</span>
-                <AnimatePresence mode="wait" custom={direction}>
-                  <motion.span
-                    key={activeMode.key}
-                    className="about-mode-name"
-                    initial={{ opacity: 0, scale: 0.8, y: 10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.8, y: -10 }}
-                    transition={{ duration: 0.5, ease: EASE_OUT }}
-                  >
-                    {activeMode.label}
-                  </motion.span>
-                </AnimatePresence>
-              </div>
-
-              {/* Mode icon */}
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={activeMode.key + '-icon'}
-                  className="about-mode-icon"
-                  initial={{ opacity: 0, rotateY: 90 }}
-                  animate={{ opacity: 1, rotateY: 0 }}
-                  exit={{ opacity: 0, rotateY: -90 }}
-                  transition={{ duration: 0.6, ease: EASE_OUT }}
-                >
-                  {activeMode.icon}
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Mode quote with smoother slide transitions */}
-              <div className="about-mode-quote-wrapper">
-                <AnimatePresence mode="wait" custom={direction}>
-                  <motion.p
-                    key={activeMode.key + '-quote'}
-                    className="about-mode-quote"
-                    variants={cardContentVariants}
-                    custom={direction}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.6, ease: EASE_OUT }}
-                  >
-                    {activeMode.quote}
-                  </motion.p>
-                </AnimatePresence>
-              </div>
-
-              {/* Navigation */}
-              <div className="about-card-nav">
-                <motion.button
-                  className="about-card-arrow interactive-zone"
-                  onClick={goPrev}
-                  whileHover={{ scale: 1.2, backgroundColor: 'rgba(139, 92, 246, 0.2)' }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  ←
-                </motion.button>
-
-                <div className="about-card-progress">
-                  {MODES.map((_, i) => (
-                    <motion.span
-                      key={i}
-                      className={`about-progress-dot ${i === modeIndex ? 'active' : ''}`}
-                      animate={{
-                        width: i === modeIndex ? '20px' : '6px',
-                        backgroundColor: i === modeIndex ? '#A78BFA' : 'rgba(255,255,255,0.1)',
-                      }}
-                      transition={{ duration: 0.4 }}
-                    />
-                  ))}
-                </div>
-
-                <motion.button
-                  className="about-card-arrow interactive-zone"
-                  onClick={goNext}
-                  whileHover={{ scale: 1.2, backgroundColor: 'rgba(139, 92, 246, 0.2)' }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  →
-                </motion.button>
-              </div>
+              {[
+                { label: "GSSoC '26", color: "#00D2BE" },
+                { label: "SSoC '26",  color: "#00D2BE" },
+                { label: "WIOS · Technical Team", color: "var(--color-lavender)" },
+              ].map((badge, i) => (
+                <span key={i} style={{
+                  fontFamily:    "var(--font-mono)",
+                  fontSize:      "0.55rem", padding: "4px 12px", borderRadius: "100px",
+                  border:        `1px solid ${badge.color}40`,
+                  color:         badge.color,
+                  background:    `${badge.color}10`,
+                  letterSpacing: "0.1em", textTransform: "uppercase",
+                }}>{badge.label}</span>
+              ))}
             </motion.div>
-          </div>
 
-          {/* ═══ RIGHT COLUMN ═══ */}
-          <div className="about-col-right">
-            <StaggerLines delay={0.4} className="about-right-text">
-              {`I work at the intersection of\nlogic and product thinking —`}
-            </StaggerLines>
-
-            <StaggerLines delay={0.6} className="about-right-text">
-              {`where systems aren't just built,\nthey're designed to scale.`}
-            </StaggerLines>
-
-            <motion.div
-              className="about-right-divider"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.7, ease: EASE_OUT }}
-            />
-
-            <StaggerLines delay={0.8} className="about-right-text" highlightWords={['fast', 'ship']}>
-              {`I move fast, iterate faster,\nand ship things that actually work.`}
-            </StaggerLines>
-
-            <StaggerLines delay={1.0} className="about-right-text about-right-highlight">
-              {`Built across AI, full-stack systems,\nand real-world applications.`}
-            </StaggerLines>
-
-            <div style={{ height: '30px' }} />
+            <div style={{ height: '40px' }} />
 
             {/* ── Highlighted Status Card ── */}
             <motion.a
               href="#contact"
               className="about-cta-card interactive-zone"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 1.2, ease: EASE_OUT }}
               onClick={(e) => {
                 e.preventDefault()
                 document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
               }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               <div className="about-cta-glow-border" />
@@ -453,6 +465,178 @@ export default function About() {
               </p>
               <span className="about-cta-arrow">View Contact ↓</span>
             </motion.a>
+          </div>
+
+          {/* ═══ RIGHT COLUMN — TECH ARSENAL ═══ */}
+          <div className="about-col-right">
+            {/* Arsenal header row */}
+            <motion.div 
+              style={{
+                display:        "flex",
+                alignItems:     "flex-end",
+                justifyContent: "space-between",
+                marginBottom:   "1.5rem",
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.4, ease: EASE_OUT }}
+            >
+              <div>
+                <h3 style={{
+                  fontSize:      "clamp(2rem,3.5vw,2.5rem)",
+                  fontWeight:    900,
+                  color:         "var(--color-text-primary)",
+                  letterSpacing: "-0.03em",
+                  lineHeight:    0.9,
+                  marginBottom:  "0.5rem",
+                  fontFamily:    "var(--font-display)",
+                }}>
+                  TECH<br />
+                  <span style={{ color: "var(--color-lavender)" }}>ARSENAL.</span>
+                </h3>
+                <div style={{
+                  fontFamily:    "var(--font-mono)",
+                  fontSize:      "0.55rem",
+                  color:         "var(--color-text-secondary)",
+                  opacity:       0.6,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                }}>Hover to inspect · sorted by mastery</div>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <div style={{
+                  fontFamily:    "var(--font-mono)",
+                  fontSize:      "0.55rem",
+                  color:         "var(--color-lavender)",
+                  opacity:       0.8,
+                  letterSpacing: "0.1em",
+                  marginBottom:  "4px",
+                }}>TOTAL XP</div>
+                <div style={{
+                  fontSize:      "clamp(1.8rem,3.5vw,2.4rem)",
+                  fontWeight:    900,
+                  color:         "var(--color-lavender)",
+                  letterSpacing: "-0.04em",
+                  lineHeight:    1,
+                  fontFamily:    "var(--font-display)",
+                }}>{totalXP.toLocaleString()}</div>
+              </div>
+            </motion.div>
+
+            {/* Category filter tabs */}
+            <motion.div 
+              style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "1.5rem" }}
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.5 }}
+            >
+              {CATS.map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCat(cat.id)}
+                  style={{
+                    fontFamily:    "var(--font-mono)",
+                    fontSize:      "0.55rem",
+                    padding:       "6px 14px",
+                    borderRadius:  "100px",
+                    border:        activeCat === cat.id
+                      ? "1px solid rgba(139,92,246,0.55)"
+                      : "1px solid rgba(255,255,255,0.08)",
+                    background:    activeCat === cat.id
+                      ? "rgba(139,92,246,0.14)"
+                      : "transparent",
+                    color:         activeCat === cat.id
+                      ? "var(--color-lavender)"
+                      : "var(--color-text-secondary)",
+                    cursor:        "none",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    transition:    "all 0.2s",
+                  }}
+                  className="interactive-zone"
+                >{cat.label}</button>
+              ))}
+            </motion.div>
+
+            {/* Tech card grid */}
+            <div style={{
+              display:               "grid",
+              gridTemplateColumns:   "repeat(auto-fill, minmax(140px,1fr))",
+              gap:                   "12px",
+              maxHeight:             "500px",
+              overflowY:             "auto",
+              paddingRight:          "8px",
+            }} className="custom-scrollbar">
+              <AnimatePresence mode="popLayout">
+                {filtered.map((tech, i) => (
+                  <TechCard key={tech.id} tech={tech} visible={inView} delay={i * 45 + 500} />
+                ))}
+              </AnimatePresence>
+            </div>
+
+            {/* Arsenal Strength bar */}
+            <motion.div 
+              style={{
+                marginTop:    "1.5rem",
+                padding:      "1rem 1.2rem",
+                background:   "rgba(255,255,255,0.02)",
+                border:       "1px solid rgba(255,255,255,0.05)",
+                borderRadius: "12px",
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.8, ease: EASE_OUT }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                <span style={{
+                  fontFamily:    "var(--font-mono)",
+                  fontSize:      "0.55rem",
+                  color:         "var(--color-text-secondary)",
+                  opacity:       0.8,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                }}>Arsenal Strength</span>
+                <span style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize:   "0.55rem",
+                  color:      "var(--color-text-secondary)",
+                  opacity:    0.6,
+                }}>{avgMastery}% · Leveling up daily</span>
+              </div>
+              <div style={{ height: "4px", background: "rgba(255,255,255,0.07)", borderRadius: "2px", overflow: "hidden" }}>
+                <motion.div style={{
+                  height:     "100%",
+                  background: "linear-gradient(90deg, var(--color-lavender), #00D2BE, #FFD700)",
+                  borderRadius: "2px",
+                }}
+                initial={{ width: "0%" }}
+                animate={inView ? { width: `${avgMastery}%` } : {}}
+                transition={{ duration: 1.5, delay: 1, ease: EASE_OUT }}
+                />
+              </div>
+            </motion.div>
+
+            {/* Rarity legend */}
+            <motion.div 
+              style={{ display: "flex", gap: "16px", marginTop: "1rem", flexWrap: "wrap" }}
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.9 }}
+            >
+              {Object.entries(RARITY).map(([key, r]) => (
+                <div key={key} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: r.color }} />
+                  <span style={{
+                    fontFamily:    "var(--font-mono)",
+                    fontSize:      "0.5rem",
+                    color:         "var(--color-text-secondary)",
+                    opacity:       0.7,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.06em",
+                  }}>{r.label}</span>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </div>
@@ -494,8 +678,8 @@ export default function About() {
 
         .about-grid {
           display: grid;
-          grid-template-columns: 1.15fr 1fr 1fr;
-          gap: 50px;
+          grid-template-columns: 1fr 1.2fr;
+          gap: 60px;
           align-items: start;
         }
 
@@ -522,21 +706,20 @@ export default function About() {
           display: flex;
           flex-direction: column;
           margin-bottom: 12px;
-        }
-
-        .about-headline-line {
           font-family: var(--font-display);
           font-size: clamp(2.5rem, 4.2vw, 4rem);
           font-weight: 800;
           letter-spacing: -0.04em;
-          text-transform: uppercase;
           line-height: 1;
+          white-space: pre-wrap;
+        }
+
+        .about-headline-line {
           color: var(--color-text-primary);
         }
 
         .about-headline-accent {
           color: var(--color-lavender);
-          display: inline-block;
         }
 
         .about-signature {
@@ -576,141 +759,32 @@ export default function About() {
           font-style: italic;
         }
 
-        .float-anim {
-          animation: aboutFloat 8s ease-in-out infinite;
-        }
-
-        @keyframes aboutFloat {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-15px); }
-        }
-
-        .about-persona-card {
-          padding: 40px;
-          border-radius: 24px;
-          background: rgba(20, 10, 30, 0.4);
-          backdrop-filter: blur(40px);
-          border: 1px solid rgba(139, 92, 246, 0.15);
-          box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+        .about-philosophy {
           position: relative;
-          z-index: 5;
+          padding-left: 20px;
+        }
+        
+        .about-philosophy-bar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 2px;
+          background: var(--color-lavender);
+          opacity: 0.5;
         }
 
-        .about-card-header {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 40px;
-        }
-
-        .about-card-dots {
-          display: flex;
-          gap: 8px;
-        }
-
-        .about-card-dots span {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: rgba(139, 92, 246, 0.2);
-        }
-
-        .about-card-dots span:first-child { background: var(--color-primary); }
-
-        .about-card-sys {
-          font-family: var(--font-mono);
-          font-size: 0.55rem;
-          letter-spacing: 0.2em;
-          opacity: 0.3;
-        }
-
-        .about-mode-title {
-          display: flex;
-          gap: 12px;
-          align-items: baseline;
-          margin-bottom: 30px;
-        }
-
-        .about-mode-prefix {
+        .about-philosophy p {
           font-family: var(--font-mono);
           font-size: 0.7rem;
-          opacity: 0.4;
-        }
-
-        .about-mode-name {
-          font-family: var(--font-display);
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: var(--color-lavender);
-        }
-
-        .about-mode-icon {
-          font-size: 3.5rem;
-          text-align: center;
-          margin-bottom: 30px;
-          filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
-        }
-
-        .about-mode-quote {
-          font-size: 0.95rem;
-          line-height: 1.8;
-          color: rgba(255, 255, 255, 0.6);
-          min-height: 100px;
-        }
-
-        .about-card-nav {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding-top: 30px;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .about-card-arrow {
-          width: 45px;
-          height: 45px;
-          border-radius: 50%;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          background: transparent;
-          color: white;
-          cursor: none;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.3s;
-        }
-
-        .about-progress-dot {
-          height: 6px;
-          border-radius: 3px;
-          margin: 0 4px;
-        }
-
-        .about-col-right {
-          display: flex;
-          flex-direction: column;
-          gap: 32px;
-          padding-top: 60px;
-        }
-
-        .about-right-text {
-          font-family: var(--font-display);
-          font-size: 1rem;
           line-height: 1.8;
           color: var(--color-text-secondary);
-          margin-bottom: 0;
-          letter-spacing: 0.01em;
+          opacity: 0.8;
         }
-
-        .about-right-highlight {
+        
+        .about-philosophy em {
           color: var(--color-lavender);
-          opacity: 0.9;
-        }
-
-        .about-right-divider {
-          width: 40px;
-          height: 1px;
-          background: rgba(139, 92, 246, 0.3);
-          margin-bottom: 25px;
+          font-style: italic;
         }
 
         .about-cta-card {
@@ -739,6 +813,13 @@ export default function About() {
           50% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 15px rgba(52, 211, 153, 0.6); }
         }
 
+        .about-cta-status {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 20px;
+        }
+
         .about-cta-pill {
           font-family: var(--font-mono);
           font-size: 0.6rem;
@@ -753,20 +834,40 @@ export default function About() {
           line-height: 1.5;
           margin-bottom: 20px;
         }
+        
+        .about-cta-accent {
+          color: var(--color-lavender);
+        }
 
         .about-cta-arrow {
           font-family: var(--font-mono);
           font-size: 0.65rem;
           letter-spacing: 0.1em;
-          opacity: 0.4;
+          opacity: 0.6;
           text-transform: uppercase;
+          color: var(--color-lavender);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.02);
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(139, 92, 246, 0.3);
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(139, 92, 246, 0.5);
         }
 
         @media (max-width: 1024px) {
           .about-grid { grid-template-columns: 1fr; gap: 80px; }
-          .about-col-right { padding-top: 0; }
         }
       `}</style>
     </section>
   )
 }
+
