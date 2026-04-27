@@ -307,7 +307,7 @@ export default function Projects() {
 
               {/* Card body */}
               <div style={{ marginBottom: '1.5rem' }}>
-                <div style={{ fontSize: 'clamp(1.6rem,4vw,2.2rem)', fontWeight: 900, color: '#F0EEF6', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: '0.5rem' }}>
+                <div style={{ fontSize: 'clamp(1.4rem,4vw,2.2rem)', fontWeight: 900, color: '#F0EEF6', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '0.5rem', wordBreak: 'break-word' }}>
                   {p.title}
                 </div>
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.1em', opacity: 0.4, marginBottom: '1rem', textTransform: 'uppercase' }}>

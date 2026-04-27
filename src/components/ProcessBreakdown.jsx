@@ -207,9 +207,10 @@ export default function ProcessBreakdown() {
               <div style={{ marginBottom: '1.5rem' }}>
                 <div style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.8rem,4vw,2.6rem)',
+                  fontSize: 'clamp(1.4rem,4vw,2.6rem)',
                   fontWeight: 900, letterSpacing: '-0.04em',
-                  color: '#F0EEF6', lineHeight: 1, marginBottom: 6,
+                  color: '#F0EEF6', lineHeight: 1.1, marginBottom: 6,
+                  wordBreak: 'break-word'
                 }}>
                   {p.name}
                 </div>

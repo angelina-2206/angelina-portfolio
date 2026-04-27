@@ -317,7 +317,7 @@ export default function LoadingScreen({ children, onComplete }) {
           top: "50%", left: "clamp(1.5rem, 6vw, 5rem)",
           transform: "translateY(-55%)",
           fontFamily: "sans-serif",
-          fontSize: "clamp(3.5rem, 12vw, 11rem)",
+          fontSize: "clamp(2.2rem, 9vw, 11rem)",
           fontWeight: 900,
           color: "#ffffff",
           lineHeight: 0.9,

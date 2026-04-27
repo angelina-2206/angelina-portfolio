@@ -373,30 +373,37 @@ export default function ShatterHero({ subtitle = "ANGELINA CHATTERJEE" }) {
                 color: "#ffffff"
               }}
             >
-              {subtitle.split("").map((char, index) => (
-                <motion.span
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.5, y: 30 }}
-                  animate={{ 
-                    opacity: 1, 
-                    scale: 1,
-                    y: 0,
-                    transition: { duration: 0.8, delay: 0.6 + index * 0.08, ease: [0.34, 1.56, 0.64, 1] }
-                  }}
-                  whileHover={{ 
-                    y: -15,
-                    scale: 1.2,
-                    skewX: -10,
-                    color: '#ffffff',
-                    textShadow: '0 0 10px rgba(251, 191, 36, 1), 0 0 30px rgba(139, 92, 246, 0.8), 0 20px 40px rgba(0,0,0,0.6)',
-                    transition: { duration: 0.1, ease: "easeOut" }
-                  }}
-                  style={{
-                    display: 'inline-block',
-                  }}
-                >
-                  {char === " " ? "\u00A0" : char}
-                </motion.span>
+              {subtitle.split(" ").map((word, wIdx) => (
+                <span key={wIdx} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+                  {word.split("").map((char, index) => (
+                    <motion.span
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                      animate={{ 
+                        opacity: 1, 
+                        scale: 1,
+                        y: 0,
+                        transition: { duration: 0.8, delay: 0.6 + (wIdx * 10 + index) * 0.08, ease: [0.34, 1.56, 0.64, 1] }
+                      }}
+                      whileHover={{ 
+                        y: -15,
+                        scale: 1.2,
+                        skewX: -10,
+                        color: '#ffffff',
+                        textShadow: '0 0 10px rgba(251, 191, 36, 1), 0 0 30px rgba(139, 92, 246, 0.8), 0 20px 40px rgba(0,0,0,0.6)',
+                        transition: { duration: 0.1, ease: "easeOut" }
+                      }}
+                      style={{
+                        display: 'inline-block',
+                      }}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                  {wIdx !== subtitle.split(" ").length - 1 && (
+                    <span style={{ display: 'inline-block', width: '0.25em' }}>&nbsp;</span>
+                  )}
+                </span>
               ))}
             </h1>
           </motion.div>
