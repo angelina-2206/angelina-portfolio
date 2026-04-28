@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { SoundProvider } from './context/SoundContext'
-import LoadingScreen from './components/LoadingScreen'
+import InitializingPage from './components/InitializingPage'
 import CustomCursor from './components/CustomCursor'
 import ObsidianNav from './components/ObsidianNav'
 import MenuOverlay from './components/MenuOverlay'
-import Hero from './components/ShatterHero'
+import EnhancedHero from './components/EnhancedHero'
 import QuoteReveal from './sections/QuoteReveal'
 import About from './sections/About'
 import Projects from './sections/Projects'
@@ -98,29 +98,36 @@ export default function App() {
   return (
     <SoundProvider>
       <CustomCursor />
-      <LoadingScreen onComplete={() => setIsLoading(false)}>
-        <MenuOverlay 
-          isOpen={isMenuOpen} 
-          onClose={() => setIsMenuOpen(false)} 
-        />
-        <ObsidianNav 
-          currentSection={currentSection} 
-          onMenuToggle={() => setIsMenuOpen(true)} 
-        />
-        
-        <main>
-          <Hero />
-          <QuoteReveal />
-          <About />
-          <Projects />
-          <ProcessBreakdown />
-          <ContributionsTimeline />
-          <Achievements />
-          <Contact />
-        </main>
+      
+      {isLoading && (
+        <InitializingPage onComplete={() => setIsLoading(false)} />
+      )}
 
-        <LapCounter />
-      </LoadingScreen>
+      {!isLoading && (
+        <>
+          <MenuOverlay 
+            isOpen={isMenuOpen} 
+            onClose={() => setIsMenuOpen(false)} 
+          />
+          <ObsidianNav 
+            currentSection={currentSection} 
+            onMenuToggle={() => setIsMenuOpen(true)} 
+          />
+          
+          <main>
+            <EnhancedHero />
+            <QuoteReveal />
+            <About />
+            <Projects />
+            <ProcessBreakdown />
+            <ContributionsTimeline />
+            <Achievements />
+            <Contact />
+          </main>
+
+          <LapCounter />
+        </>
+      )}
     </SoundProvider>
   );
 }
