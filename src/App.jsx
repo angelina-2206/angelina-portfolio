@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react'
 import { SoundProvider } from './context/SoundContext'
-import InitializingPage from './components/InitializingPage'
-import CustomCursor from './components/CustomCursor'
-import ObsidianNav from './components/ObsidianNav'
-import MenuOverlay from './components/MenuOverlay'
-import EnhancedHero from './components/EnhancedHero'
-import QuoteReveal from './sections/QuoteReveal'
+import Loader from './components/Loader'
+import Cursor from './components/Cursor'
+import Nav from './components/Nav'
+import Menu from './components/Menu'
+import Hero from './components/Hero'
+import Quote from './sections/Quote'
 import About from './sections/About'
 import Projects from './sections/Projects'
-import ProcessBreakdown from './components/ProcessBreakdown'
-import ContributionsTimeline from './components/ContributionsTimeline'
+import Process from './components/Process'
+import Timeline from './components/Timeline'
 import Achievements from './sections/Achievements'
 import Contact from './sections/Contact'
-import LapCounter from './components/LapCounter'
+import Counter from './components/Counter'
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -97,35 +97,35 @@ export default function App() {
 
   return (
     <SoundProvider>
-      <CustomCursor />
+      <Cursor />
       
       {isLoading && (
-        <InitializingPage onComplete={() => setIsLoading(false)} />
+        <Loader onComplete={() => setIsLoading(false)} />
       )}
 
       {!isLoading && (
         <>
-          <MenuOverlay 
+          <Menu 
             isOpen={isMenuOpen} 
             onClose={() => setIsMenuOpen(false)} 
           />
-          <ObsidianNav 
+          <Nav 
             currentSection={currentSection} 
             onMenuToggle={() => setIsMenuOpen(true)} 
           />
           
           <main>
-            <EnhancedHero />
-            <QuoteReveal />
+            <Hero />
+            <Quote />
             <About />
             <Projects />
-            <ProcessBreakdown />
-            <ContributionsTimeline />
+            <Process />
+            <Timeline />
             <Achievements />
             <Contact />
           </main>
 
-          <LapCounter />
+          <Counter />
         </>
       )}
     </SoundProvider>
