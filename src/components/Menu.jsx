@@ -60,23 +60,7 @@ export default function MenuOverlay({ isOpen, onClose }) {
         willChange: 'transform'
       }}
     >
-      <button 
-        onClick={onClose}
-        style={{
-          position: 'absolute',
-          top: '40px',
-          right: '40px',
-          background: 'none',
-          border: 'none',
-          color: 'white',
-          fontSize: '1rem',
-          cursor: 'pointer',
-          fontFamily: 'var(--font-display)',
-          letterSpacing: '0.1em'
-        }}
-      >
-        CLOSE
-      </button>
+
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {links.map((link, i) => (
@@ -96,7 +80,7 @@ export default function MenuOverlay({ isOpen, onClose }) {
               letterSpacing: '-0.02em',
               textTransform: 'uppercase'
             }}
-            whileHover={{ x: 20, color: 'var(--accent-primary)' }}
+            whileHover={{ x: 20, color: 'var(--color-primary)' }}
           >
             {link.name}
           </motion.a>
@@ -115,10 +99,6 @@ export default function MenuOverlay({ isOpen, onClose }) {
         fontFamily: 'var(--font-body)'
       }}>
         <div>© 2026 angelina chatterjee</div>
-        <div style={{ display: 'flex', gap: '40px' }}>
-          <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>TWITTER</a>
-          <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>LINKEDIN</a>
-        </div>
       </div>
     </motion.div>
   )

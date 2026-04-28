@@ -2,19 +2,24 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSound } from '../context/SoundContext'
 
-export default function ObsidianNav({ currentSection, onMenuToggle }) {
+export default function ObsidianNav({ currentSection, onMenuToggle, isMenuOpen }) {
   const { playSoftClick } = useSound()
   const [theme, setTheme] = useState('nav-dark')
 
   useEffect(() => {
-    // Check if the current section has bg-light class to invert nav colors
+    // If menu is open, force dark theme for visibility
+    if (isMenuOpen) {
+      setTheme('nav-dark')
+      return
+    }
+
     const el = document.getElementById(currentSection)
     if (el && el.classList.contains('bg-light')) {
       setTheme('nav-light')
     } else {
       setTheme('nav-dark')
     }
-  }, [currentSection])
+  }, [currentSection, isMenuOpen])
 
   return (
     <nav className={`obs-nav ${theme}`}>
@@ -119,15 +124,40 @@ export default function ObsidianNav({ currentSection, onMenuToggle }) {
           onClick={onMenuToggle}
           style={{ 
             cursor: 'pointer',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            background: 'none',
+            border: 'none',
+            color: 'inherit',
+            minWidth: '80px',
+            justifyContent: 'flex-end'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--color-primary)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = 'inherit';
           }}
         >
            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-             <line x1="3" y1="12" x2="21" y2="12" />
-             <line x1="3" y1="6" x2="21" y2="6" />
-             <line x1="3" y1="18" x2="21" y2="18" />
+             {isMenuOpen ? (
+               <>
+                 <line x1="18" y1="6" x2="6" y2="18" />
+                 <line x1="6" y1="6" x2="18" y2="18" />
+               </>
+             ) : (
+               <>
+                 <line x1="3" y1="12" x2="21" y2="12" />
+                 <line x1="3" y1="6" x2="21" y2="6" />
+                 <line x1="3" y1="18" x2="21" y2="18" />
+               </>
+             )}
            </svg>
-           <span style={{ fontSize: '0.55rem' }}>SYSTEM</span>
+           <span style={{ fontSize: '0.55rem', fontWeight: 600, letterSpacing: '0.1em' }}>
+             {isMenuOpen ? 'CLOSE' : 'SYSTEM'}
+           </span>
         </button>
       </div>
     </nav>

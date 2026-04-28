@@ -111,7 +111,8 @@ export default function App() {
           />
           <Nav 
             currentSection={currentSection} 
-            onMenuToggle={() => setIsMenuOpen(true)} 
+            isMenuOpen={isMenuOpen}
+            onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} 
           />
           
           <main>
