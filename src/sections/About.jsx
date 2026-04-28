@@ -642,7 +642,7 @@ export default function About() {
             }} className="custom-scrollbar">
               <AnimatePresence mode="popLayout">
                 {filtered.map((tech, i) => (
-                  <TechCard key={tech.id} tech={tech} visible={inView} delay={i * 45 + 500} />
+                  <TechCard key={tech.id} tech={tech} visible={inView} delay={i * 30 + 200} />
                 ))}
               </AnimatePresence>
             </div>
