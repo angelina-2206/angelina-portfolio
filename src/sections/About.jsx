@@ -632,7 +632,7 @@ export default function About() {
             {/* Tech card grid */}
             <div style={{
               display:               "grid",
-              gridTemplateColumns:   "repeat(auto-fill, minmax(140px,1fr))",
+              gridTemplateColumns:   "repeat(auto-fill, minmax(160px,1fr))",
               gap:                   "12px",
               maxHeight:             "500px",
               overflowY:             "auto",

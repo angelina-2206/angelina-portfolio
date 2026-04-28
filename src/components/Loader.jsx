@@ -210,7 +210,7 @@ export default function InitializingPage({ onComplete = () => {} }) {
         {/* Scrambled "PORTFOLIO" headline */}
         <div
           style={{
-            fontSize: "clamp(2.8rem,11vw,6.5rem)",
+            fontSize: "clamp(2.2rem, 11vw, 6.5rem)",
             fontWeight: 900,
             color: "#F0EEF6",
             letterSpacing: "-0.04em",

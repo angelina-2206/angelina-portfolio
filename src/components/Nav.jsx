@@ -34,10 +34,10 @@ export default function ObsidianNav({ currentSection, onMenuToggle }) {
             `}</style>
             <defs>
               <linearGradient id="purpleGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#5B2EFF"/>
-                <stop offset="60%" stop-color="#9B5CFF"/>
-                <stop offset="85%" stop-color="#3DA9FC"/>
-                <stop offset="100%" stop-color="#FFD166"/>
+                <stop offset="0%" stopColor="#5B2EFF"/>
+                <stop offset="60%" stopColor="#9B5CFF"/>
+                <stop offset="85%" stopColor="#3DA9FC"/>
+                <stop offset="100%" stopColor="#FFD166"/>
               </linearGradient>
               <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="5" result="blur"/>
@@ -47,16 +47,16 @@ export default function ObsidianNav({ currentSection, onMenuToggle }) {
                 </feMerge>
               </filter>
             </defs>
-            <circle class="orbit-circle" cx="110" cy="110" r="72"
+            <circle className="orbit-circle" cx="110" cy="110" r="72"
                     stroke="url(#purpleGrad)"
-                    stroke-width="1.8"
+                    strokeWidth="1.8"
                     opacity="0.6"
                     fill="none"
                     filter="url(#glow)"/>
             <path d="M50 110 A60 60 0 0 1 170 110"
                   stroke="#9B5CFF"
-                  stroke-width="1.2"
-                  stroke-dasharray="8 10"
+                  strokeWidth="1.2"
+                  strokeDasharray="8 10"
                   opacity="0.5"
                   fill="none"/>
             <circle cx="182" cy="110" r="4" fill="#9B5CFF" filter="url(#glow)"/>

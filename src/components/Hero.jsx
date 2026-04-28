@@ -178,7 +178,7 @@ export default function Hero() {
         {/* Scrambled Name */}
         <h1
           style={{
-            fontSize: "clamp(3rem, 8.5vw, 10rem)",
+            fontSize: "clamp(2.2rem, 8.5vw, 10rem)",
             fontWeight: 900,
             lineHeight: 0.9,
             letterSpacing: "-0.04em",
