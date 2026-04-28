@@ -20,12 +20,51 @@ export default function ObsidianNav({ currentSection, onMenuToggle }) {
     <nav className={`obs-nav ${theme}`}>
       {/* Top Left: Logo */}
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <a href="#" className="obs-nav-logo">
-          <img 
-            src="/logo.svg" 
-            alt="AC Logo" 
-            style={{ width: '40px', height: 'auto', display: 'block' }} 
-          />
+        <a href="#" className="obs-nav-logo" style={{ display: 'block', transition: 'transform 0.3s ease' }}>
+          <svg width="40" height="40" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <style>{`
+              .obs-nav-logo:hover .orbit-circle {
+                transform-origin: center;
+                animation: rotate 8s linear infinite;
+              }
+              @keyframes rotate {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+              }
+            `}</style>
+            <defs>
+              <linearGradient id="purpleGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#5B2EFF"/>
+                <stop offset="60%" stop-color="#9B5CFF"/>
+                <stop offset="85%" stop-color="#3DA9FC"/>
+                <stop offset="100%" stop-color="#FFD166"/>
+              </linearGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="5" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <circle class="orbit-circle" cx="110" cy="110" r="72"
+                    stroke="url(#purpleGrad)"
+                    stroke-width="1.8"
+                    opacity="0.6"
+                    fill="none"
+                    filter="url(#glow)"/>
+            <path d="M50 110 A60 60 0 0 1 170 110"
+                  stroke="#9B5CFF"
+                  stroke-width="1.2"
+                  stroke-dasharray="8 10"
+                  opacity="0.5"
+                  fill="none"/>
+            <circle cx="182" cy="110" r="4" fill="#9B5CFF" filter="url(#glow)"/>
+            <path d="M110 50 L150 170 H132 L120 138 H100 L88 170 H70 L110 50 Z
+                     M102 120 H118 L110 96 Z"
+                  fill="url(#purpleGrad)"
+                  filter="url(#glow)"/>
+          </svg>
         </a>
       </div>
 
