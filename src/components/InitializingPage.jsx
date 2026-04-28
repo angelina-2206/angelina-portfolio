@@ -35,8 +35,8 @@ import { useState, useEffect, useRef } from "react";
 export default function InitializingPage({ onComplete = () => {} }) {
   const [progress, setProgress] = useState(0);
   const [logs, setLogs] = useState([]);
-  const [crackPhase, setCrackPhase] = useState(0); // 0=none, 1=cracking, 2=shattering
   const [display, setDisplay] = useState("");
+  const [fadingOut, setFadingOut] = useState(false);
   const rafRef = useRef(null);
 
   // ─────────────────────────────────────────────────────────────
@@ -157,17 +157,15 @@ export default function InitializingPage({ onComplete = () => {} }) {
   }, []);
 
   // ─────────────────────────────────────────────────────────────
-  // Crack & Shatter Phase Transitions
+  // Completion Transition
   // ─────────────────────────────────────────────────────────────
   useEffect(() => {
-    const timer1 = setTimeout(() => setCrackPhase(1), 2500);  // Start cracks at 2.5s
-    const timer2 = setTimeout(() => setCrackPhase(2), 3000);  // Start shatter at 3.0s
-    const timer3 = setTimeout(() => onComplete(), 4500);      // Complete at 4.5s
+    const timer1 = setTimeout(() => setFadingOut(true), 2800);  // Start fading out
+    const timer2 = setTimeout(() => onComplete(), 3300);      // Complete at 3.3s
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
-      clearTimeout(timer3);
     };
   }, [onComplete]);
 
@@ -193,20 +191,20 @@ export default function InitializingPage({ onComplete = () => {} }) {
           inset: 0,
           background: "radial-gradient(ellipse 70% 60% at 50% 40%, rgba(139,92,246,0.12) 0%, transparent 70%)",
           pointerEvents: "none",
-          opacity: crackPhase > 0 ? 0.3 : 1,
+          opacity: fadingOut ? 0 : 1,
           transition: "opacity 0.5s ease",
         }}
       />
 
-      {/* Main content — fades when shatter begins */}
+      {/* Main content — fades out at the end */}
       <div
         style={{
           position: "relative",
           zIndex: 10,
           textAlign: "center",
-          opacity: crackPhase === 2 ? 0 : 1,
-          transform: crackPhase === 2 ? "scale(0.96)" : "scale(1)",
-          transition: "all 0.4s cubic-bezier(0.4,0,1,1)",
+          opacity: fadingOut ? 0 : 1,
+          transform: fadingOut ? "scale(0.96)" : "scale(1)",
+          transition: "all 0.5s cubic-bezier(0.4,0,1,1)",
         }}
       >
         {/* Scrambled "PORTFOLIO" headline */}
@@ -221,7 +219,7 @@ export default function InitializingPage({ onComplete = () => {} }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontFamily: "'Courier New',monospace",
+            fontFamily: "var(--font-display)",
           }}
         >
           {display}
@@ -254,7 +252,7 @@ export default function InitializingPage({ onComplete = () => {} }) {
         {/* Percentage display */}
         <div
           style={{
-            fontFamily: "'Courier New',monospace",
+            fontFamily: "var(--font-mono)",
             fontSize: "clamp(12px, 2vw, 16px)",
             color: `rgba(139,92,246,${Math.min(0.35 + progress / 100 * 0.65, 1)})`,
             letterSpacing: "0.25em",
@@ -281,7 +279,7 @@ export default function InitializingPage({ onComplete = () => {} }) {
             <div
               key={i}
               style={{
-                fontFamily: "'Courier New',monospace",
+                fontFamily: "var(--font-mono)",
                 fontSize: "clamp(9px, 1.2vw, 12px)",
                 color: i === logs.length - 1 ? "#00D2BE" : "rgba(240,238,246,0.28)",
                 lineHeight: 1.8,
@@ -297,148 +295,7 @@ export default function InitializingPage({ onComplete = () => {} }) {
         </div>
       </div>
 
-      {/* Red flash on crack initiation */}
-      {crackPhase >= 1 && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(225,6,0,0.3)",
-            opacity: crackPhase === 1 ? 1 : 0,
-            transition: "opacity 0.6s cubic-bezier(0.4,0,0.2,1)",
-            pointerEvents: "none",
-            zIndex: 15,
-          }}
-        />
-      )}
 
-      {/* Crack lines animation */}
-      {crackPhase >= 1 && (
-        <svg
-          width="100%"
-          height="100%"
-          style={{
-            position: "absolute",
-            inset: 0,
-            pointerEvents: "none",
-            zIndex: 20,
-          }}
-        >
-          {/* Three origin points for cracks */}
-          {/* Crack 1: top-center to lower-left */}
-          <line
-            x1="50%"
-            y1="20%"
-            x2="25%"
-            y2="65%"
-            stroke="#e10600"
-            strokeWidth="2.5"
-            opacity="0.85"
-            vectorEffect="non-scaling-stroke"
-            style={{
-              animation: "crackGrow 0.7s cubic-bezier(0.25,0.46,0.45,0.94) forwards",
-              filter: "drop-shadow(0 0 8px rgba(225,6,0,0.9))",
-            }}
-          />
-
-          {/* Crack 2: top-center to lower-right */}
-          <line
-            x1="50%"
-            y1="20%"
-            x2="75%"
-            y2="65%"
-            stroke="#e10600"
-            strokeWidth="2.5"
-            opacity="0.85"
-            vectorEffect="non-scaling-stroke"
-            style={{
-              animation: "crackGrow 0.7s cubic-bezier(0.25,0.46,0.45,0.94) forwards",
-              filter: "drop-shadow(0 0 8px rgba(225,6,0,0.9))",
-            }}
-          />
-
-          {/* Crack 3: center down */}
-          <line
-            x1="50%"
-            y1="20%"
-            x2="50%"
-            y2="90%"
-            stroke="#e10600"
-            strokeWidth="2.5"
-            opacity="0.85"
-            vectorEffect="non-scaling-stroke"
-            style={{
-              animation: "crackGrow 0.7s cubic-bezier(0.25,0.46,0.45,0.94) forwards",
-              filter: "drop-shadow(0 0 8px rgba(225,6,0,0.9))",
-            }}
-          />
-
-          {/* Secondary cracks for realism */}
-          <line
-            x1="35%"
-            y1="45%"
-            x2="20%"
-            y2="75%"
-            stroke="#e10600"
-            strokeWidth="1.5"
-            opacity="0.6"
-            vectorEffect="non-scaling-stroke"
-            style={{
-              animation: "crackGrow 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s forwards",
-              filter: "drop-shadow(0 0 4px rgba(225,6,0,0.7))",
-            }}
-          />
-          <line
-            x1="65%"
-            y1="45%"
-            x2="80%"
-            y2="75%"
-            stroke="#e10600"
-            strokeWidth="1.5"
-            opacity="0.6"
-            vectorEffect="non-scaling-stroke"
-            style={{
-              animation: "crackGrow 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s forwards",
-              filter: "drop-shadow(0 0 4px rgba(225,6,0,0.7))",
-            }}
-          />
-        </svg>
-      )}
-
-      {/* Voronoi glass shards bursting outward */}
-      {crackPhase === 2 &&
-        Array.from({ length: 42 }).map((_, i) => {
-          const angle = (i / 42) * Math.PI * 2;
-          const distance = 120 + Math.random() * 280;
-          const vx = Math.cos(angle) * distance;
-          const vy = Math.sin(angle) * distance;
-          const rotation = Math.random() * 360;
-          const size = 50 + Math.random() * 80;
-          const delay = Math.random() * 0.15;
-          const duration = 0.8 + Math.random() * 0.4;
-
-          return (
-            <div
-              key={i}
-              style={{
-                position: "fixed",
-                top: "50%",
-                left: "50%",
-                width: `${size}px`,
-                height: `${size}px`,
-                background: `linear-gradient(${Math.random() * 360}deg, rgba(139,92,246,${0.3 + Math.random() * 0.5}), rgba(225,6,0,${0.2 + Math.random() * 0.4}))`,
-                border: `1.5px solid rgba(225,6,0,${0.5 + Math.random() * 0.5})`,
-                borderRadius: `${Math.random() * 8}px`,
-                transform: `translate(${vx}px, ${vy}px) rotate(${rotation}deg)`,
-                opacity: 0,
-                animation: `shardFly ${duration}s cubic-bezier(0.25,0.46,0.45,0.94) forwards`,
-                animationDelay: `${delay}s`,
-                boxShadow: `0 0 16px rgba(225,6,0,0.7), inset 0 0 8px rgba(255,255,255,0.2)`,
-                zIndex: 25,
-              }}
-            />
-          );
-        })}
 
       {/* Keyframe animations */}
       <style>{`
@@ -453,31 +310,7 @@ export default function InitializingPage({ onComplete = () => {} }) {
           }
         }
 
-        @keyframes crackGrow {
-          from {
-            stroke-dasharray: 500;
-            stroke-dashoffset: 500;
-            opacity: 0;
-          }
-          to {
-            stroke-dasharray: 500;
-            stroke-dashoffset: 0;
-            opacity: 1;
-          }
-        }
 
-        @keyframes shardFly {
-          from {
-            opacity: 1;
-            transform: translate(0, 0) rotate(0deg) scale(1);
-            filter: drop-shadow(0 0 16px rgba(225,6,0,0.9));
-          }
-          to {
-            opacity: 0;
-            transform: translate(var(--tx), var(--ty)) rotate(360deg) scale(0.05);
-            filter: drop-shadow(0 0 0px rgba(225,6,0,0));
-          }
-        }
       `}</style>
     </div>
   );
