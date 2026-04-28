@@ -291,7 +291,7 @@ export default function Hero() {
               textTransform: "uppercase",
             }}
           >
-            EXPLORE
+            EXPLORE MY WORK
           </div>
           <div
             style={{
