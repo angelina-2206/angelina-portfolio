@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useSound } from '../context/SoundContext'
 
 export default function ObsidianNav({ currentSection, onMenuToggle }) {
-  const { isEnabled, toggleSound, playSoftClick } = useSound()
+  const { playSoftClick } = useSound()
   const [theme, setTheme] = useState('nav-dark')
 
   useEffect(() => {
@@ -39,29 +39,7 @@ export default function ObsidianNav({ currentSection, onMenuToggle }) {
 
       {/* Top Right: CTA / Menu */}
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'flex-end' }}>
-        {/* Sound Toggle */}
-        <button 
-          onClick={toggleSound}
-          onMouseEnter={playSoftClick}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'inherit',
-            cursor: 'pointer',
-            padding: '8px',
-            display: 'flex',
-            alignItems: 'center',
-            opacity: isEnabled ? 1 : 0.4,
-            transition: 'opacity 0.3s'
-          }}
-          title={isEnabled ? "Mute" : "Unmute"}
-        >
-          {isEnabled ? (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-          ) : (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/></svg>
-          )}
-        </button>
+
 
         <motion.a 
           href="#contact" 

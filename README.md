@@ -1,4 +1,4 @@
-# Angelina Chatterjee — Portfolio 2026
+# Angelina Chatterjee — Portfolio 
 
 An immersive, narrative-driven technical portfolio engineered with React, Vite, and GSAP. 
 

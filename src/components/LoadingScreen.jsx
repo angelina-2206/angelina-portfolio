@@ -26,78 +26,21 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSound } from "../context/SoundContext";
 
 // ── Timing constants (ms) ─────────────────────────────────────────────────────
 const T_PROGRESS_DONE   = 3000;   // when bar hits 100
-const T_CRACK_START     = 3200;   // crack lines appear
-const T_SHATTER_START   = 3550;   // shards explode
-const T_REVEAL          = 4000;   // hero visible underneath
-const T_SCRAMBLE_START  = 4150;   // name scramble begins
-const T_COMPLETE        = 5400;   // onComplete fires
-
-// ── Voronoi-ish shatter: generate N random seed points, assign each pixel
-//    to nearest seed → gives natural crack pattern ───────────────────────────
-function generateShards(W, H, count = 38) {
-  const seeds = Array.from({ length: count }, () => ({
-    x: Math.random() * W,
-    y: Math.random() * H,
-  }));
-
-  // For each shard we need: center, polygon points, velocity, rotation
-  // We approximate polygon as the seed's Voronoi cell using clipping
-  // For performance we use a simpler convex hull approach:
-  // Each shard = irregular polygon centered on seed
-
-  return seeds.map((seed, i) => {
-    const sides = 5 + Math.floor(Math.random() * 4);
-    const r = 60 + Math.random() * 140;
-    const angleOffset = Math.random() * Math.PI * 2;
-    const pts = Array.from({ length: sides }, (_, j) => {
-      const angle = angleOffset + (j / sides) * Math.PI * 2;
-      const rr = r * (0.5 + Math.random() * 0.7);
-      return {
-        x: seed.x + Math.cos(angle) * rr,
-        y: seed.y + Math.sin(angle) * rr,
-      };
-    });
-
-    const dx = seed.x - W / 2;
-    const dy = seed.y - H / 2;
-    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-    const speed = 3 + Math.random() * 8;
-
-    return {
-      seed,
-      pts,
-      vx: (dx / dist) * speed * (0.5 + Math.random()),
-      vy: (dy / dist) * speed * (0.5 + Math.random()),
-      vz: Math.random() * 4,           // z-scale shrink
-      vr: (Math.random() - 0.5) * 0.3, // rotation
-      rotation: 0,
-      opacity: 1,
-      scaleZ: 1,
-      progress: 0,                      // 0→1 explosion progress
-    };
-  });
-}
-
-
+const T_REVEAL          = 3400;   // hero visible underneath
+const T_COMPLETE        = 4500;   // onComplete fires
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function LoadingScreen({ children, onComplete }) {
   const { playBassHit } = useSound();
   const [phase, setPhase] = useState("loading"); 
-  // phases: loading → cracking → shattering → revealed → done
+  // phases: loading → revealed → done
   const [progress, setProgress] = useState(0);
-  const [shatterActive, setShatterActive] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
-
-  const canvasRef = useRef(null);
-  const shardsRef = useRef([]);
-  const rafRef = useRef(null);
-  const startTimeRef = useRef(null);
   const timeRef = useRef(null);
 
   // ── Live Date and Time ───────────────────────────────────────────────────
@@ -163,87 +106,11 @@ export default function LoadingScreen({ children, onComplete }) {
   // ── Main sequence timer ───────────────────────────────────────────────────
   useEffect(() => {
     const timers = [
-      setTimeout(() => setShatterActive(true),   T_SHATTER_START),
       setTimeout(() => setHeroVisible(true),      T_REVEAL),
       setTimeout(() => { setPhase("done"); onComplete?.(); }, T_COMPLETE),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
-
-  // ── Canvas: crack lines + shatter animation ───────────────────────────────
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    const W = canvas.width = window.innerWidth;
-    const H = canvas.height = window.innerHeight;
-
-    shardsRef.current = generateShards(W, H, 42);
-
-    let shatterProgress = 0;
-
-    const draw = (ts) => {
-      if (!startTimeRef.current) startTimeRef.current = ts;
-      ctx.clearRect(0, 0, W, H);
-
-      // ── Draw shattering shards ────────────────────────────────────────
-      if (shatterActive) {
-        shatterProgress = Math.min(1, shatterProgress + 0.025);
-
-        shardsRef.current.forEach(shard => {
-          shard.progress = Math.min(1, shard.progress + 0.018 + Math.random() * 0.012);
-          const p = shard.progress;
-
-          shard.rotation += shard.vr;
-          const tx = shard.seed.x + shard.vx * p * 60;
-          const ty = shard.seed.y + shard.vy * p * 60;
-          shard.opacity = Math.max(0, 1 - p * 1.4);
-
-          if (shard.opacity <= 0) return;
-
-          ctx.save();
-          ctx.globalAlpha = shard.opacity;
-          ctx.translate(tx, ty);
-          ctx.rotate(shard.rotation);
-          ctx.translate(-shard.seed.x, -shard.seed.y);
-
-          // Shard shape
-          ctx.beginPath();
-          ctx.moveTo(shard.pts[0].x, shard.pts[0].y);
-          shard.pts.forEach(pt => ctx.lineTo(pt.x, pt.y));
-          ctx.closePath();
-
-          // Fill: dark glass with slight blue-white tint
-          const grad = ctx.createLinearGradient(
-            shard.seed.x - 60, shard.seed.y - 60,
-            shard.seed.x + 60, shard.seed.y + 60
-          );
-          grad.addColorStop(0, "rgba(8,8,12,0.95)");
-          grad.addColorStop(0.4, "rgba(20,20,30,0.9)");
-          grad.addColorStop(1, "rgba(30,20,20,0.85)");
-          ctx.fillStyle = grad;
-          ctx.fill();
-
-          // Edge highlight (glass edge catch)
-          ctx.strokeStyle = `rgba(225,6,0,${0.4 * shard.opacity})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-
-          // Inner white glint
-          ctx.strokeStyle = `rgba(255,255,255,${0.12 * shard.opacity})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-
-          ctx.restore();
-        });
-      }
-
-      rafRef.current = requestAnimationFrame(draw);
-    };
-
-    rafRef.current = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [shatterActive]);
 
   if (phase === "done") return <>{children}</>;
 
@@ -251,23 +118,20 @@ export default function LoadingScreen({ children, onComplete }) {
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden", background: "#000" }}>
 
-      {/* Hero page — hidden underneath, revealed after shatter */}
+      {/* Hero page — hidden underneath, revealed after fade */}
       <div style={{
         position: "absolute", inset: 0, zIndex: 0,
-        opacity: heroVisible ? 1 : 0,
-        transition: "opacity 0.6s ease",
       }}>
         {children}
-        {/* Name scramble overlay on hero removed */}
       </div>
 
       {/* Loading screen — your existing design, exactly preserved ─────── */}
       <div style={{
         position: "absolute", inset: 0, zIndex: 5,
         background: "#080808",
-        opacity: shatterActive ? 0 : 1,
-        pointerEvents: shatterActive ? "none" : "auto",
-        transition: shatterActive ? "opacity 0.3s 0.3s" : "none",
+        opacity: heroVisible ? 0 : 1,
+        pointerEvents: heroVisible ? "none" : "auto",
+        transition: "opacity 0.8s ease",
       }}>
         {/* Watermark giant letters — your existing bg text */}
         <div style={{
@@ -317,7 +181,7 @@ export default function LoadingScreen({ children, onComplete }) {
           top: "50%", left: "clamp(1.5rem, 6vw, 5rem)",
           transform: "translateY(-55%)",
           fontFamily: "sans-serif",
-          fontSize: "clamp(2.2rem, 9vw, 11rem)",
+          fontSize: "clamp(1.5rem, 5vw, 5rem)",
           fontWeight: 900,
           color: "#ffffff",
           lineHeight: 0.9,
@@ -431,34 +295,10 @@ export default function LoadingScreen({ children, onComplete }) {
         </div>
       </div>
 
-      {/* Canvas: crack lines + shatter shards — top layer ──────────────── */}
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: "absolute", inset: 0, zIndex: 10,
-          pointerEvents: "none",
-          opacity: shatterActive ? 1 : 0,
-        }}
-      />
-
-      {/* Red flash on 100% ──────────────────────────────────────────────── */}
-      <div style={{
-        position: "absolute", inset: 0, zIndex: 8,
-        background: "#e10600",
-        pointerEvents: "none",
-        opacity: 0,
-        animation: progress === 100 ? "redFlash 0.4s ease-out 0.2s forwards" : "none",
-      }} />
-
       <style>{`
         @keyframes scrollDot {
           0%, 100% { transform: translateY(0); opacity: 1; }
           50% { transform: translateY(8px); opacity: 0.3; }
-        }
-        @keyframes redFlash {
-          0% { opacity: 0; }
-          30% { opacity: 0.18; }
-          100% { opacity: 0; }
         }
       `}</style>
     </div>
