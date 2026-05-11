@@ -511,31 +511,47 @@ export default function About() {
 
             <div style={{ height: '40px' }} />
 
-            {/* ── Highlighted Status Card ── */}
-            <motion.a
-              href="#contact"
-              className="about-cta-card interactive-zone"
+            {/* ── Status Terminal Card ── */}
+            <motion.div
+              className="about-cta-card"
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 1.2, ease: EASE_OUT }}
-              onClick={(e) => {
-                e.preventDefault()
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-              }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
             >
               <div className="about-cta-glow-border" />
+
+              {/* Status badge */}
               <div className="about-cta-status">
                 <span className="about-status-blink-dot" />
                 <span className="about-cta-pill">STATUS: BUILDING + AVAILABLE</span>
               </div>
-              <p className="about-cta-headline">
-                Currently building,<br />learning, and open to<br />
-                <span className="about-cta-accent">internship opportunities.</span>
-              </p>
-              <span className="about-cta-arrow">View Contact ↓</span>
-            </motion.a>
+
+              {/* Terminal lines */}
+              <div className="about-term-list">
+                {[
+                  { arrow: '→', text: 'learning full-stack + AI systems' },
+                  { arrow: '→', text: 'looking for internships' },
+                  { arrow: '→', text: 'open to project collaborations' },
+                  { arrow: '→', text: 'debugging things that worked yesterday', dim: true },
+                ].map((line, i) => (
+                  <div key={i} className={`about-term-line${line.dim ? ' about-term-dim' : ''}`}>
+                    <span className="about-term-arrow">{line.arrow}</span>
+                    <span>{line.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA button */}
+              <button
+                className="about-initiate-btn"
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <span className="about-btn-prefix">$</span>
+                INITIATE CONTACT
+                <span className="about-btn-arrow">→</span>
+                <span className="about-btn-cursor" />
+              </button>
+            </motion.div>
           </div>
 
           {/* ═══ RIGHT COLUMN — TECH ARSENAL ═══ */}
@@ -862,63 +878,122 @@ export default function About() {
 
         .about-cta-card {
           display: block;
-          padding: 30px;
-          border-radius: 20px;
-          background: rgba(139, 92, 246, 0.08);
-          border: 1px solid rgba(139, 92, 246, 0.2);
-          text-decoration: none;
+          padding: 22px 24px;
+          border-radius: 16px;
+          background: rgba(139, 92, 246, 0.06);
+          border: 1px solid rgba(139, 92, 246, 0.18);
           color: white;
           position: relative;
           overflow: hidden;
-          transition: all 0.4s;
         }
 
         .about-status-blink-dot {
-          width: 10px;
-          height: 10px;
+          width: 8px;
+          height: 8px;
           background: #34d399;
           border-radius: 50%;
           animation: aboutStatusBlink 2s infinite;
+          flex-shrink: 0;
         }
-
         @keyframes aboutStatusBlink {
-          0%, 100% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 rgba(52, 211, 153, 0); }
-          50% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 15px rgba(52, 211, 153, 0.6); }
+          0%, 100% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 rgba(52,211,153,0); }
+          50%       { opacity: 1;   transform: scale(1.1); box-shadow: 0 0 10px rgba(52,211,153,0.6); }
         }
-
         .about-cta-status {
           display: flex;
           align-items: center;
-          gap: 10px;
-          margin-bottom: 20px;
+          gap: 8px;
+          margin-bottom: 14px;
         }
-
         .about-cta-pill {
           font-family: var(--font-mono);
-          font-size: 0.6rem;
-          letter-spacing: 0.15em;
+          font-size: 0.55rem;
+          letter-spacing: 0.18em;
           color: #34d399;
+          text-transform: uppercase;
         }
 
-        .about-cta-headline {
-          font-family: var(--font-display);
-          font-size: 1.2rem;
-          font-weight: 600;
-          line-height: 1.5;
-          margin-bottom: 20px;
-        }
-        
-        .about-cta-accent {
-          color: var(--color-lavender);
+
+        .about-term-list {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          margin-bottom: 18px;
+          border-left: 1.5px solid rgba(139, 92, 246, 0.25);
+          padding-left: 14px;
         }
 
-        .about-cta-arrow {
+        .about-term-line {
+          display: flex;
+          align-items: center;
+          gap: 8px;
           font-family: var(--font-mono);
           font-size: 0.65rem;
-          letter-spacing: 0.1em;
-          opacity: 0.6;
-          text-transform: uppercase;
+          color: rgba(240, 238, 246, 0.75);
+          letter-spacing: 0.03em;
+          line-height: 1.5;
+        }
+
+        .about-term-dim {
+          color: rgba(240, 238, 246, 0.35);
+          font-style: italic;
+        }
+
+        .about-term-arrow {
           color: var(--color-lavender);
+          font-size: 0.6rem;
+          flex-shrink: 0;
+        }
+
+        /* Initiate Contact button */
+        .about-initiate-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-family: var(--font-mono);
+          font-size: 0.6rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          padding: 9px 18px;
+          border-radius: 8px;
+          border: 1px solid rgba(139, 92, 246, 0.35);
+          background: rgba(139, 92, 246, 0.1);
+          color: var(--color-lavender);
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+          position: relative;
+          overflow: hidden;
+        }
+        .about-initiate-btn:hover {
+          background: rgba(139, 92, 246, 0.22);
+          border-color: rgba(139, 92, 246, 0.6);
+          box-shadow: 0 0 24px rgba(139, 92, 246, 0.2);
+          transform: translateY(-2px);
+        }
+        .about-btn-prefix {
+          color: #34d399;
+          font-size: 0.65rem;
+        }
+        .about-btn-arrow {
+          color: var(--color-lavender);
+          transition: transform 0.25s;
+        }
+        .about-initiate-btn:hover .about-btn-arrow {
+          transform: translateX(4px);
+        }
+        .about-btn-cursor {
+          display: inline-block;
+          width: 6px;
+          height: 11px;
+          background: var(--color-lavender);
+          opacity: 0.7;
+          border-radius: 1px;
+          animation: btnCursorBlink 1.1s step-end infinite;
+          margin-left: -2px;
+        }
+        @keyframes btnCursorBlink {
+          0%, 100% { opacity: 0.7; }
+          50% { opacity: 0; }
         }
         
         .custom-scrollbar::-webkit-scrollbar {
