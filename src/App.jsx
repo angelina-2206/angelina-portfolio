@@ -13,13 +13,14 @@ import Timeline from './components/Timeline'
 import Achievements from './sections/Achievements'
 import Contact from './sections/Contact'
 import Counter from './components/Counter'
+import { trackSectionView } from './lib/analytics'
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [currentSection, setCurrentSection] = useState('hero')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   
-  // Track scroll position for Nav updates (dark/light theme)
+  // Track scroll position for Nav updates + GA4 section view events
   useEffect(() => {
     if (isLoading) return
     
@@ -36,6 +37,8 @@ export default function App() {
       
       if (current !== currentSection) {
         setCurrentSection(current)
+        // Fire a GA4 section-view event on every section change
+        if (current) trackSectionView(current)
       }
     }
     
@@ -81,6 +84,11 @@ export default function App() {
 
       return () => lenis.destroy()
     })
+  }, [isLoading])
+
+  // Fire the initial 'hero' page_view once the loader completes
+  useEffect(() => {
+    if (!isLoading) trackSectionView('hero')
   }, [isLoading])
 
   useEffect(() => {
