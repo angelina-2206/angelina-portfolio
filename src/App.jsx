@@ -15,6 +15,18 @@ import Contact from './sections/Contact'
 import Counter from './components/Counter'
 import { trackSectionView } from './lib/analytics'
 
+const BASE_TITLE = 'Angelina Chatterjee'
+const SECTION_PAGE_TITLES = {
+  hero:          'Angelina Chatterjee | Full Stack Developer & AI Builder',
+  quote:         'Signal | Angelina Chatterjee',
+  about:         'About | Angelina Chatterjee',
+  projects:      'Projects | Angelina Chatterjee',
+  process:       'Process | Angelina Chatterjee',
+  contributions: 'Contributions | Angelina Chatterjee',
+  achievements:  'Achievements | Angelina Chatterjee',
+  contact:       "Let's Connect | Angelina Chatterjee",
+}
+
 export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [currentSection, setCurrentSection] = useState('hero')
@@ -45,6 +57,13 @@ export default function App() {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [isLoading, currentSection])
+
+  // Update document.title as the user scrolls through sections (#11)
+  useEffect(() => {
+    if (isLoading) return
+    const title = SECTION_PAGE_TITLES[currentSection]
+    if (title) document.title = title
+  }, [currentSection, isLoading])
 
   // Prevent scrolling when menu is open
   useEffect(() => {
