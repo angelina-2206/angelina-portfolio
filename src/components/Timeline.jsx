@@ -245,17 +245,18 @@ export default function ContributionsTimeline() {
 
               {/* Left — icon + text */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                {/* Oracle logo mark */}
+                {/* Oracle wordmark logo */}
                 <div style={{
-                  width: 44, height: 44, borderRadius: 10,
-                  background: 'rgba(199,70,52,0.12)',
-                  border: '0.5px solid rgba(199,70,52,0.35)',
+                  width: 80, height: 44, borderRadius: 10,
+                  background: 'rgba(199,70,52,0.1)',
+                  border: '0.5px solid rgba(199,70,52,0.3)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  padding: '0 10px',
                 }}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <ellipse cx="12" cy="12" rx="10" ry="10" stroke="#C74634" strokeWidth="1.5"/>
-                    <ellipse cx="12" cy="12" rx="5" ry="10" stroke="#C74634" strokeWidth="1.5"/>
-                    <line x1="2" y1="12" x2="22" y2="12" stroke="#C74634" strokeWidth="1.5"/>
+                  <svg width="68" height="20" viewBox="0 0 120 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    {/* Oracle official wordmark paths */}
+                    <path d="M17 0C7.6 0 0 7.6 0 17s7.6 17 17 17 17-7.6 17-17S26.4 0 17 0zm0 28.6C10.6 28.6 5.4 23.4 5.4 17S10.6 5.4 17 5.4 28.6 10.6 28.6 17 23.4 28.6 17 28.6z" fill="#C74634"/>
+                    <path d="M40 8.5h5.2c4.6 0 7.8 3.1 7.8 8.5s-3.2 8.5-7.8 8.5H40V8.5zm5 14c3 0 4.9-1.9 4.9-5.5s-1.9-5.5-4.9-5.5h-2v11h2zM56 8.5h3v17h-3zM68.3 8.2c3.2 0 5.2 1.6 5.2 4.3 0 1.9-1 3.3-2.8 3.9l3.4 5.1h-3.4l-3-4.7H65v4.7h-3v-13h5.3c.3 0 .7 0 1-.1V8.2zm-.4 6.4c1.5 0 2.3-.7 2.3-2s-.8-2-2.3-2H65v4h2.9zM77 25.5V8.5h10v2.8h-7V16h6.3v2.8H80v3.9h7.3v2.8zM91 8.5h3v14.2h7v2.8H91z" fill="#C74634"/>
                   </svg>
                 </div>
 
