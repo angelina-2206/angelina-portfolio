@@ -221,6 +221,98 @@ export default function ContributionsTimeline() {
           ))}
         </div>
 
+        {/* ── Certifications ── */}
+        <div style={{ marginTop: '3.5rem' }}>
+
+          {/* Sub-header */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: '1.5rem' }}>
+            <div style={{ width: 20, height: 1, background: '#FFD700' }} />
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,215,0,0.7)' }}>
+              Certifications
+            </span>
+          </div>
+
+          {/* Oracle cert card */}
+          <a
+            href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=2D51C4C86DF645928399B2D666A4934CB6C0A18DD5F942D689A881E89883FB00"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cert-card"
+            style={{ textDecoration: 'none', display: 'block' }}
+          >
+            <div style={{ height: 2, background: 'linear-gradient(90deg,#C74634,#FFD700)' }} />
+            <div style={{ padding: '1.5rem 1.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+
+              {/* Left — icon + text */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+                {/* Oracle logo mark */}
+                <div style={{
+                  width: 44, height: 44, borderRadius: 10,
+                  background: 'rgba(199,70,52,0.12)',
+                  border: '0.5px solid rgba(199,70,52,0.35)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <ellipse cx="12" cy="12" rx="10" ry="10" stroke="#C74634" strokeWidth="1.5"/>
+                    <ellipse cx="12" cy="12" rx="5" ry="10" stroke="#C74634" strokeWidth="1.5"/>
+                    <line x1="2" y1="12" x2="22" y2="12" stroke="#C74634" strokeWidth="1.5"/>
+                  </svg>
+                </div>
+
+                <div>
+                  <div style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(0.95rem,2vw,1.15rem)',
+                    fontWeight: 800, letterSpacing: '-0.02em',
+                    color: '#F0EEF6', marginBottom: 3,
+                  }}>
+                    Oracle Infrastructure Generative AI Professional
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'rgba(240,238,246,0.4)', letterSpacing: '0.08em' }}>
+                    Oracle · Issued Oct 2025
+                  </div>
+                </div>
+              </div>
+
+              {/* Right — verified badge + arrow */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 5,
+                  fontFamily: 'var(--font-mono)', fontSize: 8,
+                  letterSpacing: '0.12em', textTransform: 'uppercase',
+                  padding: '4px 10px', borderRadius: 100,
+                  background: 'rgba(255,215,0,0.08)',
+                  border: '0.5px solid rgba(255,215,0,0.3)',
+                  color: '#FFD700',
+                }}>
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#FFD700" strokeWidth="2.5">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Verified
+                </div>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'rgba(255,215,0,0.5)' }}>↗</span>
+              </div>
+
+            </div>
+          </a>
+
+        </div>
+
+        <style>{`
+          .cert-card {
+            background: #0D0D0D;
+            border: 0.5px solid rgba(199,70,52,0.2);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s cubic-bezier(0.16,1,0.3,1);
+          }
+          .cert-card:hover {
+            border-color: rgba(199,70,52,0.5);
+            box-shadow: 0 12px 48px rgba(199,70,52,0.12);
+            transform: translateY(-4px);
+          }
+        `}</style>
+
       </div>
     </section>
   )
