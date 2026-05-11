@@ -452,13 +452,7 @@ export default function About() {
 
             {/* Intro Text */}
             <StaggerLines delay={0.6} className="about-intro" highlightWords={['scalable', 'practical']}>
-              {`Full-Stack Developer & Computer Science Engineering student`}
-            </StaggerLines>
-
-            <div style={{ height: '16px' }} />
-
-            <StaggerLines delay={0.7} className="about-body">
-              {`focused on building scalable, practical products\nacross web development, automation, and AI.`}
+              {`Full-Stack Developer & Computer Science Engineering student focused on building scalable, practical products across web development, automation, and AI.`}
             </StaggerLines>
 
             <div style={{ height: '16px' }} />
