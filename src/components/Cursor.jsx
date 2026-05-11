@@ -9,9 +9,25 @@ const isTouchDevice = () =>
 export default function CustomCursor() {
   const cursorRef = useRef(null)
   const [isHovering, setIsHovering] = useState(false)
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' && 
+    (window.innerWidth <= 768 || navigator.maxTouchPoints > 0 || window.matchMedia('(hover: none)').matches)
+  )
 
-  // Never render on touch/mobile — the OS pointer is fine there
-  if (isTouchDevice()) return null
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(
+        window.innerWidth <= 768 || 
+        navigator.maxTouchPoints > 0 || 
+        window.matchMedia('(hover: none)').matches
+      )
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Never render on touch/mobile — the OS pointer is fine there, and custom cursors cause lag
+  if (isMobile) return null
 
   useEffect(() => {
     const cursor = cursorRef.current

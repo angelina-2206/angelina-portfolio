@@ -59,6 +59,12 @@ a, button, input, textarea, select { cursor: none; }
   button, .obs-nav-menu, .arrow-btn, .pill-btn { min-height: 44px; }
   /* Ensure smooth native scroll */
   html { -webkit-overflow-scrolling: touch; }
+  /* Ensure custom JS cursor is entirely hidden */
+  .custom-cursor-container, .custom-cursor { display: none !important; }
+}
+
+@media (max-width: 768px) {
+  .custom-cursor-container, .custom-cursor { display: none !important; }
 }
 
 
