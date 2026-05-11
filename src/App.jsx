@@ -86,10 +86,7 @@ export default function App() {
     })
   }, [isLoading])
 
-  // Fire the initial 'hero' page_view once the loader completes
-  useEffect(() => {
-    if (!isLoading) trackSectionView('hero')
-  }, [isLoading])
+
 
   useEffect(() => {
     if (isLoading) return
