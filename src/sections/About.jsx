@@ -439,7 +439,7 @@ export default function About() {
               animate={inView ? { opacity: 0.6, y: 0 } : {}}
               transition={{ duration: 1, delay: 0.4, ease: EASE_OUT }}
             >
-              I don't chase trends. I build systems that last.
+              Turning caffeine into code and ideas into systems that (usually) work.
             </motion.p>
 
             {/* Divider */}
@@ -451,20 +451,26 @@ export default function About() {
             />
 
             {/* Intro Text */}
-            <StaggerLines delay={0.6} className="about-intro" highlightWords={['systems', 'solve']}>
-              {`I build systems that solve real problems.`}
+            <StaggerLines delay={0.6} className="about-intro" highlightWords={['scalable', 'practical']}>
+              {`Full-Stack Developer & Computer Science Engineering student`}
             </StaggerLines>
 
             <div style={{ height: '16px' }} />
 
             <StaggerLines delay={0.7} className="about-body">
-              {`Full-stack developer & Computer Science Engineering student\nfocused on turning ideas into scalable engineering products\nthat work in real conditions — not just demos.`}
+              {`focused on building scalable, practical products\nacross web development, automation, and AI.`}
             </StaggerLines>
 
             <div style={{ height: '16px' }} />
 
-            <StaggerLines delay={0.8} className="about-body about-body-emphasis">
-              {`I don't just write code —\nI design how things work.`}
+            <StaggerLines delay={0.8} className="about-body">
+              {`I don't really chase trends.\nI just like understanding how things work\nand rebuilding them until they make more sense.`}
+            </StaggerLines>
+
+            <div style={{ height: '16px' }} />
+
+            <StaggerLines delay={0.85} className="about-body about-body-emphasis">
+              {`Mostly learning.\nOccasionally shipping.`}
             </StaggerLines>
 
             <div style={{ height: '24px' }} />
@@ -478,8 +484,8 @@ export default function About() {
             >
               <span className="about-philosophy-bar" />
               <p>
-                Every system starts the same way:<br />
-                <em>"What's broken — and why hasn't it been fixed yet?"</em>
+                Most projects start with:<br />
+                <em>"there's probably a better way to build this."</em>
               </p>
             </motion.div>
 
@@ -494,8 +500,8 @@ export default function About() {
               transition={{ duration: 1, delay: 1.1 }}
             >
               {[
-                { label: "GSSoC '26", color: "#00D2BE" },
-                { label: "SSoC '26",  color: "#00D2BE" },
+                { label: "GSSoC '26",           color: "#00D2BE" },
+                { label: "SSoC '26",             color: "#00D2BE" },
                 { label: "WIOS · Technical Team", color: "var(--color-lavender)" },
               ].map((badge, i) => (
                 <span key={i} style={{
