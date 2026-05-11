@@ -614,9 +614,14 @@ export default function Contact() {
           transition={{ duration: 1.2, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
         />
 
-        <motion.div {...stagger(6)} className="cta-footer">
-          <span>© 2026 ANGELINA CHATTERJEE</span>
-          <span>ALL RIGHTS RESERVED</span>
+        <motion.div {...stagger(6)} className="cta-footer-stack">
+          <span className="cta-tech-signature">
+            Built with React, caffeine,<br className="mobile-break" /> and optimistic deployment decisions.
+          </span>
+          <div className="cta-footer">
+            <span>© 2026 ANGELINA CHATTERJEE</span>
+            <span>ALL RIGHTS RESERVED</span>
+          </div>
         </motion.div>
       </div>
 
@@ -746,6 +751,15 @@ export default function Contact() {
           background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
           margin: 60px 0 24px; transform-origin: center;
         }
+        .cta-footer-stack {
+          display: flex; flex-direction: column; gap: 16px;
+        }
+        .cta-tech-signature {
+          text-align: center;
+          font-family: var(--font-mono); font-size: 0.5rem;
+          color: rgba(255, 255, 255, 0.15);
+          letter-spacing: 0.1em; line-height: 1.6;
+        }
         .cta-footer {
           display: flex; justify-content: space-between;
           align-items: center;
@@ -753,6 +767,7 @@ export default function Contact() {
           letter-spacing: 0.2em; text-transform: uppercase;
           color: rgba(255, 255, 255, 0.18); padding: 0 4px;
         }
+        .mobile-break { display: none; }
 
         /* ══════════════ TERMINAL MODAL ══════════════ */
         .term-overlay {
@@ -944,6 +959,7 @@ export default function Contact() {
             font-size: clamp(4rem, 20vw, 8rem);
             -webkit-text-stroke-width: 1px;
           }
+          .mobile-break { display: block; }
           .term-window { max-height: 85vh; }
           .term-option { flex-direction: column; gap: 2px; align-items: flex-start; }
           .term-option-key { min-width: auto; }
