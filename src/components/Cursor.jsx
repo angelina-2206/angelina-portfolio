@@ -1,9 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 
+// Detect touch-only device (phone / tablet) — no custom cursor needed
+const isTouchDevice = () =>
+  typeof window !== 'undefined' &&
+  (navigator.maxTouchPoints > 0 || window.matchMedia('(hover: none)').matches)
+
 export default function CustomCursor() {
   const cursorRef = useRef(null)
   const [isHovering, setIsHovering] = useState(false)
+
+  // Never render on touch/mobile — the OS pointer is fine there
+  if (isTouchDevice()) return null
 
   useEffect(() => {
     const cursor = cursorRef.current

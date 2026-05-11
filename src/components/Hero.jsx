@@ -81,6 +81,11 @@ function useInView(threshold = 0.2) {
 const GRID_COLS = 20;
 const GRID_ROWS = 14;
 
+// Detect touch device for hint text adaptation
+const isTouchDevice = () =>
+  typeof window !== 'undefined' &&
+  (navigator.maxTouchPoints > 0 || window.matchMedia('(hover: none)').matches)
+
 // ── Main Hero Component ────────────────────────────────────────
 export default function Hero() {
   const [sectionRef, inView] = useInView(0.1);
@@ -265,7 +270,7 @@ export default function Hero() {
                 textTransform: "uppercase",
               }}
             >
-              click & hold for hyperspeed
+              {isTouchDevice() ? 'tap & hold for hyperspeed' : 'click & hold for hyperspeed'}
             </span>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M8 2v12M2 8l6 6 6-6" stroke="#c77dff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

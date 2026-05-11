@@ -49,6 +49,19 @@ body {
 a, button, input, textarea, select { cursor: none; }
 ::selection { background: var(--color-primary); color: white; }
 
+/* Touch devices: restore native interactions */
+@media (hover: none) and (pointer: coarse) {
+  body { cursor: auto !important; }
+  a, button, input, textarea, select { cursor: auto !important; }
+  /* Remove blue tap highlight on Android */
+  * { -webkit-tap-highlight-color: transparent; }
+  /* Better touch targets for nav/button controls */
+  button, .obs-nav-menu, .arrow-btn, .pill-btn { min-height: 44px; }
+  /* Ensure smooth native scroll */
+  html { -webkit-overflow-scrolling: touch; }
+}
+
+
 ::-webkit-scrollbar { width: 2px; }
 ::-webkit-scrollbar-track { background: var(--color-void); }
 ::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 2px; }
@@ -546,22 +559,29 @@ a, button, input, textarea, select { cursor: none; }
 
 @media (max-width: 768px) {
   html { scroll-snap-type: none; }
-  .obs-nav { padding: 0 20px; height: 48px; }
+  .obs-nav { padding: 0 16px; height: 52px; }
   .obs-nav-links { display: none; }
   .section-dots { display: none; }
   .obs-section { padding: 80px 20px !important; min-height: auto; }
-  .obs-inner { padding: 0 20px !important; }
-  body { cursor: auto; }
-  a, button, input, textarea, select { cursor: auto; }
-  .custom-cursor { display: none; }
+  .obs-inner { padding: 0 !important; }
+  /* Restore native cursor + touch behaviour */
+  body { cursor: auto !important; }
+  a, button, input, textarea, select { cursor: auto !important; }
+  .custom-cursor-container { display: none !important; }
+  .custom-cursor { display: none !important; }
+  /* Nav menu button — comfortably tappable */
+  .obs-nav-menu { cursor: auto !important; min-height: 44px; padding: 0 16px; }
+  .arrow-btn { cursor: auto !important; width: 48px; height: 48px; }
+  .section-dot { cursor: auto !important; }
+  /* Typography */
   .display-massive { font-size: clamp(2.5rem, 14vw, 5rem); }
+  /* Utility */
   .hide-mobile { display: none !important; }
+  /* Lap counter: scale down */
   .lap-counter-wrapper {
-    bottom: 10px !important; 
-    right: 10px !important;
-    transform: scale(0.65);
-    transform-origin: bottom right;
+    display: none !important;
   }
+  /* Ghost text */
   .ghost-text-bg { 
     opacity: 0.02 !important; 
     font-size: clamp(3rem, 12vw, 6rem) !important; 

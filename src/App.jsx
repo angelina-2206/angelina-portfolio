@@ -54,7 +54,10 @@ export default function App() {
 
   useEffect(() => {
     if (isLoading) return
-    
+    // Skip smooth scroll on touch devices — native momentum scroll is superior
+    const isTouch = navigator.maxTouchPoints > 0 || window.matchMedia('(hover: none)').matches
+    if (isTouch) return
+
     import('@studio-freight/lenis').then(({ default: Lenis }) => {
       const lenis = new Lenis({
         duration: 1.2,
