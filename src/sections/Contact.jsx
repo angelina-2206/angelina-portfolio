@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { trackContactSubmit } from '../lib/analytics'
 
 /* ═══════════════════════════════════════════════════════════════
    TYPING ANIMATION HOOK
@@ -218,6 +219,7 @@ function TerminalModal({ isOpen, onClose }) {
         } catch (err) {
           console.error('Formspree error:', err)
         }
+        trackContactSubmit()
         setStep(STEPS.DONE)
       }, 4200)
     }
@@ -246,6 +248,7 @@ function TerminalModal({ isOpen, onClose }) {
         } catch (err) {
           console.error('Formspree error:', err)
         }
+        trackContactSubmit()
         setStep(STEPS.DONE)
       }, 4200)
     }

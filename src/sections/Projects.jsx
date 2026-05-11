@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
+import { trackGitHubClick, trackProjectDemoClick } from '../lib/analytics'
 
 const PROJECTS = [
   {
@@ -340,7 +341,7 @@ export default function Projects() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="proj-gh-btn"
-                    onClick={e => e.stopPropagation()}
+                    onClick={e => { e.stopPropagation(); trackGitHubClick(p.title) }}
                     style={{
                       fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.15em',
                       textTransform: 'uppercase', padding: '6px 12px', borderRadius: 100,
@@ -356,20 +357,25 @@ export default function Projects() {
                     GitHub
                   </a>
 
-                  {/* View button */}
+                  {/* View / Live button — falls back to GitHub if no live URL */}
                   <button
                     className="proj-view-btn"
                     style={{
                       fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.15em',
                       textTransform: 'uppercase', padding: '6px 14px', borderRadius: 100,
                       border: `0.5px solid ${p.accent}55`, color: p.accent,
-                      background: 'transparent', cursor: 'none',
+                      background: 'transparent', cursor: 'pointer',
                       display: 'flex', alignItems: 'center', gap: 5,
                       transition: 'all 0.2s', opacity: 0.8,
                     }}
-                    onClick={() => p.live && window.open(p.live, '_blank')}
+                    onClick={() => {
+                      const url = p.live || p.github
+                      trackProjectDemoClick(p.title, url)
+                      window.open(url, '_blank')
+                    }}
+                    title={p.live ? 'View live demo' : 'View on GitHub'}
                   >
-                    View <span style={{ transition: 'transform 0.2s', display: 'inline-block' }}>→</span>
+                    {p.live ? 'Live' : 'Repo'} <span style={{ transition: 'transform 0.2s', display: 'inline-block' }}>→</span>
                   </button>
                 </div>
               </div>
