@@ -79,4 +79,5 @@ This build intentionally avoids generic web tropes. Components are built to be h
 
 ---
 
-(c) 2026 Angelina Chatterjee. Engineered for high-impact performance.
+(c) 2026 Angelina Chatterjee. 
+Engineered for high-impact performance.
