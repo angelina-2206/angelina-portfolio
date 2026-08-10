@@ -10,7 +10,7 @@ const TECH = [
     color: "#FFD700", icon_bg: "rgba(255,215,0,0.12)",
     grad: "linear-gradient(90deg,#FFD700,#FF6B35)",
     glow: "rgba(255,215,0,0.5)",
-    projects: ["Burnout Sentinel", "TrapEye", "EcoPulse"],
+    projects: ["Burnout Sentinel", "TrapEye", "OrbitOps"],
   },
   {
     id: "genai", name: "Generative AI", devicon: "devicon-tensorflow-original colored", cat: "ai",
@@ -18,7 +18,7 @@ const TECH = [
     color: "#FFD700", icon_bg: "rgba(255,215,0,0.12)",
     grad: "linear-gradient(90deg,#FFD700,#8B5CF6)",
     glow: "rgba(255,215,0,0.5)",
-    projects: ["What If Wizard", "NyayaSathi", "EcoPulse"],
+    projects: ["What If Wizard", "NyayaSathi", "OrbitOps"],
   },
   {
     id: "react", name: "React", devicon: "devicon-react-original colored", cat: "frontend",
@@ -26,7 +26,7 @@ const TECH = [
     color: "#61DAFB", icon_bg: "rgba(97,218,251,0.1)",
     grad: "linear-gradient(90deg,#61DAFB,#8B5CF6)",
     glow: "rgba(97,218,251,0.5)",
-    projects: ["Portfolio", "PostPehchaan", "What If Wizard"],
+    projects: ["OrbitOps", "Portfolio", "PostPehchaan"],
   },
   {
     id: "js", name: "JavaScript", devicon: "devicon-javascript-plain colored", cat: "language",
@@ -58,7 +58,7 @@ const TECH = [
     color: "#38BDF8", icon_bg: "rgba(56,189,248,0.1)",
     grad: "linear-gradient(90deg,#38BDF8,#8B5CF6)",
     glow: "rgba(56,189,248,0.5)",
-    projects: ["Portfolio", "What If Wizard"],
+    projects: ["OrbitOps", "Portfolio", "What If Wizard"],
   },
   {
     id: "git", name: "Git", devicon: "devicon-git-plain colored", cat: "tools",
@@ -82,7 +82,7 @@ const TECH = [
     color: "rgba(255,255,255,0.35)", icon_bg: "rgba(255,255,255,0.05)",
     grad: "linear-gradient(90deg,rgba(255,255,255,0.25),rgba(255,255,255,0.1))",
     glow: "rgba(255,255,255,0.2)",
-    projects: ["Burnout Sentinel", "EcoPulse"],
+    projects: ["Burnout Sentinel", "OrbitOps"],
   },
   {
     id: "postgres", name: "PostgreSQL", devicon: "devicon-postgresql-plain colored", cat: "data",

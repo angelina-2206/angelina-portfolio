@@ -67,19 +67,19 @@ const PROJECTS = [
     live: null,
   },
   {
-    num: '05', title: 'EcoPulse',
-    subtitle: 'Sustainability AI · MSME Carbon Advisor',
-    desc: 'Conversational AI advisor that analyzes carbon footprint data and recommends actionable eco-friendly practices. Built to make sustainability insights accessible for small businesses.',
-    accent: '#2ECC71',
-    accentGrad: 'linear-gradient(90deg,#2ECC71,#00D2BE)',
-    bgWord: 'ECOPULSE',
+    num: '05', title: 'OrbitOps GCS',
+    subtitle: 'Aerospace · Ground Control Station · Telemetry',
+    desc: 'High-reliability Ground Control Station for CanSat & CubeSat missions. Features real-time high-frequency telemetry ingestion, 3D WebGL orientation visualization, GIS flight trajectory tracking, and Web Serial API hardware links.',
+    accent: '#38BDF8',
+    accentGrad: 'linear-gradient(90deg,#38BDF8,#8B5CF6)',
+    bgWord: 'ORBITOPS',
     tags: [
-      { t: 'Conv. AI', c: 'green' }, { t: 'IndiaAI · IISc+IBM', c: 'gold' },
-      { t: 'Python', c: 'muted' }
+      { t: 'Space Tech', c: 'teal' }, { t: 'Three.js / WebGL', c: 'purple' },
+      { t: 'Web Serial API', c: 'gold' }
     ],
     flagship: false,
-    status: { label: 'Selected', dot: '#FFD700', text: 'rgba(255,215,0,0.85)', border: 'rgba(255,215,0,0.3)' },
-    github: 'https://github.com/angelina-2206/EcoPulse',
+    status: { label: 'Deployed', dot: '#38BDF8', text: 'rgba(56,189,248,0.85)', border: 'rgba(56,189,248,0.3)' },
+    github: 'https://github.com/angelina-2206/OrbitOps',
     live: null,
   },
   {
