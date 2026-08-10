@@ -153,7 +153,7 @@ function TerminalModal({ isOpen, onClose }) {
       return true
     }
     if (lower === 'resume') {
-      window.open('https://drive.google.com/file/d/1n3mCkBWABQyyIOtM0va_pr6tIyQW3vdF/view?usp=drive_link', '_blank')
+      window.open('https://drive.google.com/file/d/1vooUbNU_WS4HuMIjeQ_ypJpAAK_6HU0d/view?usp=drive_link', '_blank')
       return true
     }
     if (lower === 'github') {
@@ -597,7 +597,7 @@ export default function Contact() {
             LINKEDIN
           </a>
           <a
-            href="https://drive.google.com/file/d/1n3mCkBWABQyyIOtM0va_pr6tIyQW3vdF/view?usp=drive_link"
+            href="https://drive.google.com/file/d/1vooUbNU_WS4HuMIjeQ_ypJpAAK_6HU0d/view?usp=drive_link"
             target="_blank" rel="noreferrer"
             className="cta-link"
             onClick={trackResumeDownload}

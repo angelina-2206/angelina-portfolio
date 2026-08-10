@@ -2,64 +2,106 @@ import { useState } from 'react'
 
 const CONTRIBUTIONS = [
   {
-    id: 'gssoc',
-    year: '2026',
-    org: 'GSSoC',
-    fullName: 'GirlScript Summer of Code',
-    role: 'Open Source Contributor',
-    accent: '#F97316',
-    accentGrad: 'linear-gradient(135deg,#F97316,#FBBF24)',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-        <line x1="9" y1="9" x2="9.01" y2="9"/>
-        <line x1="15" y1="9" x2="15.01" y2="9"/>
+    id: 'bserc',
+    year: 'Jun 2026 - Present · 3 mos',
+    org: 'BSERC',
+    fullName: 'Bharat Space Education Research Centre (भारत अंतरिक्ष शिक्षा अनुसंधान केंद्र) · Internship',
+    role: 'Space Technology Intern',
+    location: 'Remote',
+    accent: '#38BDF8',
+    accentGrad: 'linear-gradient(135deg,#38BDF8,#8B5CF6)',
+    logoBg: '#FFFFFF',
+    logoUrl: '/logos/bserc.png',
+    svgLogo: (
+      <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="100" rx="20" fill="#FFFFFF" />
+        {/* Outer serrated gear wheel */}
+        <circle cx="50" cy="50" r="41" stroke="#1E293B" strokeWidth="4.5" strokeDasharray="7 3.5" />
+        <circle cx="50" cy="50" r="34" stroke="#1E293B" strokeWidth="2.5" />
+        {/* Inner ring */}
+        <circle cx="50" cy="50" r="24" fill="#0F172A" />
+        {/* Space tech atomic orbits */}
+        <ellipse cx="50" cy="50" rx="18" ry="6.5" stroke="#38BDF8" strokeWidth="2" transform="rotate(-30 50 50)" />
+        <ellipse cx="50" cy="50" rx="18" ry="6.5" stroke="#60A5FA" strokeWidth="2" transform="rotate(30 50 50)" />
+        <circle cx="50" cy="50" r="4" fill="#38BDF8" />
+        <circle cx="50" cy="50" r="30" stroke="#94A3B8" strokeWidth="1" strokeDasharray="2 2" />
       </svg>
     ),
-    copy: 'Not the kind that adds a README typo fix and calls it open source. Real PRs, real codebases, real maintainers who review your work and don\'t sugarcoat it. GSSoC\'26 — currently contributing, actively shipping.',
-    tags: ['Open Source', 'Collaborative Development', 'Code Review'],
+    copy: 'Space Technology Intern (Remote) at Bharat Space Education Research Centre (भारत अंतरिक्ष शिक्षा अनुसंधान केंद्र). Engaging in space science research, satellite systems engineering, and tech innovations.',
+    tags: ['Space Tech', 'Internship', 'Remote', 'Research'],
     status: 'Active',
     statusColor: '#22C55E',
   },
   {
-    id: 'ssoc',
-    year: '2026',
-    org: 'SSoC',
-    fullName: 'Social Summer of Code',
+    id: 'gssoc',
+    year: 'Apr 2026 - Present · 5 mos',
+    org: 'GSSoC',
+    fullName: 'GirlScript Summer of Code · Part-time',
     role: 'Open Source Contributor',
-    accent: '#3B82F6',
-    accentGrad: 'linear-gradient(135deg,#3B82F6,#8B5CF6)',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+    location: 'Remote',
+    accent: '#F97316',
+    accentGrad: 'linear-gradient(135deg,#F97316,#FBBF24)',
+    logoBg: '#FFFFFF',
+    logoUrl: '/logos/gssoc.png',
+    svgLogo: (
+      <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Orange base card with geometric border accents */}
+        <rect width="100" height="100" rx="20" fill="#F97316" />
+        {/* Decorative corner patterns */}
+        <circle cx="0" cy="0" r="26" fill="#EA580C" opacity="0.6" />
+        <circle cx="100" cy="0" r="26" fill="#EA580C" opacity="0.6" />
+        <circle cx="0" cy="100" r="26" fill="#EA580C" opacity="0.6" />
+        <circle cx="100" cy="100" r="26" fill="#EA580C" opacity="0.6" />
+        {/* Center white circle */}
+        <circle cx="50" cy="50" r="28" fill="#FFFFFF" />
+        {/* Inner orange badge */}
+        <rect x="29" y="29" width="42" height="42" rx="11" fill="#F97316" />
+        {/* </> symbol inside */}
+        <path d="M42 42 L35 50 L42 58 M58 42 L65 50 L58 58 M52 37 L48 63" stroke="#FFFFFF" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
     ),
-    copy: 'Social Summer of Code — contributing to projects that build for communities, not just companies. Because building things that matter to real people is harder than building things that look good on a pitch deck.',
-    tags: ['Community Tech', 'Open Source', 'Social Impact'],
+    copy: 'Contributor at GirlScript Summer of Code 2026, working across Open Source & reliable applications.',
+    tags: ['Open-Source Development', 'GitHub', 'Open Source', 'Remote'],
     status: 'Active',
     statusColor: '#22C55E',
   },
   {
     id: 'wios',
-    year: '2025–26',
+    year: 'Sep 2025 - Present · 1 yr',
     org: 'WIOS',
-    fullName: 'Women in Open Source',
-    role: 'Community Member',
+    fullName: 'Women in Open Source, VIT-AP · Full-time',
+    role: 'Technical Team Member',
+    location: 'On-site',
     accent: '#EC4899',
     accentGrad: 'linear-gradient(135deg,#EC4899,#A855F7)',
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    logoBg: '#FFFFFF',
+    logoUrl: '/logos/wios.png',
+    svgLogo: (
+      <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* White rounded rectangle background */}
+        <rect width="100" height="100" rx="20" fill="#FFFFFF" />
+        {/* Laurel Wreath Left */}
+        <path d="M 30 75 C 18 60 18 40 30 25 C 28 32 30 40 34 46 M 22 68 C 12 55 14 38 25 28 M 24 55 C 16 45 20 32 30 30" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        {/* Laurel Wreath Right */}
+        <path d="M 70 75 C 82 60 82 40 70 25 C 72 32 70 40 66 46 M 78 68 C 88 55 86 38 75 28 M 76 55 C 84 45 80 32 70 30" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        {/* Laurel Leaves left */}
+        <path d="M 28 65 C 22 62 20 54 26 52 C 28 58 30 62 28 65 Z" fill="#334155"/>
+        <path d="M 25 50 C 18 46 18 38 24 38 C 26 44 27 48 25 50 Z" fill="#334155"/>
+        <path d="M 30 35 C 24 30 26 22 32 24 C 33 29 32 33 30 35 Z" fill="#334155"/>
+        {/* Laurel Leaves right */}
+        <path d="M 72 65 C 78 62 80 54 74 52 C 72 58 70 62 72 65 Z" fill="#334155"/>
+        <path d="M 75 50 C 82 46 82 38 76 38 C 74 44 73 48 75 50 Z" fill="#334155"/>
+        <path d="M 70 35 C 76 30 74 22 68 24 C 67 29 68 33 70 35 Z" fill="#334155"/>
+        {/* Center WIOS figure logo */}
+        <circle cx="50" cy="38" r="7" fill="#8B5CF6"/>
+        <path d="M38 52 C38 43 62 43 62 52 C62 60 38 60 38 52 Z" fill="#8B5CF6"/>
+        {/* Text WIOS & VIT-AP */}
+        <text x="50" y="65" textAnchor="middle" fill="#334155" fontSize="11" fontWeight="800" fontFamily="sans-serif">WIOS</text>
+        <text x="50" y="74" textAnchor="middle" fill="#64748B" fontSize="7" fontWeight="700" fontFamily="sans-serif">VIT-AP</text>
       </svg>
     ),
-    copy: 'Women in Open Source — because representation in technical communities isn\'t a feel-good statistic, it\'s a structural fix. Being here, contributing, and making it normal for people who look like me to ship production code.',
-    tags: ['Representation', 'Community', 'Open Source'],
+    copy: 'Technical Team Member at Women in Open Source, VIT-AP. Building technical community initiatives, mentoring contributors, and shipping production open-source software.',
+    tags: ['Technical Team', 'VIT-AP', 'On-site', 'Open Source'],
     status: 'Member',
     statusColor: '#EC4899',
   },
@@ -93,7 +135,7 @@ export default function ContributionsTimeline() {
         pointerEvents: 'none', userSelect: 'none', zIndex: 0,
         fontFamily: 'var(--font-display)',
       }}>
-        COMMUNITY
+        EXPERIENCE
       </div>
 
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 48px', position: 'relative', zIndex: 2 }}>
@@ -103,17 +145,17 @@ export default function ContributionsTimeline() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
             <div style={{ width: 20, height: 1, background: '#F97316' }} />
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(249,115,22,0.7)' }}>
-              004 — In The Wild
+              004 — Experience & Journey
             </span>
           </div>
           <h2 style={{
             fontFamily: 'var(--font-display)', fontSize: 'clamp(2.2rem,5vw,3.5rem)',
             fontWeight: 900, letterSpacing: '-0.04em', color: '#F0EEF6', lineHeight: 1, marginBottom: 12
           }}>
-            Contributions & Community
+            Experience & Contributions
           </h2>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'rgba(240,238,246,0.4)', maxWidth: 480, lineHeight: 1.8 }}>
-            Proof, not padding. These are the communities where the work is public, the reviews are honest, and the commits actually ship.
+            Proof, not padding. These are the organizations and communities where the work is public, the reviews are honest, and the commits actually ship.
           </p>
         </div>
 
@@ -140,16 +182,32 @@ export default function ContributionsTimeline() {
               <div style={{ padding: '1.75rem' }}>
                 {/* Header row */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
-                  {/* Icon */}
+                  {/* Logo Container */}
                   <div style={{
-                    width: 44, height: 44, borderRadius: 12,
-                    background: `${c.accent}15`,
-                    border: `0.5px solid ${c.accent}33`,
+                    width: 48, height: 48, borderRadius: 12,
+                    background: c.logoBg || `${c.accent}15`,
+                    border: `0.5px solid ${c.accent}44`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: c.accent,
-                    transition: 'background 0.3s',
+                    overflow: 'hidden',
+                    boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
+                    flexShrink: 0,
                   }}>
-                    {c.icon}
+                    {c.logoUrl ? (
+                      <img 
+                        src={c.logoUrl} 
+                        alt={`${c.org} logo`} 
+                        style={{ width: '100%', height: '100%', objectFit: 'contain', padding: c.logoBg === '#FFFFFF' ? 4 : 0 }}
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          if (e.currentTarget.nextSibling) {
+                            e.currentTarget.nextSibling.style.display = 'flex';
+                          }
+                        }}
+                      />
+                    ) : null}
+                    <div style={{ display: c.logoUrl ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {c.svgLogo || c.icon}
+                    </div>
                   </div>
 
                   {/* Status pill */}

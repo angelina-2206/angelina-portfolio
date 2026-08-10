@@ -494,9 +494,9 @@ export default function About() {
               transition={{ duration: 1, delay: 1.1 }}
             >
               {[
-                { label: "GSSoC '26",           color: "#00D2BE" },
-                { label: "SSoC '26",             color: "#00D2BE" },
-                { label: "WIOS · Technical Team", color: "var(--color-lavender)" },
+                { label: "Space Tech Intern · BSERC", color: "#38BDF8" },
+                { label: "GSSoC '26",                 color: "#00D2BE" },
+                { label: "WIOS · Technical Team",    color: "var(--color-lavender)" },
               ].map((badge, i) => (
                 <span key={i} style={{
                   fontFamily:    "var(--font-mono)",
