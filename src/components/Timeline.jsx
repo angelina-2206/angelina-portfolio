@@ -107,6 +107,55 @@ const CONTRIBUTIONS = [
   },
 ]
 
+const CERTIFICATIONS = [
+  {
+    id: 'hedera-hcda',
+    title: 'Hedera Certified Developer Associate',
+    issuer: 'The Hashgraph Association',
+    issued: 'Issued Jun 2026',
+    accentGrad: 'linear-gradient(90deg,#8B5CF6,#00D2BE)',
+    borderColor: 'rgba(139,92,246,0.25)',
+    hoverBorder: 'rgba(139,92,246,0.6)',
+    glowColor: 'rgba(139,92,246,0.18)',
+    badgeColor: '#00D2BE',
+    badgeText: 'Verified',
+    url: '/logos/hcda-cert-large.png',
+    iconBg: '#FFFFFF',
+    logoUrl: '/logos/hedera.png',
+    svgLogo: (
+      <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hedGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#8B5CF6"/>
+            <stop offset="1" stopColor="#00D2BE"/>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="42" stroke="url(#hedGrad)" strokeWidth="8" fill="none"/>
+        <path d="M34 26 V74 M66 26 V74 M34 42 H66 M34 58 H66" stroke="url(#hedGrad)" strokeWidth="8" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  {
+    id: 'oracle-genai',
+    title: 'Oracle Infrastructure Generative AI Professional',
+    issuer: 'Oracle',
+    issued: 'Issued Oct 2025',
+    accentGrad: 'linear-gradient(90deg,#C74634,#FFD700)',
+    borderColor: 'rgba(199,70,52,0.25)',
+    hoverBorder: 'rgba(199,70,52,0.6)',
+    glowColor: 'rgba(199,70,52,0.18)',
+    badgeColor: '#FFD700',
+    badgeText: 'Verified',
+    url: 'https://catalog-education.oracle.com/ords/certview/sharebadge?id=2D51C4C86DF645928399B2D666A4934CB6C0A18DD5F942D689A881E89883FB00',
+    iconBg: '#C74634',
+    svgLogo: (
+      <svg width="24" height="24" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 0C7.6 0 0 7.6 0 17s7.6 17 17 17 17-7.6 17-17S26.4 0 17 0zm0 28.6C10.6 28.6 5.4 23.4 5.4 17S10.6 5.4 17 5.4 28.6 10.6 28.6 17 23.4 28.6 17 28.6z" fill="#FFFFFF"/>
+      </svg>
+    ),
+  },
+]
+
 export default function ContributionsTimeline() {
   const [hovered, setHovered] = useState(null)
 
@@ -297,81 +346,103 @@ export default function ContributionsTimeline() {
             </span>
           </div>
 
-          {/* Oracle cert card */}
-          <a
-            href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=2D51C4C86DF645928399B2D666A4934CB6C0A18DD5F942D689A881E89883FB00"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cert-card"
-            style={{ textDecoration: 'none', display: 'block' }}
-          >
-            <div style={{ height: 2, background: 'linear-gradient(90deg,#C74634,#FFD700)' }} />
-            <div style={{ padding: '1.5rem 1.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          {/* Certifications grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16 }}>
+            {CERTIFICATIONS.map((cert) => (
+              <a
+                key={cert.id}
+                href={cert.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cert-card"
+                style={{
+                  '--cert-hover-border': cert.hoverBorder,
+                  '--cert-glow': cert.glowColor,
+                  border: `0.5px solid ${cert.borderColor}`,
+                  textDecoration: 'none',
+                  display: 'block',
+                }}
+              >
+                <div style={{ height: 2, background: cert.accentGrad }} />
+                <div style={{ padding: '1.4rem 1.6rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', minHeight: 92 }}>
 
-              {/* Left — icon + text */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                {/* Oracle "O" icon */}
-                <div style={{
-                  width: 44, height: 44, borderRadius: 10,
-                  background: '#C74634',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                  boxShadow: '0 4px 12px rgba(199,70,52,0.2)'
-                }}>
-                  <svg width="24" height="24" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17 0C7.6 0 0 7.6 0 17s7.6 17 17 17 17-7.6 17-17S26.4 0 17 0zm0 28.6C10.6 28.6 5.4 23.4 5.4 17S10.6 5.4 17 5.4 28.6 10.6 28.6 17 23.4 28.6 17 28.6z" fill="#FFFFFF"/>
-                  </svg>
-                </div>
+                  {/* Left — icon + text */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.15rem' }}>
+                    <div style={{
+                      width: 44, height: 44, borderRadius: 10,
+                      background: cert.iconBg,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                      boxShadow: `0 4px 12px ${cert.glowColor}`,
+                      overflow: 'hidden',
+                      padding: cert.logoUrl ? 3 : 0,
+                    }}>
+                      {cert.logoUrl ? (
+                        <img
+                          src={cert.logoUrl}
+                          alt={cert.title}
+                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            if (e.currentTarget.nextSibling) e.currentTarget.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      <div style={{ display: cert.logoUrl ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {cert.svgLogo}
+                      </div>
+                    </div>
 
-                <div>
-                  <div style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(0.95rem,2vw,1.15rem)',
-                    fontWeight: 800, letterSpacing: '-0.02em',
-                    color: '#F0EEF6', marginBottom: 3,
-                  }}>
-                    Oracle Infrastructure Generative AI Professional
+                    <div>
+                      <div style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: 'clamp(0.95rem,2vw,1.1rem)',
+                        fontWeight: 800, letterSpacing: '-0.02em',
+                        color: '#F0EEF6', marginBottom: 3, lineHeight: 1.25,
+                      }}>
+                        {cert.title}
+                      </div>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'rgba(240,238,246,0.4)', letterSpacing: '0.08em' }}>
+                        {cert.issuer} · {cert.issued}
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'rgba(240,238,246,0.4)', letterSpacing: '0.08em' }}>
-                    Oracle · Issued Oct 2025
+
+                  {/* Right — verified badge + arrow */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                    <div style={{
+                      display: 'flex', alignItems: 'center', gap: 5,
+                      fontFamily: 'var(--font-mono)', fontSize: 8,
+                      letterSpacing: '0.12em', textTransform: 'uppercase',
+                      padding: '4px 10px', borderRadius: 100,
+                      background: `${cert.badgeColor}14`,
+                      border: `0.5px solid ${cert.badgeColor}4D`,
+                      color: cert.badgeColor,
+                    }}>
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke={cert.badgeColor} strokeWidth="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                      {cert.badgeText}
+                    </div>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: `${cert.badgeColor}88` }}>↗</span>
                   </div>
-                </div>
-              </div>
 
-              {/* Right — verified badge + arrow */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-                <div style={{
-                  display: 'flex', alignItems: 'center', gap: 5,
-                  fontFamily: 'var(--font-mono)', fontSize: 8,
-                  letterSpacing: '0.12em', textTransform: 'uppercase',
-                  padding: '4px 10px', borderRadius: 100,
-                  background: 'rgba(255,215,0,0.08)',
-                  border: '0.5px solid rgba(255,215,0,0.3)',
-                  color: '#FFD700',
-                }}>
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#FFD700" strokeWidth="2.5">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  Verified
                 </div>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'rgba(255,215,0,0.5)' }}>↗</span>
-              </div>
-
-            </div>
-          </a>
+              </a>
+            ))}
+          </div>
 
         </div>
 
         <style>{`
           .cert-card {
             background: #0D0D0D;
-            border: 0.5px solid rgba(199,70,52,0.2);
             border-radius: 14px;
             overflow: hidden;
             transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s cubic-bezier(0.16,1,0.3,1);
           }
           .cert-card:hover {
-            border-color: rgba(199,70,52,0.5);
-            box-shadow: 0 12px 48px rgba(199,70,52,0.12);
+            border-color: var(--cert-hover-border) !important;
+            box-shadow: 0 12px 48px var(--cert-glow) !important;
             transform: translateY(-4px);
           }
         `}</style>
