@@ -2,72 +2,8 @@ import { useState } from 'react'
 
 const CONTRIBUTIONS = [
   {
-    id: 'bserc',
-    year: 'Jun 2026 - Present · 3 mos',
-    org: 'BSERC',
-    fullName: 'Bharat Space Education Research Centre (भारत अंतरिक्ष शिक्षा अनुसंधान केंद्र) · Internship',
-    role: 'Space Technology Intern',
-    location: 'Remote',
-    accent: '#38BDF8',
-    accentGrad: 'linear-gradient(135deg,#38BDF8,#8B5CF6)',
-    logoBg: '#FFFFFF',
-    logoUrl: '/logos/bserc.png',
-    svgLogo: (
-      <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100" height="100" rx="20" fill="#FFFFFF" />
-        {/* Outer serrated gear wheel */}
-        <circle cx="50" cy="50" r="41" stroke="#1E293B" strokeWidth="4.5" strokeDasharray="7 3.5" />
-        <circle cx="50" cy="50" r="34" stroke="#1E293B" strokeWidth="2.5" />
-        {/* Inner ring */}
-        <circle cx="50" cy="50" r="24" fill="#0F172A" />
-        {/* Space tech atomic orbits */}
-        <ellipse cx="50" cy="50" rx="18" ry="6.5" stroke="#38BDF8" strokeWidth="2" transform="rotate(-30 50 50)" />
-        <ellipse cx="50" cy="50" rx="18" ry="6.5" stroke="#60A5FA" strokeWidth="2" transform="rotate(30 50 50)" />
-        <circle cx="50" cy="50" r="4" fill="#38BDF8" />
-        <circle cx="50" cy="50" r="30" stroke="#94A3B8" strokeWidth="1" strokeDasharray="2 2" />
-      </svg>
-    ),
-    copy: 'Space Technology Intern (Remote) at Bharat Space Education Research Centre (भारत अंतरिक्ष शिक्षा अनुसंधान केंद्र). Engaging in space science research, satellite systems engineering, and tech innovations.',
-    tags: ['Space Tech', 'Internship', 'Remote', 'Research'],
-    status: 'Active',
-    statusColor: '#22C55E',
-  },
-  {
-    id: 'gssoc',
-    year: 'Apr 2026 - Present · 5 mos',
-    org: 'GSSoC',
-    fullName: 'GirlScript Summer of Code · Part-time',
-    role: 'Open Source Contributor',
-    location: 'Remote',
-    accent: '#F97316',
-    accentGrad: 'linear-gradient(135deg,#F97316,#FBBF24)',
-    logoBg: '#FFFFFF',
-    logoUrl: '/logos/gssoc.png',
-    svgLogo: (
-      <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Orange base card with geometric border accents */}
-        <rect width="100" height="100" rx="20" fill="#F97316" />
-        {/* Decorative corner patterns */}
-        <circle cx="0" cy="0" r="26" fill="#EA580C" opacity="0.6" />
-        <circle cx="100" cy="0" r="26" fill="#EA580C" opacity="0.6" />
-        <circle cx="0" cy="100" r="26" fill="#EA580C" opacity="0.6" />
-        <circle cx="100" cy="100" r="26" fill="#EA580C" opacity="0.6" />
-        {/* Center white circle */}
-        <circle cx="50" cy="50" r="28" fill="#FFFFFF" />
-        {/* Inner orange badge */}
-        <rect x="29" y="29" width="42" height="42" rx="11" fill="#F97316" />
-        {/* </> symbol inside */}
-        <path d="M42 42 L35 50 L42 58 M58 42 L65 50 L58 58 M52 37 L48 63" stroke="#FFFFFF" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    ),
-    copy: 'Contributor at GirlScript Summer of Code 2026, working across Open Source & reliable applications.',
-    tags: ['Open-Source Development', 'GitHub', 'Open Source', 'Remote'],
-    status: 'Active',
-    statusColor: '#22C55E',
-  },
-  {
     id: 'wios',
-    year: 'Sep 2025 - Present · 1 yr',
+    year: 'Sep 2025 - Sep 2026 · 1 yr 1 mo',
     org: 'WIOS',
     fullName: 'Women in Open Source, VIT-AP · Full-time',
     role: 'Technical Team Member',
@@ -101,9 +37,73 @@ const CONTRIBUTIONS = [
       </svg>
     ),
     copy: 'Technical Team Member at Women in Open Source, VIT-AP. Building technical community initiatives, mentoring contributors, and shipping production open-source software.',
-    tags: ['Technical Team', 'VIT-AP', 'On-site', 'Open Source'],
-    status: 'Member',
+    tags: ['Technical Team', 'Full-time', 'On-site', 'Open Source', 'VIT-AP'],
+    status: 'Completed',
     statusColor: '#EC4899',
+  },
+  {
+    id: 'gssoc',
+    year: 'Apr 2026 - Aug 2026 · 5 mos',
+    org: 'GSSoC',
+    fullName: 'GirlScript Summer of Code · Part-time',
+    role: 'Open Source Contributor',
+    location: 'Remote',
+    accent: '#F97316',
+    accentGrad: 'linear-gradient(135deg,#F97316,#FBBF24)',
+    logoBg: '#FFFFFF',
+    logoUrl: '/logos/gssoc.png',
+    svgLogo: (
+      <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Orange base card with geometric border accents */}
+        <rect width="100" height="100" rx="20" fill="#F97316" />
+        {/* Decorative corner patterns */}
+        <circle cx="0" cy="0" r="26" fill="#EA580C" opacity="0.6" />
+        <circle cx="100" cy="0" r="26" fill="#EA580C" opacity="0.6" />
+        <circle cx="0" cy="100" r="26" fill="#EA580C" opacity="0.6" />
+        <circle cx="100" cy="100" r="26" fill="#EA580C" opacity="0.6" />
+        {/* Center white circle */}
+        <circle cx="50" cy="50" r="28" fill="#FFFFFF" />
+        {/* Inner orange badge */}
+        <rect x="29" y="29" width="42" height="42" rx="11" fill="#F97316" />
+        {/* </> symbol inside */}
+        <path d="M42 42 L35 50 L42 58 M58 42 L65 50 L58 58 M52 37 L48 63" stroke="#FFFFFF" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+    copy: 'Ranked #229 / 47.9K+ globally (Top 0.5%) as a contributor across Open Source and AI Agents tracks.',
+    tags: ['Open-Source Development', 'GitHub', 'AI Agents', 'Open Source', 'Remote'],
+    status: 'Top 0.5%',
+    statusColor: '#F97316',
+  },
+  {
+    id: 'bserc',
+    year: 'Jun 2026 - Jul 2026 · 2 mos',
+    org: 'BSERC',
+    fullName: 'Bharat Space Education Research Centre (भारत अंतरिक्ष शिक्षा अनुसंधान केंद्र ) · Internship',
+    role: 'Space Technology Intern',
+    location: 'Remote',
+    accent: '#38BDF8',
+    accentGrad: 'linear-gradient(135deg,#38BDF8,#8B5CF6)',
+    logoBg: '#FFFFFF',
+    logoUrl: '/logos/bserc.png',
+    svgLogo: (
+      <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="100" rx="20" fill="#FFFFFF" />
+        {/* Outer serrated gear wheel */}
+        <circle cx="50" cy="50" r="41" stroke="#1E293B" strokeWidth="4.5" strokeDasharray="7 3.5" />
+        <circle cx="50" cy="50" r="34" stroke="#1E293B" strokeWidth="2.5" />
+        {/* Inner ring */}
+        <circle cx="50" cy="50" r="24" fill="#0F172A" />
+        {/* Space tech atomic orbits */}
+        <ellipse cx="50" cy="50" rx="18" ry="6.5" stroke="#38BDF8" strokeWidth="2" transform="rotate(-30 50 50)" />
+        <ellipse cx="50" cy="50" rx="18" ry="6.5" stroke="#60A5FA" strokeWidth="2" transform="rotate(30 50 50)" />
+        <circle cx="50" cy="50" r="4" fill="#38BDF8" />
+        <circle cx="50" cy="50" r="30" stroke="#94A3B8" strokeWidth="1" strokeDasharray="2 2" />
+      </svg>
+    ),
+    copy: 'Space Technology Intern (Remote) at Bharat Space Education Research Centre (भारत अंतरिक्ष शिक्षा अनुसंधान केंद्र). Engaging in space science research, satellite systems engineering, and tech innovations.',
+    tags: ['Space Tech', 'Satellite Systems', 'Internship', 'Remote', 'Research'],
+    status: 'Completed',
+    statusColor: '#38BDF8',
   },
 ]
 
@@ -229,25 +229,32 @@ export default function ContributionsTimeline() {
                   fontFamily: 'var(--font-display)',
                   fontSize: 'clamp(1.4rem,3vw,1.9rem)',
                   fontWeight: 900, letterSpacing: '-0.03em',
-                  color: '#F0EEF6', lineHeight: 1, marginBottom: 4,
+                  color: '#F0EEF6', lineHeight: 1, marginBottom: 6,
                 }}>
                   {c.org}
-                </div>
-                <div style={{
-                  fontFamily: 'var(--font-mono)', fontSize: 9,
-                  color: 'rgba(240,238,246,0.35)', letterSpacing: '0.08em',
-                  marginBottom: '1rem',
-                }}>
-                  {c.fullName} · {c.year}
                 </div>
 
                 {/* Role badge */}
                 <div style={{
-                  fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.12em',
-                  textTransform: 'uppercase', color: c.accent,
-                  marginBottom: '1rem',
+                  fontFamily: 'var(--font-mono)', fontSize: 9.5, letterSpacing: '0.12em',
+                  textTransform: 'uppercase', color: c.accent, fontWeight: 700,
+                  marginBottom: '0.65rem',
                 }}>
                   {c.role}
+                </div>
+
+                {/* Organization details & Duration */}
+                <div style={{
+                  fontFamily: 'var(--font-mono)', fontSize: 9,
+                  color: 'rgba(240,238,246,0.45)', letterSpacing: '0.04em',
+                  marginBottom: '1rem', lineHeight: 1.6,
+                }}>
+                  <div style={{ color: 'rgba(240,238,246,0.65)', fontWeight: 500, marginBottom: 2 }}>
+                    {c.fullName}
+                  </div>
+                  <div>
+                    {c.year} · <span style={{ color: 'rgba(240,238,246,0.75)' }}>{c.location}</span>
+                  </div>
                 </div>
 
                 {/* Copy */}
