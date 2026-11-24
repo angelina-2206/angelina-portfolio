@@ -153,7 +153,7 @@ function TerminalModal({ isOpen, onClose }) {
       return true
     }
     if (lower === 'resume') {
-      window.open('https://drive.google.com/file/d/1vooUbNU_WS4HuMIjeQ_ypJpAAK_6HU0d/view?usp=drive_link', '_blank')
+      window.open('https://drive.google.com/file/d/1JoszU1CS89KPT5qCpid_V-PO8sg2LGFu/view?usp=sharing', '_blank')
       return true
     }
     if (lower === 'github') {
